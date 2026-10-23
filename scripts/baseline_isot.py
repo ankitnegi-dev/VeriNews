@@ -214,11 +214,20 @@ def evaluate_variant(
 
 def main() -> None:
     dataset, load_stats = load_isot()
+    rows_before_dedupe = len(dataset)
+    duplicate_text_rows = int(dataset.duplicated(subset=["text"]).sum())
+    dataset = dataset.drop_duplicates(subset=["text"], keep="first").reset_index(drop=True)
+    logger.info(
+        "deduplicated %s rows by article text: %s -> %s",
+        duplicate_text_rows,
+        rows_before_dedupe,
+        len(dataset),
+    )
+
     dataset["text_as_is"] = dataset["text"]
     dataset["text_stripped"] = dataset["text"].apply(strip_source_tag)
 
     tagged_rows = int(dataset["text"].apply(lambda text: bool(SOURCE_TAG_RE.match(text))).sum())
-    duplicate_text_rows = int(dataset.duplicated(subset=["text"]).sum())
     logger.info("rows with a leading wire-service dateline: %s", tagged_rows)
 
     train_index, test_index = train_test_split(
@@ -234,10 +243,11 @@ def main() -> None:
             "fake_rows_raw": load_stats["fake_rows_raw"],
             "true_rows_raw": load_stats["true_rows_raw"],
             "rows_dropped_empty_text": load_stats["rows_dropped_empty_text"],
+            "rows_before_dedupe": rows_before_dedupe,
+            "duplicate_text_rows_removed": duplicate_text_rows,
             "fake_rows": int((dataset["label"] == 0).sum()),
             "true_rows": int((dataset["label"] == 1).sum()),
             "total_rows": int(len(dataset)),
-            "duplicate_text_rows": duplicate_text_rows,
             "rows_with_leading_source_tag": tagged_rows,
         },
         "protocol": {
@@ -254,6 +264,7 @@ def main() -> None:
             },
             "text_field": "text",
             "labels": {"Fake": 0, "True": 1},
+            "dedupe": {"subset": "text", "keep": "first", "when": "before split"},
         },
         "as_is": evaluate_variant(
             dataset, "text_as_is", train_index, test_index, "as_is"
