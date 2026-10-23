@@ -1,0 +1,29 @@
+# Glossary
+
+- **Accuracy**: the share of all predictions that are correct; misleading when classes are unbalanced.
+- **Baseline**: a simple reference model used to check that later, more complex models are worth the cost.
+- **Confidence**: here, the normalized gap between weighted support and weighted refutation, clipped to 0-1.
+- **Confusion matrix**: a table of actual vs predicted classes; shows false positives and false negatives directly.
+- **Contradiction (NLI)**: the premise conflicts with the hypothesis, e.g. premise says Paris, hypothesis says Berlin.
+- **Cosine similarity**: the cosine of the angle between two vectors; 1 means same direction, 0 means unrelated.
+- **Credibility weight**: a 0-1 multiplier for a news domain, based on a hand-made tier list.
+- **Dateline / source tag**: the opening `WASHINGTON (Reuters) - ` marker on a wire-service article.
+- **Embedding**: a fixed-length numeric vector representing a sentence's meaning.
+- **Entailment (NLI)**: the premise logically supports the hypothesis.
+- **Entity**: a named thing in text, such as a person, organization, place, date or money amount.
+- **Evidence**: one retrieved article's best-matching snippet plus its scores and stance.
+- **F1 score**: the harmonic mean of precision and recall; one number balancing both errors.
+- **FEVER**: a fact-verification dataset of claims with Wikipedia evidence references and SUPPORTS / REFUTES / NOT ENOUGH INFO labels.
+- **ISOT**: a Fake/True news dataset of articles; useful for a style baseline, not for live claim verification.
+- **Logistic regression**: a linear classifier that learns weights for input features and outputs a class.
+- **NEI / NOT ENOUGH INFO**: the label for a claim that the available evidence cannot decide.
+- **NER (named entity recognition)**: finding names and other entities in text; spaCy does this.
+- **NLI (natural language inference)**: deciding whether a premise entails, contradicts or is neutral toward a hypothesis.
+- **Precision**: of the items predicted positive, the share that are actually positive.
+- **Recall**: of the items that are actually positive, the share the model finds.
+- **Recency factor**: a 0.6-1.0 multiplier that discounts older articles during ranking.
+- **Source-tag leakage**: shortcut learning where a dataset artefact such as a Reuters dateline predicts the label.
+- **Stance**: the per-evidence label `SUPPORTS`, `REFUTES` or `NEUTRAL`.
+- **TF-IDF**: term frequency-inverse document frequency; weights words that are common in one document but rare overall.
+- **UNVERIFIED**: the decision when evidence is missing, too weak, or conflicting.
+- **Zero-shot**: using a pretrained model on a task without fine-tuning it on task-specific labelled data.
