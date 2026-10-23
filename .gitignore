@@ -1,0 +1,40 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local data, caches, and downloaded models (never commit these)
+data/
+.cache/
+models/
+
+# Model weight files if they appear elsewhere
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.h5
+
+# Third-party agent skills installed locally
+.agents/skills/
+.opencode/skills/
+skills/frontend-design/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
