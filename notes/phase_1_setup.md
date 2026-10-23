@@ -11,22 +11,31 @@ loads the fixed NLI model and checks one entailment, one neutral and one contrad
 ## ISOT baseline
 
 Raw files: 23,481 Fake and 21,417 True articles. After dropping 630 Fake and 1 True article
-with an empty body, 44,267 rows remain. Stratified 80/20 split, `random_state=42`; 8,854 test rows.
+with an empty body, 44,267 rows remain. **Deduplicating by exact article text before the
+split** removes 5,628 duplicates, leaving 38,639 rows (17,449 Fake / 21,190 True). Stratified
+80/20 split, `random_state=42`; 7,728 test rows. Dedupe is the current protocol; the earlier
+pre-dedupe numbers are kept below only for comparison.
 
 | Variant | Accuracy | Precision (macro) | Recall (macro) | F1 (macro) | Confusion (actual Fake/True x predicted Fake/True) |
 |---|---:|---:|---:|---:|---|
-| As-is | 0.9864 | 0.9863 | 0.9866 | 0.9864 | [[4494, 77], [43, 4240]] |
-| Dateline stripped | 0.9794 | 0.9793 | 0.9796 | 0.9794 | [[4453, 118], [64, 4219]] |
+| As-is, deduped | **0.9802** | 0.9811 | 0.9790 | 0.9800 | [[3374, 116], [37, 4201]] |
+| Dateline stripped, deduped | **0.9744** | 0.9756 | 0.9728 | 0.9741 | [[3340, 150], [48, 4190]] |
 
-**Why the difference matters.** 19,451 of 21,416 usable True articles (90.8%) start with a
-dateline such as `WASHINGTON (Reuters) - `; **zero** Fake articles do. The as-is model can
-use that shortcut, so its 98.6% is not evidence that it detects truth. Removing the dateline
-costs 0.70 accuracy points, which shows the shortcut was real but not the only signal: ISOT
-Fake and True articles also differ in topic and writing style. Even 97.9% is a style score,
-not a fact-checking score. Exact values are in `results/baseline_metrics.json`.
+Pre-dedupe comparison (superseded, same split seed):
 
-Caveat: 5,628 duplicate article bodies remain, so some near-duplicates can fall on both sides
-of the split and make the score slightly optimistic.
+| Variant | Accuracy | F1 (macro) | Confusion |
+|---|---:|---:|---|
+| As-is | 0.9864 | 0.9864 | [[4494, 77], [43, 4240]] |
+| Dateline stripped | 0.9794 | 0.9794 | [[4453, 118], [64, 4219]] |
+
+**Why the difference matters.** After dedupe, 19,243 of 21,190 True articles (90.8%) start
+with a dateline such as `WASHINGTON (Reuters) - `; **zero** Fake articles do. The as-is model
+can use that shortcut, so 98.0% is not evidence that it detects truth. Removing the dateline
+costs 0.58 accuracy points, showing the shortcut is real but not the only signal: ISOT Fake
+and True articles also differ in topic and writing style. Even 97.4% is a style score, not a
+fact-checking score. Dedupe lowered both scores by roughly 0.6 points, which confirms the old
+numbers were slightly inflated by repeated article bodies. Exact values are in
+`results/baseline_metrics.json`.
 
 ## NLI smoke test
 
@@ -56,9 +65,12 @@ Verifiable: 109,810; not verifiable: 35,639.
 **Evidence contains references, not text.** Each reference is
 `[page_id, sentence_id, page_title, sentence_number]`, for example
 `[92206, 104971, "Nikolaj_Coster-Waldau", 7]`. There is no evidence-sentence text.
-`NOT ENOUGH INFO` rows contain `[page_id, null, null, null]`. Therefore the optional
-Phase 5 NLI-on-FEVER check is **not possible from these files alone**; it would need the
-Wikipedia sentence text (or the FEVER wiki dump). We did not build anything on FEVER.
+All 35,639 `NOT ENOUGH INFO` rows contain only `[page_id, null, null, null]`.
+
+**Decision: FEVER is dropped from scope.** It cannot feed the NLI stage without downloading
+a Wikipedia dump and aligning page/sentence ids to text, which is outside the deadline and
+adds a new data dependency. We will not download any Wikipedia dump, and `data/raw/fever`
+stays untracked. Nothing was built on FEVER.
 
 ## Concepts, simply
 
@@ -77,12 +89,13 @@ Wikipedia sentence text (or the FEVER wiki dump). We did not build anything on F
 
 1. `validate_isot_files()` stops immediately if a CSV is missing or 0 bytes.
 2. `load_isot()` reads `title` and `text`, labels Fake=0 / True=1, and drops empty bodies.
-3. `strip_source_tag()` removes one leading `CITY (Reuters|AP|AFP) - ` tag with a regex.
-4. The same train/test indices are used for both variants; TF-IDF is fitted on train only,
+3. `main()` removes exact duplicate article texts **before** creating the train/test split.
+4. `strip_source_tag()` removes one leading `CITY (Reuters|AP|AFP) - ` tag with a regex.
+5. The same train/test indices are used for both variants; TF-IDF is fitted on train only,
    then logistic regression predicts the test rows.
-5. `evaluate_variant()` writes accuracy, macro/weighted precision-recall-F1, per-class scores,
+6. `evaluate_variant()` writes accuracy, macro/weighted precision-recall-F1, per-class scores,
    a confusion matrix and the sklearn report to `results/baseline_metrics.json`.
-6. `smoke_nli.py` maps label names from `model.config.id2label` (never assumes index order),
+7. `smoke_nli.py` maps label names from `model.config.id2label` (never assumes index order),
    runs one pair at a time, applies softmax and prints probabilities plus latency.
 
 ## Why these choices
@@ -101,15 +114,32 @@ Wikipedia sentence text (or the FEVER wiki dump). We did not build anything on F
    before building the real pipeline.
 2. **Why did accuracy fall after stripping datelines?** The model had been using the Reuters
    tag as a strong hint; removing it forces more reliance on wording and topic.
-3. **Does 98% mean the model can detect fake news?** No. ISOT is a style/topic dataset, and
-   the split still contains duplicates; the score does not transfer to live claims.
+3. **Does 98% mean the model can detect fake news?** No. ISOT is a style/topic dataset;
+   dedupe removed exact repeats but not the shortcut, and the score does not transfer to
+   live claims.
 4. **What do the three NLI outputs mean?** Entailment = evidence supports the claim,
    contradiction = evidence conflicts with it, neutral = evidence does not decide it.
 5. **Why not fine-tune the NLI model?** No labelled in-domain data, limited CPU time, and a
    zero-shot model already passes the sanity check.
 
+## Carry-forward Phase 5 plan
+
+- Benchmark NLI on a batch of 6 realistic snippets, cache NLI results per
+  `(claim, snippet)` SHA-256 hash, and switch to the smaller model only after telling the
+  user if a batch takes over ~8 seconds on CPU.
+
 ## Check yourself
 
-1. Why can a classifier score 98.6% on ISOT without learning whether a claim is true?
+1. Why can a classifier score 98.0% on ISOT without learning whether a claim is true?
 2. If `p_contra = 0.82`, what stance should the NLI stage assign, and why?
 3. Why can we not run the optional FEVER NLI evaluation directly from `train.jsonl`?
+
+## Check yourself: answers
+
+1. **Correct.** It learns dataset-specific wording/topic patterns (and can exploit artefacts
+   such as datelines), not a general test of factual truth.
+2. **Partly correct.** The NLI model's label is `contradiction`, but our pipeline maps that
+   to the stance **`REFUTES`**, because `p_contra = 0.82 >= 0.5`. "Contradiction" is the
+   model output; "REFUTES" is our evidence label.
+3. **Correct.** `train.jsonl` has only Wikipedia page ids, titles and sentence ids, not the
+   evidence sentence text. NLI needs a premise (evidence text) and a hypothesis (claim).

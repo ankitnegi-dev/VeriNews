@@ -55,6 +55,6 @@ are retrieved. If retrieval returns only unrelated articles, the expected result
 ## ISOT baseline vs the real pipeline
 
 The Phase 1 baseline classifies an article as Fake or True from its writing style. That is a
-different task from verifying a claim against live evidence. Its 98.6% score is useful as a
-sanity check and as a warning about shortcuts such as the Reuters dateline, but it is **not**
-the accuracy of VeriNews.
+different task from verifying a claim against live evidence. Its 98.0% deduped score is useful
+as a sanity check and as a warning about shortcuts such as the Reuters dateline, but it is
+**not** the accuracy of VeriNews.

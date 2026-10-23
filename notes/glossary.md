@@ -8,6 +8,7 @@
 - **Cosine similarity**: the cosine of the angle between two vectors; 1 means same direction, 0 means unrelated.
 - **Credibility weight**: a 0-1 multiplier for a news domain, based on a hand-made tier list.
 - **Dateline / source tag**: the opening `WASHINGTON (Reuters) - ` marker on a wire-service article.
+- **Deduplication**: removing exact repeated rows before splitting so the same article cannot appear in both train and test.
 - **Embedding**: a fixed-length numeric vector representing a sentence's meaning.
 - **Entailment (NLI)**: the premise logically supports the hypothesis.
 - **Entity**: a named thing in text, such as a person, organization, place, date or money amount.
