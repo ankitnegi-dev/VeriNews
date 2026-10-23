@@ -1,0 +1,20 @@
+# VeriNews dependencies.
+# Install CPU-only torch first if the machine has no CUDA GPU:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# Then:
+#   pip install -r requirements.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+fastapi==0.161.1
+httpx==0.28.1
+pandas==3.1.0
+python-dotenv==1.2.4
+pytest==9.1.1
+PyYAML==6.0.3
+requests==2.34.2
+scikit-learn==1.9.1
+sentence-transformers==6.2.0
+spacy==3.8.16
+torch==2.14.1+cpu
+transformers==5.20.2
+uvicorn[standard]==0.54.0
