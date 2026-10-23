@@ -70,6 +70,7 @@ BASELINE_LOGREG_MAX_ITER = 1_000
 # ---------------------------------------------------------------------------
 MAX_CLAIM_CHARS = 500
 MIN_CLAIM_CHARS = 3
+MIN_CLAIM_WORDS = 3
 MAX_QUERIES = 3
 MAX_QUERY_WORDS = 12
 
