@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-10-23T05:29:19.531715+00:00",
+  "dataset": {
+    "fake_rows_raw": 23481,
+    "true_rows_raw": 21417,
+    "rows_dropped_empty_text": 631,
+    "fake_rows": 22851,
+    "true_rows": 21416,
+    "total_rows": 44267,
+    "duplicate_text_rows": 5628,
+    "rows_with_leading_source_tag": 19451
+  },
+  "protocol": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "vectorizer": {
+      "type": "TfidfVectorizer",
+      "max_features": 50000,
+      "stop_words": "english"
+    },
+    "classifier": {
+      "type": "LogisticRegression",
+      "max_iter": 1000
+    },
+    "text_field": "text",
+    "labels": {
+      "Fake": 0,
+      "True": 1
+    }
+  },
+  "as_is": {
+    "accuracy": 0.9864468037045403,
+    "precision_macro": 0.9863429555531082,
+    "recall_macro": 0.9865574894727867,
+    "f1_macro": 0.986435640530686,
+    "precision_weighted": 0.9864789022240739,
+    "recall_weighted": 0.9864468037045403,
+    "f1_weighted": 0.9864482979876547,
+    "per_class": {
+      "Fake": {
+        "precision": 0.9905223716111968,
+        "recall": 0.9831546707503829,
+        "f1": 0.9868247694334651,
+        "support": 4571
+      },
+      "True": {
+        "precision": 0.9821635394950197,
+        "recall": 0.9899603081951903,
+        "f1": 0.986046511627907,
+        "support": 4283
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Fake",
+        "True"
+      ],
+      "rows_actual_columns_predicted": [
+        [
+          4494,
+          77
+        ],
+        [
+          43,
+          4240
+        ]
+      ]
+    },
+    "classification_report": {
+      "Fake": {
+        "precision": 0.9905223716111968,
+        "recall": 0.9831546707503829,
+        "f1-score": 0.9868247694334651,
+        "support": 4571.0
+      },
+      "True": {
+        "precision": 0.9821635394950197,
+        "recall": 0.9899603081951903,
+        "f1-score": 0.986046511627907,
+        "support": 4283.0
+      },
+      "accuracy": 0.9864468037045403,
+      "macro avg": {
+        "precision": 0.9863429555531082,
+        "recall": 0.9865574894727867,
+        "f1-score": 0.986435640530686,
+        "support": 8854.0
+      },
+      "weighted avg": {
+        "precision": 0.9864789022240739,
+        "recall": 0.9864468037045403,
+        "f1-score": 0.9864482979876547,
+        "support": 8854.0
+      }
+    },
+    "test_rows": 8854,
+    "vocabulary_size": 50000
+  },
+  "stripped": {
+    "accuracy": 0.9794443189518861,
+    "precision_macro": 0.9793117783360266,
+    "recall_macro": 0.9796211413732014,
+    "f1_macro": 0.9794299512270841,
+    "precision_weighted": 0.9795238433214019,
+    "recall_weighted": 0.9794443189518861,
+    "f1_weighted": 0.9794476345806866,
+    "per_class": {
+      "Fake": {
+        "precision": 0.9858313039628072,
+        "recall": 0.974185079851236,
+        "f1": 0.9799735915492958,
+        "support": 4571
+      },
+      "True": {
+        "precision": 0.9727922527092461,
+        "recall": 0.985057202895167,
+        "f1": 0.9788863109048724,
+        "support": 4283
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Fake",
+        "True"
+      ],
+      "rows_actual_columns_predicted": [
+        [
+          4453,
+          118
+        ],
+        [
+          64,
+          4219
+        ]
+      ]
+    },
+    "classification_report": {
+      "Fake": {
+        "precision": 0.9858313039628072,
+        "recall": 0.974185079851236,
+        "f1-score": 0.9799735915492958,
+        "support": 4571.0
+      },
+      "True": {
+        "precision": 0.9727922527092461,
+        "recall": 0.985057202895167,
+        "f1-score": 0.9788863109048724,
+        "support": 4283.0
+      },
+      "accuracy": 0.9794443189518861,
+      "macro avg": {
+        "precision": 0.9793117783360266,
+        "recall": 0.9796211413732014,
+        "f1-score": 0.9794299512270841,
+        "support": 8854.0
+      },
+      "weighted avg": {
+        "precision": 0.9795238433214019,
+        "recall": 0.9794443189518861,
+        "f1-score": 0.9794476345806866,
+        "support": 8854.0
+      }
+    },
+    "test_rows": 8854,
+    "vocabulary_size": 50000,
+    "source_tags_removed": 3902
+  }
+}
