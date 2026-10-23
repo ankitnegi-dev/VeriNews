@@ -1,0 +1,1 @@
+"""VeriNews application package."""
