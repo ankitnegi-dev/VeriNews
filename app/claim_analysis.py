@@ -37,6 +37,13 @@ ENTITY_PRIORITY = {
     "CARDINAL": 12,
 }
 
+_LEADING_ARTICLE = re.compile(r"^(?:the|a|an)\s+", re.IGNORECASE)
+_LOW_VALUE_QUERY_ENTITY = re.compile(r"^(?:the\s+)?age\s+of\b", re.IGNORECASE)
+_LOW_VALUE_QUERY_PHRASE = re.compile(
+    r"\b(?:the\s+)?age\s+of\s+\d+\b",
+    re.IGNORECASE,
+)
+
 _NLP = None
 
 
@@ -76,6 +83,21 @@ def _normalize_claim(text: str) -> str:
 def _clean_entity_text(text: str) -> str:
     cleaned = " ".join(text.split()).strip()
     return cleaned.strip(".,;:!?\"'()[]{}").strip()
+
+
+def _query_entity_text(text: str) -> str:
+    """Clean an entity for a search query, without changing its display form."""
+    cleaned = _clean_entity_text(text)
+    while True:
+        without_article = _LEADING_ARTICLE.sub("", cleaned, count=1).strip()
+        if without_article == cleaned:
+            return cleaned
+        cleaned = without_article
+
+
+def _is_low_value_query_entity(text: str) -> bool:
+    """Phrases such as 'the age of 93' add noise to a search query."""
+    return bool(_LOW_VALUE_QUERY_ENTITY.match(_clean_entity_text(text)))
 
 
 def _extract_entities(doc) -> list[dict[str, str]]:
@@ -142,7 +164,9 @@ def _main_verb_or_chunk(doc: Doc) -> str:
 def _clean_query(query: str) -> str:
     # Search engines do not need commas, brackets or quotes inside a query.
     query = re.sub(r"[,;:!?\"'()\[\]{}]", " ", query)
+    query = _LOW_VALUE_QUERY_PHRASE.sub(" ", query)
     query = " ".join(query.split())
+    query = _LEADING_ARTICLE.sub("", query, count=1)
     return query.strip(" .")
 
 
@@ -170,7 +194,13 @@ def _add_query(queries: list[str], seen: set[str], candidate: str) -> None:
 
 def _build_queries(doc: Doc, entities: list[dict[str, str]]) -> list[str]:
     keyword_tokens = _keyword_tokens(doc)
-    ordered = _ordered_entities(entities)
+    ordered: list[dict[str, str]] = []
+    for entity in _ordered_entities(entities):
+        if _is_low_value_query_entity(entity["text"]):
+            continue
+        cleaned = _query_entity_text(entity["text"])
+        if cleaned:
+            ordered.append({"text": cleaned, "label": entity["label"]})
     context = _main_verb_or_chunk(doc)
     entity_keys = {entity["text"].lower() for entity in ordered}
 
@@ -197,7 +227,12 @@ def _build_queries(doc: Doc, entities: list[dict[str, str]]) -> list[str]:
         candidates.append(context)
 
     # Fallbacks for unusual claims with few named entities.
-    chunks = [chunk.text for chunk in doc.noun_chunks]
+    chunks = [
+        _query_entity_text(chunk.text)
+        for chunk in doc.noun_chunks
+        if not _is_low_value_query_entity(chunk.text)
+    ]
+    chunks = [chunk for chunk in chunks if chunk]
     if len(chunks) >= 2:
         candidates.append(" ".join(chunks[:2]))
     if len(keyword_tokens) >= 2:
