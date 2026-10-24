@@ -353,6 +353,11 @@ def test_retrieve_dedupes_urls_titles_and_empty_content(tmp_path):
     ]
 
 
+def test_default_cache_ttl_is_fourteen_days():
+    assert retrieval.config.CACHE_TTL_HOURS == 14 * 24
+    assert RetrievalCache().ttl_seconds == 14 * 24 * 3600
+
+
 def test_cache_ttl_expires_entries(tmp_path):
     cache = RetrievalCache(tmp_path / "cache", ttl_hours=-1)
     cached = _article("Cached story", "https://cache.example.com/story")
