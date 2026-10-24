@@ -44,7 +44,7 @@ TRACKING_QUERY_KEYS = {
     "ref_src",
     "source",
 }
-NEWSAPI_TRUNCATION_MARKER = re.compile(r"\s*\[\+\d+\s+chars\]\s*$", re.IGNORECASE)
+TRUNCATION_MARKER = re.compile(r"\s*\[\+?\d+\s+chars\]\s*$", re.IGNORECASE)
 TRAILING_ELLIPSIS = re.compile(r"\s*(?:\.\.\.|\u2026)\s*$")
 HTML_TAG = re.compile(r"<[^>]+>")
 WHITESPACE = re.compile(r"\s+")
@@ -240,7 +240,7 @@ def _clean_text(value: object) -> str:
 
 def _strip_truncation_marker(value: object) -> str:
     text = _clean_text(value)
-    text = NEWSAPI_TRUNCATION_MARKER.sub("", text).strip()
+    text = TRUNCATION_MARKER.sub("", text).strip()
     text = TRAILING_ELLIPSIS.sub("", text).strip()
     return text
 

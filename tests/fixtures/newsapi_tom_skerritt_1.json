@@ -1,0 +1,36 @@
+{
+  "status": "ok",
+  "totalResults": 4,
+  "articles": [
+    {
+      "source": {
+        "name": "Abcnews.com"
+      },
+      "title": "Veteran actor Tom Skerritt dies at 93",
+      "description": "Tom Skerritt started in movies including \"Top Gun\" and \"Steel Magnolias.\"",
+      "url": "https://abcnews.com/GMA/Culture/veteran-actor-tom-skerritt-dies-93/story?id=137488364",
+      "publishedAt": "2026-10-22T19:18:56Z",
+      "content": "Veteran actor Tom Skerritt, known for his roles in projects including \"Steel Magnolias, \"Alien\" \"Top Gun\" and \"Picket Fences,\" has died at the age of 93.\nSkerritt died on Wednesday due to natural ca… [+177 chars]"
+    },
+    {
+      "source": {
+        "name": "Dailymail.com"
+      },
+      "title": "Tom Skerritt dead at 93: Actor known for Top Gun and Alien passes away as heartbroken family pay tribute",
+      "description": "Tom Skerritt, best known for his role in the original 1979 Alien film, has died.",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16231147/Tom-Skerritt-dies-alien-gun.html",
+      "publishedAt": "2026-10-22T19:35:46Z",
+      "content": "Tom Skerritt, best known for his role in the original 1979 Alien film, has died.\nAccording to the Hollywood Reporter, the actor passed away on Wednesday of natural causes.\n'We are heartbroken by hi… [+1636 chars]"
+    },
+    {
+      "source": {
+        "name": "The Times of India"
+      },
+      "title": "Tom Skerritt of Top Gun dies: From US Air Force to Hollywood, all about Emmy-winning actor",
+      "description": "Tom Skerritt, the Emmy-winning actor who embodied a solid, wry authority figure, whether as a flight instructor in “Top Gun,” a tough-but-fair sheriff on TV's “Picket Fences” or the doomed captain of “Alien,” has died.",
+      "url": "https://economictimes.indiatimes.com/news/international/us/tom-skerritt-cause-of-death-reason-top-gun-alien-detroit-air-force-emmy-awards/articleshow/135127207.cms",
+      "publishedAt": "2026-10-22T20:09:54Z",
+      "content": "Tom Skerritt of \"Top Gun\" has died at the age of 93. Versatile actor Skerritt starred in Hollywood megahits including the sci-fi classic \"Alien,\" the war comedy \"M*A*S*H\". Skerritt died on Wednesday … [+4080 chars]"
+    }
+  ]
+}

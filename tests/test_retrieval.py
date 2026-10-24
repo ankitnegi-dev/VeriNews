@@ -78,7 +78,7 @@ def _budget(tmp_path: Path, limit: int = 80) -> RequestBudget:
 
 
 def test_newsapi_normalizes_articles_and_request_params(monkeypatch, tmp_path):
-    payload = _fixture("newsapi_search.json")
+    payload = _fixture("newsapi_tom_skerritt_1.json")
     captured: dict[str, object] = {}
 
     def fake_get(url, *, params, headers, timeout):
@@ -92,7 +92,7 @@ def test_newsapi_normalizes_articles_and_request_params(monkeypatch, tmp_path):
     budget = _budget(tmp_path)
     provider = NewsAPIProvider(api_key="test-key", budget=budget)
 
-    articles = provider.search("apple iphone", max_results=20)
+    articles = provider.search("Tom Skerritt", max_results=20)
 
     assert captured["url"] == retrieval.config.NEWSAPI_BASE_URL
     assert captured["params"]["language"] == "en"
@@ -102,20 +102,55 @@ def test_newsapi_normalizes_articles_and_request_params(monkeypatch, tmp_path):
     assert captured["headers"] == {"X-Api-Key": "test-key"}
     assert budget.usage()[0] == 1
 
-    # Provider normalization keeps duplicates and near-duplicates. retrieve()
-    # removes them after all queries are merged.
-    assert len(articles) == 4
-    assert articles[0].source_domain == "example.com"
-    assert articles[0].content.count("Apple unveiled") == 1
-    assert "USB-C" in articles[0].content
-    assert "[+1450 chars]" not in articles[0].content
-    tesla = next(article for article in articles if "Tesla" in article.title)
-    assert tesla.source_domain == "finance.example.com"
+    # The provider returns the response articles. retrieve() deduplicates after
+    # all queries are merged, so the provider layer keeps all three.
+    assert len(articles) == 3
+    assert articles[0].source_domain == "abcnews.com"
+    assert articles[0].content.count("Veteran actor Tom Skerritt") == 1
+    assert "natural ca" in articles[0].content
+    assert "[+177 chars]" not in articles[0].content
+    assert articles[2].source_domain == "economictimes.indiatimes.com"
+
+
+def test_live_fixtures_are_sanitized():
+    allowed_article_keys = {
+        "source",
+        "title",
+        "description",
+        "url",
+        "publishedAt",
+        "content",
+    }
+    for name in (
+        "newsapi_tom_skerritt_1.json",
+        "newsapi_tom_skerritt_2.json",
+        "newsapi_tom_skerritt_3.json",
+        "gnews_tom_skerritt.json",
+    ):
+        raw = (FIXTURES / name).read_text(encoding="utf-8")
+        assert "\u2013" not in raw
+        assert "\u2014" not in raw
+
+        payload = _fixture(name)
+        serialized = json.dumps(payload).lower()
+        assert "apikey" not in serialized
+        assert "api_key" not in serialized
+        assert payload["articles"]
+        for article in payload["articles"]:
+            assert set(article) == allowed_article_keys
+            assert set(article["source"]) == {"name"}
+            assert article["source"]["name"]
+            assert article["title"]
+            assert article["url"].startswith("http")
+            assert article["publishedAt"]
+            assert article["content"]
 
 
 def test_newsapi_empty_response_returns_empty_list(monkeypatch, tmp_path):
+    empty_payload = {"status": "ok", "totalResults": 0, "articles": []}
+
     def fake_get(url, *, params, headers, timeout):
-        return FakeResponse(_fixture("newsapi_empty.json"))
+        return FakeResponse(empty_payload)
 
     monkeypatch.setattr(retrieval.requests, "get", fake_get)
     provider = NewsAPIProvider(api_key="test-key", budget=_budget(tmp_path))
@@ -124,7 +159,7 @@ def test_newsapi_empty_response_returns_empty_list(monkeypatch, tmp_path):
 
 
 def test_gnews_normalizes_articles_and_request_params(monkeypatch, tmp_path):
-    payload = _fixture("gnews_search.json")
+    payload = _fixture("gnews_tom_skerritt.json")
     captured: dict[str, object] = {}
 
     def fake_get(url, *, params, headers, timeout):
@@ -136,18 +171,22 @@ def test_gnews_normalizes_articles_and_request_params(monkeypatch, tmp_path):
     monkeypatch.setattr(retrieval.requests, "get", fake_get)
     provider = GNewsProvider(api_key="gnews-test-key", budget=_budget(tmp_path))
 
-    articles = provider.search("apple iphone", max_results=20)
+    articles = provider.search("Tom Skerritt", max_results=20)
 
     assert captured["url"] == retrieval.config.GNEWS_BASE_URL
+    assert captured["params"]["q"] == "Tom Skerritt"
     assert captured["params"]["lang"] == "en"
     assert captured["params"]["max"] == 10
     assert captured["params"]["apikey"] == "gnews-test-key"
     assert captured["headers"] is None
 
-    assert len(articles) == 2
-    assert articles[0].source_domain == "news.example.net"
-    assert articles[1].source_domain == "world.example.org"
-    assert "launch of the iPhone 15" in articles[0].content
+    assert len(articles) == 3
+    assert articles[0].source_domain == "mlive.com"
+    assert articles[1].source_domain == "al.com"
+    assert articles[2].source_domain == "nj.com"
+    assert "Emmy-winning actor Tom Skerritt" in articles[0].content
+    assert "[2332 chars]" not in articles[0].content
+    assert not articles[0].content.endswith("...")
 
 
 def test_missing_newsapi_key_raises_clear_error(tmp_path):
@@ -183,7 +222,7 @@ def test_retrieve_uses_cache_on_second_call(monkeypatch, tmp_path):
     def fake_get(url, *, params, headers, timeout):
         nonlocal calls
         calls += 1
-        return FakeResponse(_fixture("newsapi_search.json"))
+        return FakeResponse(_fixture("newsapi_tom_skerritt_1.json"))
 
     monkeypatch.setattr(retrieval.requests, "get", fake_get)
     cache = RetrievalCache(tmp_path / "cache")
@@ -191,19 +230,19 @@ def test_retrieve_uses_cache_on_second_call(monkeypatch, tmp_path):
     provider = NewsAPIProvider(api_key="test-key", budget=budget)
 
     first = retrieve(
-        ["apple iphone"],
+        ["Tom Skerritt"],
         providers=[provider],
         cache=cache,
         cache_only=False,
     )
     second = retrieve(
-        ["apple iphone"],
+        ["Tom Skerritt"],
         providers=[provider],
         cache=cache,
         cache_only=False,
     )
 
-    assert len(first) == 2
+    assert len(first) == 3
     assert [article.url for article in second] == [article.url for article in first]
     assert calls == 1
     assert budget.usage()[0] == 1
@@ -216,7 +255,7 @@ def test_retrieve_falls_back_when_primary_fails(monkeypatch, tmp_path):
         requested_urls.append(url)
         if url == retrieval.config.NEWSAPI_BASE_URL:
             raise requests.ConnectionError("primary is down")
-        return FakeResponse(_fixture("gnews_search.json"))
+        return FakeResponse(_fixture("gnews_tom_skerritt.json"))
 
     monkeypatch.setattr(retrieval.requests, "get", fake_get)
     budget = _budget(tmp_path)
@@ -226,7 +265,7 @@ def test_retrieve_falls_back_when_primary_fails(monkeypatch, tmp_path):
     ]
 
     articles = retrieve(
-        ["apple iphone"],
+        ["Tom Skerritt"],
         providers=providers,
         cache=RetrievalCache(tmp_path / "cache"),
         cache_only=False,
