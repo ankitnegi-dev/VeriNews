@@ -6,4 +6,5 @@ Given a claim, the planned pipeline extracts entities, retrieves recent news art
 evidence, runs a pretrained NLI model, weights sources by credibility, and returns a verdict
 (`SUPPORTED`, `REFUTED`, or `UNVERIFIED`) with ranked evidence.
 
-Status: **Phase 1 - setup and baseline**. See `WORK_MAP.md` for the full build plan.
+Status: **Phase 3 - news retrieval (offline tests pass; live check pending an API key)**.
+See `WORK_MAP.md` for the full build plan.

@@ -1,0 +1,22 @@
+{
+  "articles": [
+    {
+      "title": "Apple iPhone 15 launch draws crowds",
+      "description": "Crowds gathered at stores for the launch.",
+      "content": "Crowds gathered at stores for the launch of the iPhone 15.",
+      "url": "https://news.example.net/apple-launch?utm_source=gnews",
+      "image": null,
+      "publishedAt": "2026-10-23T13:00:00Z",
+      "source": {"name": "Example News", "url": "https://news.example.net"}
+    },
+    {
+      "title": "Climate summit opens in Paris",
+      "description": "Negotiators met to discuss emissions.",
+      "content": "Negotiators met in Paris to discuss emissions targets.",
+      "url": "https://world.example.org/climate-summit",
+      "image": null,
+      "publishedAt": "2026-10-21T08:00:00Z",
+      "source": {"name": "World Report", "url": "https://world.example.org"}
+    }
+  ]
+}
