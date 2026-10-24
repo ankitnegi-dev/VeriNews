@@ -12,19 +12,28 @@
 - **Embedding**: a fixed-length numeric vector representing a sentence's meaning.
 - **Entailment (NLI)**: the premise logically supports the hypothesis.
 - **Entity**: a named thing in text, such as a person, organization, place, date or money amount.
+- **Entity label**: the category spaCy assigns to an entity, e.g. `PERSON`, `ORG` or `GPE`.
 - **Evidence**: one retrieved article's best-matching snippet plus its scores and stance.
 - **F1 score**: the harmonic mean of precision and recall; one number balancing both errors.
 - **FEVER**: a fact-verification dataset of claims with Wikipedia evidence references and SUPPORTS / REFUTES / NOT ENOUGH INFO labels.
+- **GPE**: geo-political entity; a country, city, state or similar place.
 - **ISOT**: a Fake/True news dataset of articles; useful for a style baseline, not for live claim verification.
 - **Logistic regression**: a linear classifier that learns weights for input features and outputs a class.
 - **NEI / NOT ENOUGH INFO**: the label for a claim that the available evidence cannot decide.
 - **NER (named entity recognition)**: finding names and other entities in text; spaCy does this.
 - **NLI (natural language inference)**: deciding whether a premise entails, contradicts or is neutral toward a hypothesis.
+- **Noun chunk**: a noun plus its modifiers, such as `the fourth quarter`; useful as a search phrase.
+- **ORG**: organization entity label, used for companies, agencies and institutions.
+- **PERSON**: person entity label, used for individual people.
 - **Precision**: of the items predicted positive, the share that are actually positive.
+- **Query generation**: turning a claim into short search phrases for a news API.
 - **Recall**: of the items that are actually positive, the share the model finds.
 - **Recency factor**: a 0.6-1.0 multiplier that discounts older articles during ranking.
+- **Rule-based**: implemented with explicit fixed rules rather than a trained model.
 - **Source-tag leakage**: shortcut learning where a dataset artefact such as a Reuters dateline predicts the label.
+- **spaCy**: a Python NLP library that provides tokenization, entity recognition and syntax.
 - **Stance**: the per-evidence label `SUPPORTS`, `REFUTES` or `NEUTRAL`.
+- **Stopword**: a common word such as `the`, `is` or `in`, usually removed from keyword queries.
 - **TF-IDF**: term frequency-inverse document frequency; weights words that are common in one document but rare overall.
 - **UNVERIFIED**: the decision when evidence is missing, too weak, or conflicting.
 - **Zero-shot**: using a pretrained model on a task without fine-tuning it on task-specific labelled data.

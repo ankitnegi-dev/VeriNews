@@ -20,16 +20,18 @@ claim
   -> JSON API + one HTML page
 ```
 
-Status after Phase 1: only the **baseline** and the **NLI smoke test** exist. Stages 1-6 are
-planned, not yet built.
+Status after Phase 2: the Phase 1 **baseline** and **NLI smoke test**, plus the Phase 2
+**claim analysis** stage, are built. Retrieval, ranking, the NLI stage, credibility, the
+decision engine and the API are still planned.
 
 ## Worked example
 
 Claim: **"The Eiffel Tower is located in Paris."**
 
-1. **Claim analysis (Phase 2).** spaCy finds the entity `Eiffel Tower` (a landmark, likely
-   `ORG`/`FAC`) and `Paris` (`GPE`). Rule-based query generation produces:
-   `Eiffel Tower Paris`, `Eiffel Tower location`, `Paris Eiffel Tower`.
+1. **Claim analysis (Phase 2).** spaCy finds `Paris` and `France` (`GPE`). `Eiffel Tower` is
+   labelled `LOC`, which the project contract excludes, so it is not used as an entity. The
+   claim keywords still include it. Query generation produces:
+   `Eiffel Tower located Paris France`, `Paris France`, `Paris France located`.
 2. **Retrieval (Phase 3).** NewsAPI is asked for each query. Articles are normalized, merged,
    and de-duplicated by URL and near-identical title. If NewsAPI fails, GNews is tried. The
    result is cached in `.cache/` so a demo can run offline.
