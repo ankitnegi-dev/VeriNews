@@ -12,30 +12,29 @@ import logging
 import re
 
 import spacy
+from spacy.tokens import Doc, Token
 
 import config
 from app.schemas import Claim
 
 logger = logging.getLogger(__name__)
 
-# Only these entity types are useful for news search. LOC (non-political
-# locations such as landmarks) is intentionally excluded because the project
-# contract lists GPE, not LOC.
-ENTITY_LABELS = frozenset(
-    {"PERSON", "ORG", "GPE", "DATE", "EVENT", "NORP", "MONEY", "PERCENT", "CARDINAL"}
-)
-
 # Organizations and people make better search anchors than dates or numbers.
+# Places and landmarks come next, then context-like labels.
 ENTITY_PRIORITY = {
     "ORG": 0,
     "PERSON": 1,
     "GPE": 2,
-    "EVENT": 3,
-    "NORP": 4,
-    "DATE": 5,
-    "MONEY": 6,
-    "PERCENT": 7,
-    "CARDINAL": 8,
+    "LOC": 3,
+    "FAC": 4,
+    "EVENT": 5,
+    "NORP": 6,
+    "PRODUCT": 7,
+    "LAW": 8,
+    "DATE": 9,
+    "MONEY": 10,
+    "PERCENT": 11,
+    "CARDINAL": 12,
 }
 
 _NLP = None
@@ -83,7 +82,7 @@ def _extract_entities(doc) -> list[dict[str, str]]:
     entities: list[dict[str, str]] = []
     seen: set[str] = set()
     for entity in doc.ents:
-        if entity.label_ not in ENTITY_LABELS:
+        if entity.label_ not in config.ENTITY_LABELS:
             continue
         cleaned = _clean_entity_text(entity.text)
         key = cleaned.lower()
@@ -101,15 +100,34 @@ def _ordered_entities(entities: list[dict[str, str]]) -> list[dict[str, str]]:
     return [entity for _, entity in indexed]
 
 
-def _keywords(doc) -> list[str]:
+def _keyword_tokens(doc: Doc) -> list[Token]:
     return [
-        token.text
+        token
         for token in doc
         if not token.is_stop and not token.is_punct and not token.is_space
     ]
 
 
-def _main_verb_or_chunk(doc) -> str:
+def _join_source_tokens(doc: Doc, tokens: list[Token]) -> str:
+    """Join tokens using the original text, so '$2.5' stays '$2.5'.
+
+    The gap between two selected tokens is copied when it has no whitespace
+    (for example the hyphen in 'COVID-19'), and reduced to one space otherwise.
+    """
+    if not tokens:
+        return ""
+
+    parts = [tokens[0].text]
+    previous_end = tokens[0].idx + len(tokens[0].text)
+    for token in tokens[1:]:
+        gap = doc.text[previous_end : token.idx]
+        separator = " " if any(character.isspace() for character in gap) else gap
+        parts.append(f"{separator}{token.text}")
+        previous_end = token.idx + len(token.text)
+    return "".join(parts)
+
+
+def _main_verb_or_chunk(doc: Doc) -> str:
     root = doc[:].root
     if root.pos_ == "VERB":
         return root.text
@@ -128,28 +146,43 @@ def _clean_query(query: str) -> str:
     return query.strip(" .")
 
 
+def _query_words(query: str) -> list[str]:
+    """Tokenize a query for order-insensitive duplicate detection."""
+    return re.findall(r"[a-z0-9$%]+(?:[.\-][a-z0-9$%]+)*", query.lower())
+
+
+def _query_key(query: str) -> str:
+    return " ".join(sorted(_query_words(query)))
+
+
 def _add_query(queries: list[str], seen: set[str], candidate: str) -> None:
     candidate = _clean_query(candidate)
     words = candidate.split()
     if len(words) < 2:
         return
     candidate = " ".join(words[: config.MAX_QUERY_WORDS])
-    key = candidate.lower()
-    if key in seen:
+    key = _query_key(candidate)
+    if not key or key in seen:
         return
     seen.add(key)
     queries.append(candidate)
 
 
-def _build_queries(doc, entities: list[dict[str, str]]) -> list[str]:
-    keywords = _keywords(doc)
+def _build_queries(doc: Doc, entities: list[dict[str, str]]) -> list[str]:
+    keyword_tokens = _keyword_tokens(doc)
     ordered = _ordered_entities(entities)
     context = _main_verb_or_chunk(doc)
+    entity_keys = {entity["text"].lower() for entity in ordered}
+
+    # Do not build a query such as "Paris Paris" when the noun chunk is itself
+    # an entity. The fallbacks below will still fill the third slot.
+    if context.lower() in entity_keys:
+        context = ""
 
     candidates: list[str] = []
 
     # Rule 1: the claim itself, stopwords removed, capped at 12 words.
-    candidates.append(" ".join(keywords[: config.MAX_QUERY_WORDS]))
+    candidates.append(_join_source_tokens(doc, keyword_tokens))
 
     # Rule 2: entities joined, with organizations/people/places first.
     candidates.append(" ".join(entity["text"] for entity in ordered[:4]))
@@ -158,8 +191,8 @@ def _build_queries(doc, entities: list[dict[str, str]]) -> list[str]:
     if ordered:
         top_entities = [entity["text"] for entity in ordered[:2]]
         candidates.append(" ".join([*top_entities, context]) if context else "")
-    elif context and keywords:
-        candidates.append(f"{context} {keywords[0]}")
+    elif context and keyword_tokens:
+        candidates.append(f"{context} {keyword_tokens[0].text}")
     else:
         candidates.append(context)
 
@@ -167,9 +200,9 @@ def _build_queries(doc, entities: list[dict[str, str]]) -> list[str]:
     chunks = [chunk.text for chunk in doc.noun_chunks]
     if len(chunks) >= 2:
         candidates.append(" ".join(chunks[:2]))
-    if len(keywords) >= 2:
-        candidates.append(" ".join(keywords[:2]))
-    candidates.append(" ".join(token.text for token in doc))
+    if len(keyword_tokens) >= 2:
+        candidates.append(_join_source_tokens(doc, keyword_tokens[:2]))
+    candidates.append(_join_source_tokens(doc, list(doc)))
 
     queries: list[str] = []
     seen: set[str] = set()

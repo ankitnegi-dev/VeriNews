@@ -8,14 +8,15 @@ from __future__ import annotations
 
 import pytest
 
-from app.claim_analysis import ENTITY_LABELS, analyze, build_queries
+from app.claim_analysis import _add_query, analyze, build_queries
 from app.schemas import Claim
+from config import ENTITY_LABELS
 
 
 SAMPLES = [
     (
         "The Eiffel Tower is located in Paris, France.",
-        {"Paris", "France"},
+        {"The Eiffel Tower", "Paris", "France"},
     ),
     (
         "Apple announced the iPhone 15 at an event in Cupertino on September 12, 2023.",
@@ -78,3 +79,27 @@ def test_build_queries_is_public_and_returns_unique_queries():
     queries = build_queries(claim.text, claim.entities)
     assert 2 <= len(queries) <= 3
     assert len(queries) == len({query.lower() for query in queries})
+
+
+def test_landmark_entity_appears_in_entities_and_queries():
+    claim = analyze("The Eiffel Tower is in Paris")
+    entity_texts = [entity["text"] for entity in claim.entities]
+    assert any("Eiffel Tower" in text for text in entity_texts)
+    assert any("Eiffel Tower" in query for query in claim.queries)
+
+
+def test_money_query_preserves_the_original_span():
+    claim = analyze(
+        "Tesla reported a profit of $2.5 billion in the fourth quarter of 2023."
+    )
+    assert any(entity["text"] == "$2.5 billion" for entity in claim.entities)
+    assert any("$2.5 billion" in query for query in claim.queries)
+    assert not any("$ 2.5" in query for query in claim.queries)
+
+
+def test_query_dedupe_ignores_word_order():
+    queries: list[str] = []
+    seen: set[str] = set()
+    _add_query(queries, seen, "Narendra Modi met Joe Biden")
+    _add_query(queries, seen, "Joe Biden met Narendra Modi")
+    assert queries == ["Narendra Modi met Joe Biden"]

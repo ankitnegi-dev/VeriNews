@@ -74,6 +74,26 @@ MIN_CLAIM_WORDS = 3
 MAX_QUERIES = 3
 MAX_QUERY_WORDS = 12
 
+# Entity types worth searching for. LOC, FAC and PRODUCT cover landmarks and
+# goods; LAW covers bills, acts and court rulings.
+ENTITY_LABELS = frozenset(
+    {
+        "PERSON",
+        "ORG",
+        "GPE",
+        "LOC",
+        "FAC",
+        "PRODUCT",
+        "LAW",
+        "DATE",
+        "EVENT",
+        "NORP",
+        "MONEY",
+        "PERCENT",
+        "CARDINAL",
+    }
+)
+
 # ---------------------------------------------------------------------------
 # Retrieval (Phase 3)
 # ---------------------------------------------------------------------------
