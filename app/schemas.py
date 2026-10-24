@@ -27,6 +27,18 @@ class Article:
 
 
 @dataclass
+class RankedArticle:
+    title: str
+    source_domain: str
+    url: str
+    published_at: str | None
+    snippet: str
+    similarity: float
+    recency_factor: float
+    score: float
+
+
+@dataclass
 class Evidence:
     title: str
     source_domain: str

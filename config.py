@@ -116,7 +116,9 @@ REQUEST_COUNT_PATH = CACHE_DIR / "request_count.json"
 # Ranking (Phase 4)
 # ---------------------------------------------------------------------------
 TOP_K = 6
-MIN_SIMILARITY = 0.25
+# Tuned on the Skerritt evaluation: lowest relevant score 0.7938, highest
+# unrelated score 0.1872. 0.35 keeps a clear margin without overfitting.
+MIN_SIMILARITY = 0.35
 SNIPPET_MAX_CHARS = 400
 RECENCY_FULL_CREDIT_DAYS = 3
 RECENCY_ZERO_CREDIT_DAYS = 30
