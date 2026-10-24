@@ -100,9 +100,15 @@ ENTITY_LABELS = frozenset(
 NEWSAPI_BASE_URL = "https://newsapi.org/v2/everything"
 GNEWS_BASE_URL = "https://gnews.io/api/v4/search"
 NEWS_LANGUAGE = "en"
-MAX_RESULTS_PER_QUERY = 10
+NEWSAPI_PAGE_SIZE = 20
+GNEWS_MAX_RESULTS = 10
+MAX_RESULTS_PER_QUERY = 20
 CACHE_TTL_HOURS = 6
 CACHE_ONLY = os.getenv("CACHE_ONLY", "false").strip().lower() == "true"
+DAILY_REQUEST_LIMIT = 80
+RETRIEVAL_TIMEOUT_SECONDS = 20
+RETRIEVAL_CACHE_DIR = CACHE_DIR / "retrieval"
+REQUEST_COUNT_PATH = CACHE_DIR / "request_count.json"
 
 # ---------------------------------------------------------------------------
 # Ranking (Phase 4)
