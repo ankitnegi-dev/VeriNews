@@ -131,6 +131,8 @@ RECENCY_UNKNOWN_DATE_FACTOR = 0.8
 # ---------------------------------------------------------------------------
 NLI_SUPPORT_THRESHOLD = 0.5
 NLI_REFUTE_THRESHOLD = 0.5
+NLI_CACHE_DIR = CACHE_DIR / "nli"
+NLI_BATCH_SIZE = 8
 
 # ---------------------------------------------------------------------------
 # Credibility and decision (Phase 6)
