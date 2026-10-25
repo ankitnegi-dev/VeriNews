@@ -116,8 +116,9 @@ REQUEST_COUNT_PATH = CACHE_DIR / "request_count.json"
 # Ranking (Phase 4)
 # ---------------------------------------------------------------------------
 TOP_K = 6
-# Tuned on the Skerritt evaluation: lowest relevant score 0.7938, highest
-# unrelated score 0.1872. 0.35 keeps a clear margin without overfitting.
+# PROVISIONAL: this came from the early Skerritt check, and that claim is in
+# split=test. Recalibrate later using only rows with split=dev in
+# tests/data/claims.csv. Never tune on split=test.
 MIN_SIMILARITY = 0.35
 SNIPPET_MAX_CHARS = 400
 RECENCY_FULL_CREDIT_DAYS = 3
