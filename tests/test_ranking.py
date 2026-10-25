@@ -41,6 +41,24 @@ class DictEmbedder:
         )
 
 
+class MarkerEmbedder:
+    """Assign a different similarity to each marker word in a test article."""
+
+    def encode(self, sentences, **kwargs):
+        vectors = []
+        for sentence in sentences:
+            lowered = sentence.lower()
+            if "alpha" in lowered:
+                vectors.append([1.0, 0.0])
+            elif "beta" in lowered:
+                vectors.append([0.9, 0.435889894])
+            elif "gamma" in lowered:
+                vectors.append([0.8, 0.6])
+            else:
+                vectors.append([1.0, 0.0])
+        return np.asarray(vectors, dtype=float)
+
+
 def _article(
     title: str,
     content: str,
@@ -170,7 +188,8 @@ def test_rank_articles_respects_top_k():
         _article(
             f"Tom Skerritt story {index}",
             "Tom Skerritt has died.",
-            f"https://example.com/story-{index}",
+            f"https://example{index}.com/story",
+            domain=f"example{index}.com",
         )
         for index in range(3)
     ]
@@ -184,6 +203,40 @@ def test_rank_articles_respects_top_k():
     )
 
     assert len(ranked) == 1
+
+
+def test_rank_articles_keeps_one_article_per_domain():
+    articles = [
+        _article(
+            "Alpha report",
+            "Alpha relevant evidence.",
+            "https://example.com/alpha",
+            domain="example.com",
+        ),
+        _article(
+            "Beta report",
+            "Beta relevant evidence.",
+            "https://example.com/beta",
+            domain="example.com",
+        ),
+        _article(
+            "Gamma report",
+            "Gamma relevant evidence.",
+            "https://other.com/gamma",
+            domain="other.com",
+        ),
+    ]
+
+    ranked = rank_articles(
+        "Tom Skerritt died.",
+        articles,
+        embedder=MarkerEmbedder(),
+        now=NOW,
+        top_k=2,
+    )
+
+    assert [item.title for item in ranked] == ["Alpha report", "Gamma report"]
+    assert len({item.source_domain for item in ranked}) == len(ranked)
 
 
 def test_snippet_is_truncated_to_configured_limit():

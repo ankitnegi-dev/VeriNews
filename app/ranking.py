@@ -190,6 +190,28 @@ def score_articles(
     return ranked
 
 
+def _domain_key(item: RankedArticle) -> str:
+    domain = item.source_domain.strip().lower()
+    if domain.startswith("www."):
+        domain = domain[4:]
+    return domain or item.url.strip().lower()
+
+
+def _diversify(items: Sequence[RankedArticle], limit: int) -> list[RankedArticle]:
+    """Keep the best-scoring article from each domain, up to the limit."""
+    selected: list[RankedArticle] = []
+    seen_domains: set[str] = set()
+    for item in items:
+        domain = _domain_key(item)
+        if domain in seen_domains:
+            continue
+        seen_domains.add(domain)
+        selected.append(item)
+        if len(selected) >= limit:
+            break
+    return selected
+
+
 def rank_articles(
     claim: str,
     articles: Sequence[Article],
@@ -199,7 +221,12 @@ def rank_articles(
     embedder: Embedder | None = None,
     now: datetime | None = None,
 ) -> list[RankedArticle]:
-    """Return the top articles whose raw similarity meets the threshold."""
+    """Return the top articles whose raw similarity meets the threshold.
+
+    The final list has at most one article per source domain. Syndicated copies
+    on different domains can still both appear; domain diversity is not a
+    duplicate detector.
+    """
     limit = config.TOP_K if top_k is None else top_k
     threshold = config.MIN_SIMILARITY if min_similarity is None else min_similarity
     if limit <= 0:
@@ -207,4 +234,4 @@ def rank_articles(
 
     scored = score_articles(claim, articles, embedder=embedder, now=now)
     filtered = [item for item in scored if item.similarity >= threshold]
-    return filtered[:limit]
+    return _diversify(filtered, limit)
