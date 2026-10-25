@@ -39,6 +39,15 @@ class RankedArticle:
 
 
 @dataclass
+class NLIResult:
+    p_entail: float
+    p_neutral: float
+    p_contra: float
+    stance: str
+    cached: bool = False
+
+
+@dataclass
 class Evidence:
     title: str
     source_domain: str
