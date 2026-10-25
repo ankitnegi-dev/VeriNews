@@ -8,7 +8,13 @@ from __future__ import annotations
 
 import pytest
 
-from app.claim_analysis import _add_query, analyze, build_queries
+from app.claim_analysis import (
+    _add_query,
+    _is_low_value_query_entity,
+    _query_entity_text,
+    analyze,
+    build_queries,
+)
 from app.schemas import Claim
 from config import ENTITY_LABELS
 
@@ -72,6 +78,45 @@ def test_claim_without_entities_still_builds_queries():
     claim = analyze("Inflation rose sharply.")
     assert claim.entities == []
     assert len(claim.queries) >= 2
+
+
+def test_query_entity_text_strips_leading_articles():
+    assert _query_entity_text("The Eiffel Tower") == "Eiffel Tower"
+    assert _query_entity_text("a Tesla Model 3") == "Tesla Model 3"
+    assert _query_entity_text("an Apple event") == "Apple event"
+    assert _query_entity_text("Paris") == "Paris"
+
+
+def test_age_phrase_is_marked_as_low_value():
+    assert _is_low_value_query_entity("the age of 93")
+    assert _is_low_value_query_entity("age of 42")
+    assert not _is_low_value_query_entity("March 2020")
+    assert not _is_low_value_query_entity("Tom Skerritt")
+
+
+def test_skerritt_claim_does_not_query_the_age_phrase():
+    claim = analyze(
+        "Tom Skerritt, the actor known for Top Gun and Alien, has died at the age of 93."
+    )
+
+    assert 2 <= len(claim.queries) <= 3
+    assert any("Tom Skerritt" in query for query in claim.queries)
+    assert not any("age of 93" in query.lower() for query in claim.queries)
+
+
+def test_named_entity_stopwords_are_kept_in_the_skerritt_query():
+    claim = analyze(
+        "Tom Skerritt, the actor known for Top Gun and Alien, has died at the age of 93."
+    )
+
+    assert claim.queries[0] == "Tom Skerritt actor known Top Gun Alien died age 93"
+
+
+def test_entity_queries_strip_leading_the():
+    claim = analyze("The Eiffel Tower is located in Paris, France.")
+
+    assert any("Eiffel Tower" in query for query in claim.queries)
+    assert not any("The Eiffel Tower" in query for query in claim.queries)
 
 
 def test_build_queries_is_public_and_returns_unique_queries():

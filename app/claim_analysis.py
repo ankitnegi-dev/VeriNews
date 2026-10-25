@@ -37,6 +37,13 @@ ENTITY_PRIORITY = {
     "CARDINAL": 12,
 }
 
+_LEADING_ARTICLE = re.compile(r"^(?:the|a|an)\s+", re.IGNORECASE)
+_LOW_VALUE_QUERY_ENTITY = re.compile(r"^(?:the\s+)?age\s+of\b", re.IGNORECASE)
+_LOW_VALUE_QUERY_PHRASE = re.compile(
+    r"\b(?:the\s+)?age\s+of\s+\d+\b",
+    re.IGNORECASE,
+)
+
 _NLP = None
 
 
@@ -78,6 +85,21 @@ def _clean_entity_text(text: str) -> str:
     return cleaned.strip(".,;:!?\"'()[]{}").strip()
 
 
+def _query_entity_text(text: str) -> str:
+    """Clean an entity for a search query, without changing its display form."""
+    cleaned = _clean_entity_text(text)
+    while True:
+        without_article = _LEADING_ARTICLE.sub("", cleaned, count=1).strip()
+        if without_article == cleaned:
+            return cleaned
+        cleaned = without_article
+
+
+def _is_low_value_query_entity(text: str) -> bool:
+    """Phrases such as 'the age of 93' add noise to a search query."""
+    return bool(_LOW_VALUE_QUERY_ENTITY.match(_clean_entity_text(text)))
+
+
 def _extract_entities(doc) -> list[dict[str, str]]:
     entities: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -101,10 +123,34 @@ def _ordered_entities(entities: list[dict[str, str]]) -> list[dict[str, str]]:
 
 
 def _keyword_tokens(doc: Doc) -> list[Token]:
+    """Drop stopwords, except when they are part of a named phrase.
+
+    spaCy marks "Top" as a stopword, but removing it would turn the film title
+    "Top Gun" into "Gun". Protect stopwords inside entity spans and inside
+    proper-noun noun chunks so names and titles survive query cleaning.
+    """
+    protected: set[int] = set()
+
+    for entity in doc.ents:
+        if entity.label_ not in config.ENTITY_LABELS:
+            continue
+        if _is_low_value_query_entity(entity.text):
+            continue
+        protected.update(token.i for token in entity if token.is_stop)
+
+    for chunk in doc.noun_chunks:
+        chunk_tokens = [
+            token for token in chunk if not token.is_punct and not token.is_space
+        ]
+        if any(token.pos_ == "PROPN" for token in chunk_tokens):
+            protected.update(token.i for token in chunk_tokens if token.is_stop)
+
     return [
         token
         for token in doc
-        if not token.is_stop and not token.is_punct and not token.is_space
+        if (not token.is_stop or token.i in protected)
+        and not token.is_punct
+        and not token.is_space
     ]
 
 
@@ -142,7 +188,9 @@ def _main_verb_or_chunk(doc: Doc) -> str:
 def _clean_query(query: str) -> str:
     # Search engines do not need commas, brackets or quotes inside a query.
     query = re.sub(r"[,;:!?\"'()\[\]{}]", " ", query)
+    query = _LOW_VALUE_QUERY_PHRASE.sub(" ", query)
     query = " ".join(query.split())
+    query = _LEADING_ARTICLE.sub("", query, count=1)
     return query.strip(" .")
 
 
@@ -170,7 +218,13 @@ def _add_query(queries: list[str], seen: set[str], candidate: str) -> None:
 
 def _build_queries(doc: Doc, entities: list[dict[str, str]]) -> list[str]:
     keyword_tokens = _keyword_tokens(doc)
-    ordered = _ordered_entities(entities)
+    ordered: list[dict[str, str]] = []
+    for entity in _ordered_entities(entities):
+        if _is_low_value_query_entity(entity["text"]):
+            continue
+        cleaned = _query_entity_text(entity["text"])
+        if cleaned:
+            ordered.append({"text": cleaned, "label": entity["label"]})
     context = _main_verb_or_chunk(doc)
     entity_keys = {entity["text"].lower() for entity in ordered}
 
@@ -197,7 +251,12 @@ def _build_queries(doc: Doc, entities: list[dict[str, str]]) -> list[str]:
         candidates.append(context)
 
     # Fallbacks for unusual claims with few named entities.
-    chunks = [chunk.text for chunk in doc.noun_chunks]
+    chunks = [
+        _query_entity_text(chunk.text)
+        for chunk in doc.noun_chunks
+        if not _is_low_value_query_entity(chunk.text)
+    ]
+    chunks = [chunk for chunk in chunks if chunk]
     if len(chunks) >= 2:
         candidates.append(" ".join(chunks[:2]))
     if len(keyword_tokens) >= 2:

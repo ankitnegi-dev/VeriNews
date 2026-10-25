@@ -17,6 +17,9 @@ venv/
 
 # Local data, caches, and downloaded models (never commit these)
 data/
+# Curated evaluation claims are tracked test data, not raw local data.
+!tests/data/
+!tests/data/claims.csv
 .cache/
 models/
 
