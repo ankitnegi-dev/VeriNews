@@ -104,6 +104,14 @@ def test_skerritt_claim_does_not_query_the_age_phrase():
     assert not any("age of 93" in query.lower() for query in claim.queries)
 
 
+def test_named_entity_stopwords_are_kept_in_the_skerritt_query():
+    claim = analyze(
+        "Tom Skerritt, the actor known for Top Gun and Alien, has died at the age of 93."
+    )
+
+    assert claim.queries[0] == "Tom Skerritt actor known Top Gun Alien died age 93"
+
+
 def test_entity_queries_strip_leading_the():
     claim = analyze("The Eiffel Tower is located in Paris, France.")
 

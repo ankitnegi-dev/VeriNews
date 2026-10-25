@@ -123,10 +123,34 @@ def _ordered_entities(entities: list[dict[str, str]]) -> list[dict[str, str]]:
 
 
 def _keyword_tokens(doc: Doc) -> list[Token]:
+    """Drop stopwords, except when they are part of a named phrase.
+
+    spaCy marks "Top" as a stopword, but removing it would turn the film title
+    "Top Gun" into "Gun". Protect stopwords inside entity spans and inside
+    proper-noun noun chunks so names and titles survive query cleaning.
+    """
+    protected: set[int] = set()
+
+    for entity in doc.ents:
+        if entity.label_ not in config.ENTITY_LABELS:
+            continue
+        if _is_low_value_query_entity(entity.text):
+            continue
+        protected.update(token.i for token in entity if token.is_stop)
+
+    for chunk in doc.noun_chunks:
+        chunk_tokens = [
+            token for token in chunk if not token.is_punct and not token.is_space
+        ]
+        if any(token.pos_ == "PROPN" for token in chunk_tokens):
+            protected.update(token.i for token in chunk_tokens if token.is_stop)
+
     return [
         token
         for token in doc
-        if not token.is_stop and not token.is_punct and not token.is_space
+        if (not token.is_stop or token.i in protected)
+        and not token.is_punct
+        and not token.is_space
     ]
 
 
