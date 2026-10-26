@@ -189,6 +189,21 @@ def test_gnews_normalizes_articles_and_request_params(monkeypatch, tmp_path):
     assert not articles[0].content.endswith("...")
 
 
+def test_gnews_quotes_special_tokens(monkeypatch, tmp_path):
+    captured: dict[str, object] = {}
+
+    def fake_get(url, *, params, headers, timeout):
+        captured["params"] = params
+        return FakeResponse({"totalArticles": 0, "articles": []})
+
+    monkeypatch.setattr(retrieval.requests, "get", fake_get)
+    provider = GNewsProvider(api_key="gnews-test-key", budget=_budget(tmp_path))
+
+    provider.search("Tesla $38 third-quarter 5.50 percent", max_results=1)
+
+    assert captured["params"]["q"] == 'Tesla "$38" "third-quarter" "5.50" percent'
+
+
 def test_missing_newsapi_key_raises_clear_error(tmp_path):
     provider = NewsAPIProvider(api_key="", budget=_budget(tmp_path))
 

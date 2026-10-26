@@ -526,6 +526,25 @@ class NewsAPIProvider(SearchProvider):
         return normalized[:max_results]
 
 
+def _sanitize_gnews_query(query: str) -> str:
+    """Quote tokens with punctuation because GNews rejects unquoted specials.
+
+    GNews treats characters such as ``.``, ``-`` and ``$`` as query syntax and
+    returns HTTP 400 unless the token containing them is wrapped in quotes. The
+    quote token is still a normal keyword search, not a whole-query phrase.
+    """
+    tokens: list[str] = []
+    for raw_token in query.split():
+        token = raw_token.replace('"', "").strip()
+        if not token:
+            continue
+        if any(not char.isalnum() for char in token):
+            tokens.append(f'"{token}"')
+        else:
+            tokens.append(token)
+    return " ".join(tokens)
+
+
 class GNewsProvider(SearchProvider):
     """Fallback provider using the GNews search endpoint."""
 
@@ -563,7 +582,7 @@ class GNewsProvider(SearchProvider):
         payload = _get_json(
             self.base_url,
             params={
-                "q": cleaned_query,
+                "q": _sanitize_gnews_query(cleaned_query),
                 "lang": config.NEWS_LANGUAGE,
                 "max": min(max_results, config.GNEWS_MAX_RESULTS),
                 "apikey": self.api_key,
