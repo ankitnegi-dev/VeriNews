@@ -1,0 +1,86 @@
+# Source credibility tiers for VeriNews.
+#
+# These are fixed judgment values, not weights fitted to the evaluation data.
+# The categories follow the reviewed draft in the repository root:
+#   high    (1.0): wire services, public broadcasters, government and
+#                  international bodies, peer-reviewed publishers
+#   medium  (0.7): established newspapers and TV news with editorial standards
+#   low     (0.4): any domain not listed here (the default)
+#   blocked (0.2): satire and known clickbait only
+#
+# Matching is case-insensitive. A listed domain also matches its subdomains, so
+# edition.cnn.com inherits the cnn.com tier. Suffixes are checked after exact
+# and parent-domain matches. Unknown domains get the low default.
+#
+# Edit this file by hand after checking the spelling of a domain. Do not tune
+# the credibility values on split=dev or split=test; they are policy choices.
+
+version: 1
+default: low
+
+scores:
+  high: 1.0
+  medium: 0.7
+  low: 0.4
+  blocked: 0.2
+
+domains:
+  high:
+    - reuters.com
+    - apnews.com
+    - bbc.com
+    - bbc.co.uk
+    - npr.org
+    - pbs.org
+    - dw.com
+    - who.int
+    - un.org
+    - worldbank.org
+    - imf.org
+    - nature.com
+    - science.org
+    - thelancet.com
+    - pib.gov.in
+    - rbi.org.in
+
+  medium:
+    - thehindu.com
+    - indianexpress.com
+    - ndtv.com
+    - hindustantimes.com
+    - timesofindia.indiatimes.com
+    - economictimes.indiatimes.com
+    - livemint.com
+    - business-standard.com
+    - theguardian.com
+    - nytimes.com
+    - washingtonpost.com
+    - wsj.com
+    - ft.com
+    - bloomberg.com
+    - cnn.com
+    - nbcnews.com
+    - abcnews.go.com
+    - abcnews.com
+    - cbsnews.com
+    - aljazeera.com
+    - espn.com
+    - espncricinfo.com
+    - variety.com
+    - hollywoodreporter.com
+    - deadline.com
+    - rollingstone.com
+    - vulture.com
+
+  blocked:
+    - theonion.com
+    - babylonbee.com
+    - thedailymash.co.uk
+
+# Suffixes are a last-resort rule for official government domains that are not
+# worth listing one by one. They never override an explicit domain tier.
+suffixes:
+  high:
+    - .gov
+    - .gov.in
+    - .nic.in
