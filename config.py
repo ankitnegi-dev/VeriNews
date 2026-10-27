@@ -137,12 +137,21 @@ NLI_BATCH_SIZE = 8
 # ---------------------------------------------------------------------------
 # Credibility and decision (Phase 6)
 # ---------------------------------------------------------------------------
+# Credibility values are fixed judgment calls about source quality. They are
+# not fitted to split=dev or split=test.
 CREDIBILITY_HIGH = 1.0
 CREDIBILITY_MEDIUM = 0.7
 CREDIBILITY_LOW = 0.4
 CREDIBILITY_BLOCKED = 0.2
 
+# MIN_EVIDENCE is a fixed safety floor, not a tunable. It is used twice: at
+# least this many kept articles must exist, and at least this many relevant
+# directional articles must agree before either side can decide.
 MIN_EVIDENCE = 2
+
+# Exactly four decision parameters are tunable, and only on split=dev:
+# REL_MIN, MIN_TOTAL_WEIGHT, DECISION_RATIO, MARGIN.
+REL_MIN = 0.5
 MIN_TOTAL_WEIGHT = 0.5
 DECISION_RATIO = 0.4
 MARGIN = 1.5
