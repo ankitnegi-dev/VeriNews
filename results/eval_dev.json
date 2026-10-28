@@ -1,0 +1,1263 @@
+{
+  "split": "dev",
+  "generated_at": "2026-10-28T04:45:41.144080+00:00",
+  "claims_path": "C:\\Users\\ANKIT\\Desktop\\coding\\Projects\\News-Verification Project\\verinews\\tests\\data\\claims.csv",
+  "cache_only": true,
+  "model": {
+    "nli": "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+    "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+    "spacy": "en_core_web_sm"
+  },
+  "decision_config": {
+    "REL_MIN": 0.5,
+    "MIN_TOTAL_WEIGHT": 0.5,
+    "DECISION_RATIO": 0.4,
+    "MARGIN": 1.5,
+    "MIN_EVIDENCE": 2
+  },
+  "metrics": {
+    "total": 10,
+    "correct": 8,
+    "exact_accuracy": 0.8,
+    "per_class": {
+      "SUPPORTED": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "support": 3,
+        "predicted": 2
+      },
+      "REFUTED": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "support": 3,
+        "predicted": 2
+      },
+      "UNVERIFIED": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "support": 4,
+        "predicted": 6
+      }
+    },
+    "confusion_matrix": {
+      "SUPPORTED": {
+        "SUPPORTED": 2,
+        "REFUTED": 0,
+        "UNVERIFIED": 1
+      },
+      "REFUTED": {
+        "SUPPORTED": 0,
+        "REFUTED": 2,
+        "UNVERIFIED": 1
+      },
+      "UNVERIFIED": {
+        "SUPPORTED": 0,
+        "REFUTED": 0,
+        "UNVERIFIED": 4
+      }
+    },
+    "wrong_verdict_rate": 0.0,
+    "wrong_verdict_flips": 0,
+    "directional_gold": 6,
+    "coverage": 0.6666666666666666,
+    "committed_directional": 4,
+    "mean_latency_ms": 4153,
+    "max_latency_ms": 6265
+  },
+  "mistakes": [
+    {
+      "row": "6",
+      "claim": "Netflix reported third-quarter 2026 revenue of $12.87 billion and earnings of 87 cents per share.",
+      "expected": "SUPPORTED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "Netflix reported third-quarter 2026 revenue $12.87 billion earnings 87 cents share",
+        "Netflix third-quarter 2026 $12.87 billion",
+        "Netflix third-quarter reported"
+      ],
+      "explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 6 relevant neutral article(s) treated as no information.",
+      "latency_ms": 4995,
+      "wall_ms": 4995,
+      "evidence": [
+        {
+          "title": "The Truth About Netflix’s Massive Stock Buybacks",
+          "source_domain": "biztoc.com",
+          "url": "https://biztoc.com/x/d68bcd9bdbccda85",
+          "published_at": "2026-10-22T20:08:07Z",
+          "snippet": "Tuesday evening, Netflix delivered a solid third-quarter financial report for fiscal 2026, posting $12.87 billion in revenue -- an 11.9% year-over-year increase.",
+          "similarity": 0.8894045026430824,
+          "credibility": 0.4,
+          "p_entail": 0.001964569091796875,
+          "p_neutral": 0.99755859375,
+          "p_contra": 0.00027489662170410156,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Warns of Disappointing Q4 Revenue As Growth Questions Remain",
+          "source_domain": "thewrap.com",
+          "url": "https://www.thewrap.com/industry-news/business/netflix-earnings-q3-2026/",
+          "published_at": "2026-10-20T20:17:32Z",
+          "snippet": "Netflix posted revenue of $12.87 billion and a profit of 87 cents per share, compared to Wall Street estimates of $12.87 billion in revenue and a profit of 82 cents per share, per Yahoo Finan",
+          "similarity": 0.7972811115429772,
+          "credibility": 0.4,
+          "p_entail": 0.01345062255859375,
+          "p_neutral": 0.9716796875,
+          "p_contra": 0.01483917236328125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Q3 Revenue Meets Wall Street Estimates, Q4 Earnings Will Be Crimped by Costs Associated With Mass Layoffs",
+          "source_domain": "variety.com",
+          "url": "https://variety.com/2026/tv/news/netflix-q3-2026-earnings-wall-street-layoffs-exec-firings-1236917438/",
+          "published_at": "2026-10-20T20:13:23Z",
+          "snippet": "Netflix’s third-quarter 2026 earnings met revenue expectations and it slightly beat on the bottom line.",
+          "similarity": 0.7824093199979503,
+          "credibility": 0.7,
+          "p_entail": 0.0010366439819335938,
+          "p_neutral": 0.99853515625,
+          "p_contra": 0.00042438507080078125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Revenue Growth Hits Three-Year Low",
+          "source_domain": "theinformation.com",
+          "url": "https://www.theinformation.com/briefings/netflix-revenue-growth-hits-three-year-low",
+          "published_at": "2026-10-20T21:46:12Z",
+          "snippet": "Netflix Revenue Growth Hits Three-Year Low",
+          "similarity": 0.7623019348410869,
+          "credibility": 0.4,
+          "p_entail": 0.00530242919921875,
+          "p_neutral": 0.953125,
+          "p_contra": 0.041778564453125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix issues weak fourth-quarter forecast, shares drop",
+          "source_domain": "economictimes.indiatimes.com",
+          "url": "https://economictimes.indiatimes.com/tech/technology/netflix-issues-weak-fourth-quarter-forecast-shares-drop/articleshow/135079840.cms",
+          "published_at": "2026-10-21T02:05:18Z",
+          "snippet": "The company forecast fourth-quarter net income of $2.79 billion and EPS of 67 cents, below the average analyst forec Netflix issued a weaker-than-expected forecast for fourth-quarter profit on Tuesday, days after the streaming pioneer laid off 6% of its workforce and replaced two of its top programming executives.S",
+          "similarity": 0.7431540537395893,
+          "credibility": 0.7,
+          "p_entail": 0.0017223358154296875,
+          "p_neutral": 0.9931640625,
+          "p_contra": 0.005092620849609375,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Promises To ‘Do Better’",
+          "source_domain": "gizmodo.com",
+          "url": "https://gizmodo.com/netflix-promises-to-do-better-2000828357",
+          "published_at": "2026-10-21T01:25:04Z",
+          "snippet": "In its third-quarter earnings report release on Tuesday, streaming giant Netflix beat many expectations, but still delivered some unwanted news to investors: viewer metrics, especially in the United",
+          "similarity": 0.7058973801005626,
+          "credibility": 0.4,
+          "p_entail": 0.0078582763671875,
+          "p_neutral": 0.9423828125,
+          "p_contra": 0.0496826171875,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 6 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "21",
+      "claim": "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026, and the Panama Canal suspended all ship passage.",
+      "expected": "REFUTED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0,
+      "refute_score": 0.2652100654138952,
+      "total_weight": 0.31143934287136316,
+      "queries": [
+        "magnitude 7.7 earthquake struck southern Panama October 9 2026 the Panama Canal",
+        "Panama Panama Canal October 9 2026 7.7",
+        "Panama Panama Canal struck"
+      ],
+      "explanation": "UNVERIFIED: only one relevant article refutes the claim; a single article cannot decide a verdict; top refuting: cbc.ca; 5 relevant neutral article(s) treated as no information.",
+      "latency_ms": 2515,
+      "wall_ms": 2515,
+      "evidence": [
+        {
+          "title": "Powerful 7.7 quake hits Panama, damages buildings",
+          "source_domain": "hurriyetdailynews.com",
+          "url": "https://www.hurriyetdailynews.com/powerful-7-7-quake-hits-panama-damages-buildings-227958",
+          "published_at": "2026-10-10T06:58:47Z",
+          "snippet": "A powerful 7.7-magnitude earthquake struck southern Panama on Oct.",
+          "similarity": 0.8673077370722329,
+          "credibility": 0.4,
+          "p_entail": 0.00206756591796875,
+          "p_neutral": 0.99658203125,
+          "p_contra": 0.0015249252319335938,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Panama rocked by 7.7 magnitude earthquake",
+          "source_domain": "israelnationalnews.com",
+          "url": "https://www.israelnationalnews.com/news/434384",
+          "published_at": "2026-10-10T18:37:02Z",
+          "snippet": "A powerful 7.7-magnitude earthquake struck Panama on Friday, October 9, causing widespread damage to buildings and infrastructure, injuring at least 27 people and prompting evacuations across the country.",
+          "similarity": 0.8088261574430062,
+          "credibility": 0.4,
+          "p_entail": 0.0035552978515625,
+          "p_neutral": 0.98046875,
+          "p_contra": 0.016204833984375,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Panama struck by magnitude 7.7 earthquake, U.S. Geological Survey says",
+          "source_domain": "freerepublic.com",
+          "url": "https://freerepublic.com/focus/f-news/4398607/posts",
+          "published_at": "2026-10-09T20:46:12Z",
+          "snippet": "Panama struck by magnitude 7.7 earthquake, U.S.",
+          "similarity": 0.8181978334647055,
+          "credibility": 0.4,
+          "p_entail": 0.00249481201171875,
+          "p_neutral": 0.99462890625,
+          "p_contra": 0.00298309326171875,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Strong earthquakes shake Panama, prompting tsunami alert",
+          "source_domain": "dw.com",
+          "url": "https://www.dw.com/en/strong-earthquakes-shake-panama-prompting-tsunami-alert/a-79623168",
+          "published_at": "2026-10-09T19:03:00Z",
+          "snippet": "A powerful magnitude-7.7 earthquake struck Panama on Friday morning.",
+          "similarity": 0.8018452589800895,
+          "credibility": 1.0,
+          "p_entail": 0.002658843994140625,
+          "p_neutral": 0.974609375,
+          "p_contra": 0.0228424072265625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Powerful 7.7 magnitude earthquake rocks Panama",
+          "source_domain": "cbc.ca",
+          "url": "https://www.cbc.ca/news/world/panama-earthquake-9.7376897",
+          "published_at": "2026-10-10T00:40:33Z",
+          "snippet": "A magnitude 7.7 earthquake struck southern Panama on Friday, damaging buildings and sending thousands into the streets, but the country appeared to escape widespread destruction or deaths.",
+          "similarity": 0.7785983571784079,
+          "credibility": 0.4,
+          "p_entail": 0.0012960433959960938,
+          "p_neutral": 0.14697265625,
+          "p_contra": 0.8515625,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "Panama hit by strongest quake in 75 years, 7.7-magnitude tremor strikes",
+          "source_domain": "business-standard.com",
+          "url": "https://www.business-standard.com/world-news/panama-hit-by-strongest-quake-in-75-years-7-7-magnitude-tremor-strikes-126101000149_1.html",
+          "published_at": "2026-10-10T03:56:40Z",
+          "snippet": "The earthquake struck Herrera Province more than 193 km southwest of the Panama Canal, with a 6.6-magnitude aftershock and eight others of magnitude 4.8 or higher recorded People stand near cars damaged by falling debris after an earthquake struck near the southern coast of Panama, in Penonome, Panama, October 9, 2026 | REUTERS",
+          "similarity": 0.7703715842918537,
+          "credibility": 0.7,
+          "p_entail": 0.0037517547607421875,
+          "p_neutral": 0.88623046875,
+          "p_contra": 0.11004638671875,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: only one relevant article refutes the claim; a single article cannot decide a verdict; top refuting: cbc.ca; 5 relevant neutral article(s) treated as no information."
+    }
+  ],
+  "records": [
+    {
+      "row": "2",
+      "claim": "South African human rights lawyer Navi Pillay won the 2026 Nobel Peace Prize.",
+      "expected": "SUPPORTED",
+      "predicted": "SUPPORTED",
+      "confidence": 0.9783381929090822,
+      "support_score": 2.6629981577359216,
+      "refute_score": 0,
+      "total_weight": 2.7219607463320163,
+      "queries": [
+        "South African human rights lawyer Navi Pillay won the 2026 Nobel Peace",
+        "Navi Pillay South African 2026",
+        "Navi Pillay South African won"
+      ],
+      "explanation": "SUPPORTED: 5 relevant sources support the claim (top: npr.org, economictimes.indiatimes.com); support 2.663 vs refute 0.000; 1 relevant neutral article(s) treated as no information.",
+      "latency_ms": 5013,
+      "wall_ms": 5013,
+      "evidence": [
+        {
+          "title": "South African Human Rights lawyer Navi Pillay wins Nobel Peace Prize",
+          "source_domain": "npr.org",
+          "url": "https://www.npr.org/2026/10/08/nx-s1-5994952/nobel-peace-prize",
+          "published_at": "2026-10-09T08:23:16Z",
+          "snippet": "South African human rights lawyer Navi Pillay wins the 2026 Nobel Peace Prize for advancing human rights and international law.",
+          "similarity": 0.9741139023311758,
+          "credibility": 1.0,
+          "p_entail": 0.99658203125,
+          "p_neutral": 0.002544403076171875,
+          "p_contra": 0.0007009506225585938,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "South African judge wins Nobel Peace Prize as committee warns international law is 'under attack'",
+          "source_domain": "thejournal.ie",
+          "url": "https://www.thejournal.ie/navi-pillay-south-africa-nobel-peace-prize-7187795-Oct2026/",
+          "published_at": "2026-10-09T09:15:34Z",
+          "snippet": "SOUTH AFRICAN HUMAN rights lawyer and judge Navi Pillay has been awarded the 2026 Nobel Peace Prize for her efforts to promote peace and international law.",
+          "similarity": 0.9476954995020899,
+          "credibility": 0.4,
+          "p_entail": 0.9970703125,
+          "p_neutral": 0.0022411346435546875,
+          "p_contra": 0.0006117820739746094,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "‘You buy Mercedes, I want to invest in my education’: What Nobel Peace Prize winner Navi Pillay, daughter of a bus driver, once told lawyers who questioned her ambition",
+          "source_domain": "economictimes.indiatimes.com",
+          "url": "https://economictimes.indiatimes.com/magazines/panache/you-buy-mercedes-i-want-to-invest-in-my-education-what-nobel-peace-prize-winner-navi-pillay-daughter-of-a-bus-driver-once-told-lawyers-who-questioned-her-ambition/articleshow/134829425.cms",
+          "published_at": "2026-10-09T09:44:44Z",
+          "snippet": "Navi Pillay, the South African lawyer of Indian origin, was awarded the 2026 Nobel Peace Prize for her work defending human rights and international law.",
+          "similarity": 0.9249792491455974,
+          "credibility": 0.7,
+          "p_entail": 0.99462890625,
+          "p_neutral": 0.00453948974609375,
+          "p_contra": 0.0007190704345703125,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "Human rights veteran Navi Pillay wins 2026 Nobel Peace Prize",
+          "source_domain": "aljazeera.com",
+          "url": "https://www.aljazeera.com/video/newsfeed/2026/10/9/human-rights-veteran-navi-pillay-wins-2026-nobel-peace-prize",
+          "published_at": "2026-10-09T20:29:30Z",
+          "snippet": "Human rights veteran Navi Pillay wins 2026 Nobel Peace Prize",
+          "similarity": 0.9152649731827133,
+          "credibility": 0.7,
+          "p_entail": 0.1619873046875,
+          "p_neutral": 0.8369140625,
+          "p_contra": 0.0009388923645019531,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Who Is Nobel Prize Winner Navi Pillay?",
+          "source_domain": "radaronline.com",
+          "url": "https://radaronline.com/p/2026-nobel-peace-prize-winner-navi-pillay-share-award-donald-trump/",
+          "published_at": "2026-10-09T18:45:00Z",
+          "snippet": "Navi Pillay, the South African jurist and former United Nations High Commissioner for Human Rights, won the 2026 Nobel Peace Prize on Friday, October 9, for her efforts to promote peace and internati",
+          "similarity": 0.9025371257448804,
+          "credibility": 0.4,
+          "p_entail": 0.95947265625,
+          "p_neutral": 0.0374755859375,
+          "p_contra": 0.00289154052734375,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "South African judge Navi Pillay wins 2026 Nobel Peace Prize",
+          "source_domain": "punchng.com",
+          "url": "https://punchng.com/south-african-judge-navi-pillay-wins-2026-nobel-peace-prize/",
+          "published_at": "2026-10-09T09:35:36Z",
+          "snippet": "South African jurist Navi Pillay has won the 2026 Nobel Peace Prize for her efforts to promote international law and prosecute war crimes and genocide.",
+          "similarity": 0.9006707987503357,
+          "credibility": 0.4,
+          "p_entail": 0.89892578125,
+          "p_neutral": 0.09869384765625,
+          "p_contra": 0.0023212432861328125,
+          "stance": "SUPPORTS"
+        }
+      ],
+      "ablation_predicted": "SUPPORTED",
+      "ablation_confidence": 0.9701750054595556,
+      "ablation_explanation": "SUPPORTED: 5 relevant sources support the claim (top: npr.org, thejournal.ie); support 4.511 vs refute 0.000; 1 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "3",
+      "claim": "Canadian poet Anne Carson won the 2026 Nobel Prize in Literature.",
+      "expected": "SUPPORTED",
+      "predicted": "SUPPORTED",
+      "confidence": 0.9965343114612305,
+      "support_score": 1.0504137966852558,
+      "refute_score": 0,
+      "total_weight": 1.0540668641353865,
+      "queries": [
+        "Canadian poet Anne Carson won the 2026 Nobel Prize Literature",
+        "Anne Carson Canadian 2026",
+        "Anne Carson Canadian won"
+      ],
+      "explanation": "SUPPORTED: 2 relevant sources support the claim (top: aljazeera.com, yahoo.com); support 1.050 vs refute 0.000; 4 relevant neutral article(s) treated as no information.",
+      "latency_ms": 3716,
+      "wall_ms": 3716,
+      "evidence": [
+        {
+          "title": "Canadian poet and writer Anne Carson wins 2026 Nobel Prize in Literature",
+          "source_domain": "yahoo.com",
+          "url": "https://www.yahoo.com/news/world/articles/canadian-writer-anne-carson-wins-153333980.html",
+          "published_at": "2026-10-08T15:33:33Z",
+          "snippet": "Canadian poet and writer Anne Carson wins 2026 Nobel Prize in Literature",
+          "similarity": 0.9642341275464552,
+          "credibility": 0.4,
+          "p_entail": 0.99560546875,
+          "p_neutral": 0.003429412841796875,
+          "p_contra": 0.0007753372192382812,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "Canadian Anne Carson wins 2026 Nobel Prize in Literature",
+          "source_domain": "aljazeera.com",
+          "url": "https://www.aljazeera.com/news/2026/10/8/canadian-anne-carson-wins-2026-nobel-prize-in-literature",
+          "published_at": "2026-10-08T13:51:46Z",
+          "snippet": "Canadian poet and writer Anne Carson has won the 2026 Nobel Prize in Literature, the award-giving body has announced.",
+          "similarity": 0.9548188758811492,
+          "credibility": 0.7,
+          "p_entail": 0.9970703125,
+          "p_neutral": 0.0023059844970703125,
+          "p_contra": 0.0006322860717773438,
+          "stance": "SUPPORTS"
+        },
+        {
+          "title": "Poet and essayist Anne Carson wins 2026 Nobel Prize in literature",
+          "source_domain": "npr.org",
+          "url": "https://www.npr.org/2026/10/08/nx-s1-5984350/nobel-prize-in-literature-anne-carson",
+          "published_at": "2026-10-08T08:45:19Z",
+          "snippet": "Poet and essayist Anne Carson wins 2026 Nobel Prize in literature",
+          "similarity": 0.915810431870509,
+          "credibility": 1.0,
+          "p_entail": 0.085205078125,
+          "p_neutral": 0.9140625,
+          "p_contra": 0.0008368492126464844,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Anne Carson has won the Nobel Prize for Literature for her bold, inventive, breathtaking work",
+          "source_domain": "theconversation.com",
+          "url": "https://theconversation.com/anne-carson-has-won-the-nobel-prize-for-literature-for-her-bold-inventive-breathtaking-work-293990",
+          "published_at": "2026-10-09T00:41:12Z",
+          "snippet": "Anne Carson has been awarded the 2026 Nobel Prize in Literature.",
+          "similarity": 0.8953031742394847,
+          "credibility": 0.4,
+          "p_entail": 0.00858306884765625,
+          "p_neutral": 0.9912109375,
+          "p_contra": 0.00026869773864746094,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Anne Carson has won the 2026 Nobel Prize in Literature.",
+          "source_domain": "lithub.com",
+          "url": "https://lithub.com/anne-carson-has-won-the-2026-nobel-prize-in-literature/",
+          "published_at": "2026-10-08T11:11:26Z",
+          "snippet": "Anne Carson has won the 2026 Nobel Prize in Literature.",
+          "similarity": 0.9023936963927655,
+          "credibility": 0.4,
+          "p_entail": 0.00925445556640625,
+          "p_neutral": 0.99072265625,
+          "p_contra": 0.0002567768096923828,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Canadian poet Anne Carson wins Nobel Prize in literature",
+          "source_domain": "thejournal.ie",
+          "url": "https://www.thejournal.ie/nobel-prize-in-literature-winner-7186508-Oct2026/",
+          "published_at": "2026-10-08T11:03:30Z",
+          "snippet": "CANADIAN POET AND essayist Anne Carson has won the Nobel Prize in Literature.",
+          "similarity": 0.8965481133632285,
+          "credibility": 0.4,
+          "p_entail": 0.01157379150390625,
+          "p_neutral": 0.9794921875,
+          "p_contra": 0.00873565673828125,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "SUPPORTED",
+      "ablation_confidence": 0.9963342972191556,
+      "ablation_explanation": "SUPPORTED: 2 relevant sources support the claim (top: yahoo.com, aljazeera.com); support 1.912 vs refute 0.000; 4 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "6",
+      "claim": "Netflix reported third-quarter 2026 revenue of $12.87 billion and earnings of 87 cents per share.",
+      "expected": "SUPPORTED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "Netflix reported third-quarter 2026 revenue $12.87 billion earnings 87 cents share",
+        "Netflix third-quarter 2026 $12.87 billion",
+        "Netflix third-quarter reported"
+      ],
+      "explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 6 relevant neutral article(s) treated as no information.",
+      "latency_ms": 4995,
+      "wall_ms": 4995,
+      "evidence": [
+        {
+          "title": "The Truth About Netflix’s Massive Stock Buybacks",
+          "source_domain": "biztoc.com",
+          "url": "https://biztoc.com/x/d68bcd9bdbccda85",
+          "published_at": "2026-10-22T20:08:07Z",
+          "snippet": "Tuesday evening, Netflix delivered a solid third-quarter financial report for fiscal 2026, posting $12.87 billion in revenue -- an 11.9% year-over-year increase.",
+          "similarity": 0.8894045026430824,
+          "credibility": 0.4,
+          "p_entail": 0.001964569091796875,
+          "p_neutral": 0.99755859375,
+          "p_contra": 0.00027489662170410156,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Warns of Disappointing Q4 Revenue As Growth Questions Remain",
+          "source_domain": "thewrap.com",
+          "url": "https://www.thewrap.com/industry-news/business/netflix-earnings-q3-2026/",
+          "published_at": "2026-10-20T20:17:32Z",
+          "snippet": "Netflix posted revenue of $12.87 billion and a profit of 87 cents per share, compared to Wall Street estimates of $12.87 billion in revenue and a profit of 82 cents per share, per Yahoo Finan",
+          "similarity": 0.7972811115429772,
+          "credibility": 0.4,
+          "p_entail": 0.01345062255859375,
+          "p_neutral": 0.9716796875,
+          "p_contra": 0.01483917236328125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Q3 Revenue Meets Wall Street Estimates, Q4 Earnings Will Be Crimped by Costs Associated With Mass Layoffs",
+          "source_domain": "variety.com",
+          "url": "https://variety.com/2026/tv/news/netflix-q3-2026-earnings-wall-street-layoffs-exec-firings-1236917438/",
+          "published_at": "2026-10-20T20:13:23Z",
+          "snippet": "Netflix’s third-quarter 2026 earnings met revenue expectations and it slightly beat on the bottom line.",
+          "similarity": 0.7824093199979503,
+          "credibility": 0.7,
+          "p_entail": 0.0010366439819335938,
+          "p_neutral": 0.99853515625,
+          "p_contra": 0.00042438507080078125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Revenue Growth Hits Three-Year Low",
+          "source_domain": "theinformation.com",
+          "url": "https://www.theinformation.com/briefings/netflix-revenue-growth-hits-three-year-low",
+          "published_at": "2026-10-20T21:46:12Z",
+          "snippet": "Netflix Revenue Growth Hits Three-Year Low",
+          "similarity": 0.7623019348410869,
+          "credibility": 0.4,
+          "p_entail": 0.00530242919921875,
+          "p_neutral": 0.953125,
+          "p_contra": 0.041778564453125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix issues weak fourth-quarter forecast, shares drop",
+          "source_domain": "economictimes.indiatimes.com",
+          "url": "https://economictimes.indiatimes.com/tech/technology/netflix-issues-weak-fourth-quarter-forecast-shares-drop/articleshow/135079840.cms",
+          "published_at": "2026-10-21T02:05:18Z",
+          "snippet": "The company forecast fourth-quarter net income of $2.79 billion and EPS of 67 cents, below the average analyst forec Netflix issued a weaker-than-expected forecast for fourth-quarter profit on Tuesday, days after the streaming pioneer laid off 6% of its workforce and replaced two of its top programming executives.S",
+          "similarity": 0.7431540537395893,
+          "credibility": 0.7,
+          "p_entail": 0.0017223358154296875,
+          "p_neutral": 0.9931640625,
+          "p_contra": 0.005092620849609375,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Promises To ‘Do Better’",
+          "source_domain": "gizmodo.com",
+          "url": "https://gizmodo.com/netflix-promises-to-do-better-2000828357",
+          "published_at": "2026-10-21T01:25:04Z",
+          "snippet": "In its third-quarter earnings report release on Tuesday, streaming giant Netflix beat many expectations, but still delivered some unwanted news to investors: viewer metrics, especially in the United",
+          "similarity": 0.7058973801005626,
+          "credibility": 0.4,
+          "p_entail": 0.0078582763671875,
+          "p_neutral": 0.9423828125,
+          "p_contra": 0.0496826171875,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 6 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "14",
+      "claim": "Manchester United beat Como 4-1 in a Champions League match on October 21, 2026.",
+      "expected": "REFUTED",
+      "predicted": "REFUTED",
+      "confidence": 0.9954349291220731,
+      "support_score": 0,
+      "refute_score": 0.9940069243552678,
+      "total_weight": 0.9985654463943066,
+      "queries": [
+        "Manchester United beat Como 4-1 a Champions League match October 21 2026",
+        "Champions League Manchester United Como 4-1 October 21 2026",
+        "Champions League Manchester United beat"
+      ],
+      "explanation": "REFUTED: 3 relevant sources refute the claim (top: aljazeera.com, football-italia.net); support 0.000 vs refute 0.994; 2 relevant neutral article(s) treated as no information.",
+      "latency_ms": 6265,
+      "wall_ms": 6265,
+      "evidence": [
+        {
+          "title": "Henry: Not many people knew Como players, ‘it’s all down to Fabregas’",
+          "source_domain": "football-italia.net",
+          "url": "https://football-italia.net/henry-not-many-knew-como-players-fabregas/",
+          "published_at": "2026-10-22T13:37:30Z",
+          "snippet": "Como beat Manchester United 4",
+          "similarity": 0.8488404836489251,
+          "credibility": 0.4,
+          "p_entail": 0.00016641616821289062,
+          "p_neutral": 0.0014257431030273438,
+          "p_contra": 0.99853515625,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "Maguire Gets 7, De Ligt With 5.5 | Manchester United Players Rated In Disappointing Loss Vs Liverpool",
+          "source_domain": "the4thofficial.net",
+          "url": "https://the4thofficial.net/2026/10/maguire-gets-7-de-ligt-with-5-5-manchester-united-players-rated-in-disappointing-loss-vs-liverpool/",
+          "published_at": "2026-10-21T19:10:00Z",
+          "snippet": "Manchester United clashed heads with Como at the Stadio Giuseppe Sinigaglia earlier this evening as they hoped to earn a good result on the road in the UEFA Champions League.",
+          "similarity": 0.6135393271792187,
+          "credibility": 0.4,
+          "p_entail": 0.0022945404052734375,
+          "p_neutral": 0.91162109375,
+          "p_contra": 0.08599853515625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "How to watch Como 1907 vs Manchester United match in the USA: Live stream and TV for 2026-27 UEFA Champions League",
+          "source_domain": "worldsoccertalk.com",
+          "url": "https://worldsoccertalk.com/watch-on-us-tv/how-to-watch-como-1907-vs-manchester-united-match-in-the-usa-live-stream-and-tv-for-2026-27-uefa-champions-league/",
+          "published_at": "2026-10-21T15:38:06Z",
+          "snippet": "Here are all of the details of where you can watch Como 1907 vs Manchester United for the 2026-27 UEFA Champions League on US television and via legal streaming.",
+          "similarity": 0.5964396258290716,
+          "credibility": 0.4,
+          "p_entail": 0.0005831718444824219,
+          "p_neutral": 0.99609375,
+          "p_contra": 0.0033416748046875,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Miserable Man Utd ripped apart by Como",
+          "source_domain": "skysports.com",
+          "url": "https://www.skysports.com/football/news/13600997/como-4-1-man-utd-michael-carricks-side-ripped-apart-in-italy-during-champions-league-hammering",
+          "published_at": "2026-10-21T18:45:00Z",
+          "snippet": "Match report as Nico Paz stars for Cesc Fabregas' Como as they take apart Manchester United; Michael Carrick's side now winless in seven games across all competitions after suffering Champions League humbling in Italy Michael Carrick's Manchester United were ripped apart in a dreadful 4-1 defeat at Como in the Champions League, as their miserable run of results stretched to seven without a win.",
+          "similarity": 0.574088031311085,
+          "credibility": 0.4,
+          "p_entail": 0.0009112358093261719,
+          "p_neutral": 0.011322021484375,
+          "p_contra": 0.98779296875,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "Atletico Madrid beat Manchester United 2-0 as winless run continues",
+          "source_domain": "aljazeera.com",
+          "url": "https://www.aljazeera.com/sports/2026/10/13/atletico-madrid-beat-manchester-united-2-0-as-winless-run-continues",
+          "published_at": "2026-10-13T21:24:19Z",
+          "snippet": "Atletico Madrid beat Manchester United 2-0 as winless run continues",
+          "similarity": 0.6134200577290037,
+          "credibility": 0.7,
+          "p_entail": 8.493661880493164e-05,
+          "p_neutral": 0.0027637481689453125,
+          "p_contra": 0.9970703125,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "Euro Leagues",
+          "source_domain": "bbc.co.uk",
+          "url": "https://www.bbc.co.uk/sounds/play/p0pgz2sp?at_campaign=rss",
+          "published_at": "2026-10-15T21:31:00Z",
+          "snippet": "Are Barcelona and PSG the teams to beat in the Champions League?",
+          "similarity": 0.46036384753998016,
+          "credibility": 1.0,
+          "p_entail": 0.00044274330139160156,
+          "p_neutral": 0.0283355712890625,
+          "p_contra": 0.97119140625,
+          "stance": "REFUTES"
+        }
+      ],
+      "ablation_predicted": "REFUTED",
+      "ablation_confidence": 0.995065452729542,
+      "ablation_explanation": "REFUTED: 3 relevant sources refute the claim (top: football-italia.net, aljazeera.com); support 0.000 vs refute 2.026; 2 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "15",
+      "claim": "SpaceX launched a Dragon cargo spacecraft to the International Space Station from Vandenberg Space Force Base in California on October 13, 2026.",
+      "expected": "REFUTED",
+      "predicted": "REFUTED",
+      "confidence": 0.9361706472267927,
+      "support_score": 0,
+      "refute_score": 1.2228317484945068,
+      "total_weight": 1.3062060342490838,
+      "queries": [
+        "SpaceX launched a Dragon cargo spacecraft the International Space Station Vandenberg Space",
+        "Dragon International Space Station SpaceX Vandenberg Space Force Base",
+        "Dragon International Space Station launched"
+      ],
+      "explanation": "REFUTED: 3 relevant sources refute the claim (top: npr.org, abcnews.com); support 0.000 vs refute 1.223; 2 relevant neutral article(s) treated as no information.",
+      "latency_ms": 3385,
+      "wall_ms": 3385,
+      "evidence": [
+        {
+          "title": "NASA’s SpaceX Crew-13 Launches",
+          "source_domain": "nasa.gov",
+          "url": "https://www.nasa.gov/image-detail/nasas-spacex-crew-13-launch-3/",
+          "published_at": "2026-10-01T18:07:00Z",
+          "snippet": "A SpaceX Falcon 9 rocket carrying the company's Dragon spacecraft is launched on NASA’s SpaceX Crew-13 mission to the International Space Station with NASA astronauts Jessica Watkins and Luke Delaney, CSA (Canadian Space Agency) astronaut Joshua Kutryk, and R A SpaceX Falcon 9 rocket carrying the company's Dragon spacecraft is launched on NASAs SpaceX Crew-13 mission to the International Space...",
+          "similarity": 0.6921979853899101,
+          "credibility": 1.0,
+          "p_entail": 0.004604339599609375,
+          "p_neutral": 0.94677734375,
+          "p_contra": 0.04840087890625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "New space station crew launches from Florida on SpaceX's Crew Dragon capsule",
+          "source_domain": "npr.org",
+          "url": "https://www.npr.org/2026/10/01/nx-s1-5987698/nasa-crew-13-spacex-international-space-station-iss",
+          "published_at": "2026-10-01T15:21:33Z",
+          "snippet": "New space station crew launches from Florida on SpaceX's Crew Dragon capsule",
+          "similarity": 0.6411163050473456,
+          "credibility": 1.0,
+          "p_entail": 0.00031948089599609375,
+          "p_neutral": 0.00569915771484375,
+          "p_contra": 0.994140625,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "NASA's SpaceX Crew-13 launches as astronaut brings 100-year-old heirloom on trip",
+          "source_domain": "abcnews.com",
+          "url": "https://abcnews.com/US/nasas-spacex-crew-13-astronaut-bringing-100-year/story?id=136906539",
+          "published_at": "2026-10-01T16:19:18Z",
+          "snippet": "The crew launched to the International Space Station on Thursday morning.",
+          "similarity": 0.6193067107147261,
+          "credibility": 0.7,
+          "p_entail": 0.0010919570922851562,
+          "p_neutral": 0.040557861328125,
+          "p_contra": 0.95849609375,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "As 'Falcon Heavy' Launches, SpaceX Plans Dragon and Falcon 9 Phase Out As Starship Ramps Up",
+          "source_domain": "science.slashdot.org",
+          "url": "https://science.slashdot.org/story/26/10/03/2317251/as-falcon-heavy-launches-spacex-plans-dragon-and-falcon-9-phase-out-as-starship-ramps-up",
+          "published_at": "2026-10-03T23:21:00Z",
+          "snippet": "The NRO has previously flown payloads on 22 Falcon 9 rockets but th As Starship flights ramp up, SpaceX has made clear that the company will phase out the use of two of its most iconic creations: the Dragon spacecraft, which ferries astronauts and cargo to and from t",
+          "similarity": 0.5789375792535749,
+          "credibility": 0.4,
+          "p_entail": 0.0048980712890625,
+          "p_neutral": 0.260986328125,
+          "p_contra": 0.73388671875,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "The commercial space station competition finally begins",
+          "source_domain": "thespacereview.com",
+          "url": "https://www.thespacereview.com/article/5340/1",
+          "published_at": "2026-10-19T11:59:00Z",
+          "snippet": "The commercial space station competition finally begins",
+          "similarity": 0.4295803929711478,
+          "credibility": 0.4,
+          "p_entail": 0.0075836181640625,
+          "p_neutral": 0.36279296875,
+          "p_contra": 0.62939453125,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "SpaceX launches 13th long-duration astronaut crew to International Space Station",
+          "source_domain": "channelnewsasia.com",
+          "url": "https://www.channelnewsasia.com/business/spacex-launches-13th-long-duration-astronaut-crew-international-space-station-6424881",
+          "published_at": "2026-10-01T15:18:03Z",
+          "snippet": "SpaceX launches 13th long-duration astronaut crew to International Space Station",
+          "similarity": 0.6040643584509148,
+          "credibility": 0.4,
+          "p_entail": 0.009368896484375,
+          "p_neutral": 0.8955078125,
+          "p_contra": 0.09490966796875,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "REFUTED",
+      "ablation_confidence": 0.9002244759060274,
+      "ablation_explanation": "REFUTED: 3 relevant sources refute the claim (top: npr.org, abcnews.com); support 0.000 vs refute 1.656; 2 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "21",
+      "claim": "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026, and the Panama Canal suspended all ship passage.",
+      "expected": "REFUTED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0,
+      "refute_score": 0.2652100654138952,
+      "total_weight": 0.31143934287136316,
+      "queries": [
+        "magnitude 7.7 earthquake struck southern Panama October 9 2026 the Panama Canal",
+        "Panama Panama Canal October 9 2026 7.7",
+        "Panama Panama Canal struck"
+      ],
+      "explanation": "UNVERIFIED: only one relevant article refutes the claim; a single article cannot decide a verdict; top refuting: cbc.ca; 5 relevant neutral article(s) treated as no information.",
+      "latency_ms": 2515,
+      "wall_ms": 2515,
+      "evidence": [
+        {
+          "title": "Powerful 7.7 quake hits Panama, damages buildings",
+          "source_domain": "hurriyetdailynews.com",
+          "url": "https://www.hurriyetdailynews.com/powerful-7-7-quake-hits-panama-damages-buildings-227958",
+          "published_at": "2026-10-10T06:58:47Z",
+          "snippet": "A powerful 7.7-magnitude earthquake struck southern Panama on Oct.",
+          "similarity": 0.8673077370722329,
+          "credibility": 0.4,
+          "p_entail": 0.00206756591796875,
+          "p_neutral": 0.99658203125,
+          "p_contra": 0.0015249252319335938,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Panama rocked by 7.7 magnitude earthquake",
+          "source_domain": "israelnationalnews.com",
+          "url": "https://www.israelnationalnews.com/news/434384",
+          "published_at": "2026-10-10T18:37:02Z",
+          "snippet": "A powerful 7.7-magnitude earthquake struck Panama on Friday, October 9, causing widespread damage to buildings and infrastructure, injuring at least 27 people and prompting evacuations across the country.",
+          "similarity": 0.8088261574430062,
+          "credibility": 0.4,
+          "p_entail": 0.0035552978515625,
+          "p_neutral": 0.98046875,
+          "p_contra": 0.016204833984375,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Panama struck by magnitude 7.7 earthquake, U.S. Geological Survey says",
+          "source_domain": "freerepublic.com",
+          "url": "https://freerepublic.com/focus/f-news/4398607/posts",
+          "published_at": "2026-10-09T20:46:12Z",
+          "snippet": "Panama struck by magnitude 7.7 earthquake, U.S.",
+          "similarity": 0.8181978334647055,
+          "credibility": 0.4,
+          "p_entail": 0.00249481201171875,
+          "p_neutral": 0.99462890625,
+          "p_contra": 0.00298309326171875,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Strong earthquakes shake Panama, prompting tsunami alert",
+          "source_domain": "dw.com",
+          "url": "https://www.dw.com/en/strong-earthquakes-shake-panama-prompting-tsunami-alert/a-79623168",
+          "published_at": "2026-10-09T19:03:00Z",
+          "snippet": "A powerful magnitude-7.7 earthquake struck Panama on Friday morning.",
+          "similarity": 0.8018452589800895,
+          "credibility": 1.0,
+          "p_entail": 0.002658843994140625,
+          "p_neutral": 0.974609375,
+          "p_contra": 0.0228424072265625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Powerful 7.7 magnitude earthquake rocks Panama",
+          "source_domain": "cbc.ca",
+          "url": "https://www.cbc.ca/news/world/panama-earthquake-9.7376897",
+          "published_at": "2026-10-10T00:40:33Z",
+          "snippet": "A magnitude 7.7 earthquake struck southern Panama on Friday, damaging buildings and sending thousands into the streets, but the country appeared to escape widespread destruction or deaths.",
+          "similarity": 0.7785983571784079,
+          "credibility": 0.4,
+          "p_entail": 0.0012960433959960938,
+          "p_neutral": 0.14697265625,
+          "p_contra": 0.8515625,
+          "stance": "REFUTES"
+        },
+        {
+          "title": "Panama hit by strongest quake in 75 years, 7.7-magnitude tremor strikes",
+          "source_domain": "business-standard.com",
+          "url": "https://www.business-standard.com/world-news/panama-hit-by-strongest-quake-in-75-years-7-7-magnitude-tremor-strikes-126101000149_1.html",
+          "published_at": "2026-10-10T03:56:40Z",
+          "snippet": "The earthquake struck Herrera Province more than 193 km southwest of the Panama Canal, with a 6.6-magnitude aftershock and eight others of magnitude 4.8 or higher recorded People stand near cars damaged by falling debris after an earthquake struck near the southern coast of Panama, in Penonome, Panama, October 9, 2026 | REUTERS",
+          "similarity": 0.7703715842918537,
+          "credibility": 0.7,
+          "p_entail": 0.0037517547607421875,
+          "p_neutral": 0.88623046875,
+          "p_contra": 0.11004638671875,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: only one relevant article refutes the claim; a single article cannot decide a verdict; top refuting: cbc.ca; 5 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "23",
+      "claim": "Netflix will cut its subscription prices for every customer next week, according to an unnamed insider.",
+      "expected": "UNVERIFIED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "Netflix cut subscription prices customer next week according unnamed insider",
+        "Netflix next week",
+        "Netflix next week cut"
+      ],
+      "explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 4 relevant neutral article(s) treated as no information.",
+      "latency_ms": 4342,
+      "wall_ms": 4342,
+      "evidence": [
+        {
+          "title": "Netflix Jitters: Valid Concerns Or Market Overreaction? – “One Breakout Hit Could Shift Sentiment”",
+          "source_domain": "deadline.com",
+          "url": "http://deadline.com/2026/10/netflix-wall-sreet-jitters-concerns-or-market-overreaction-1237169580/",
+          "published_at": "2026-10-21T17:56:35Z",
+          "snippet": "Netflix Jitters: Valid Concerns Or Market Overreaction? – “One Breakout Hit Could Shift Sentiment”",
+          "similarity": 0.5312981949816817,
+          "credibility": 0.7,
+          "p_entail": 0.0012292861938476562,
+          "p_neutral": 0.990234375,
+          "p_contra": 0.00867462158203125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Lays Off 6 Percent of Staff",
+          "source_domain": "wsj.com",
+          "url": "https://www.wsj.com/business/media/netflix-eliminates-about-6-of-staff-in-biggest-cuts-since-2022-0a2d8ec3?st=NtEg5v&reflink=desktopwebshare_permalink",
+          "published_at": "2026-10-19T16:32:06Z",
+          "snippet": "Netflix Lays Off 6 Percent of Staff",
+          "similarity": 0.5455370017842518,
+          "credibility": 0.7,
+          "p_entail": 0.0008006095886230469,
+          "p_neutral": 0.99072265625,
+          "p_contra": 0.00824737548828125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix prepares layoffs affecting about 5% of staff ahead of Q3 results",
+          "source_domain": "thenextweb.com",
+          "url": "https://thenextweb.com/news/netflix-layoffs-5-percent-workforce",
+          "published_at": "2026-10-09T14:18:10Z",
+          "snippet": "Netflix is preparing to cut about 5% of its workforce, with an announcement possible as early as next week, Puck reported on Friday, citing people familiar with the plans.",
+          "similarity": 0.6050607303478989,
+          "credibility": 0.4,
+          "p_entail": 0.0015420913696289062,
+          "p_neutral": 0.9580078125,
+          "p_contra": 0.04034423828125,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Netflix Promises To ‘Do Better’",
+          "source_domain": "gizmodo.com",
+          "url": "https://gizmodo.com/netflix-promises-to-do-better-2000828357",
+          "published_at": "2026-10-21T01:25:04Z",
+          "snippet": "In its third-quarter earnings report release on Tuesday, streaming giant Netflix beat many expectations, but still delivered some unwanted news to investors: viewer metrics, especially in the United",
+          "similarity": 0.47615470840555274,
+          "credibility": 0.4,
+          "p_entail": 0.0005583763122558594,
+          "p_neutral": 0.99755859375,
+          "p_contra": 0.001712799072265625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "8 new Netflix shows you need to binge this weekend (October 15-18)",
+          "source_domain": "makeuseof.com",
+          "url": "https://www.makeuseof.com/8-new-netflix-shows-binge-weekend-october-15-18-diplomat-tyson/",
+          "published_at": "2026-10-15T13:30:16Z",
+          "snippet": "8 new Netflix shows you need to binge this weekend (October 15-18)",
+          "similarity": 0.5042531390826631,
+          "credibility": 0.4,
+          "p_entail": 0.0003371238708496094,
+          "p_neutral": 0.99853515625,
+          "p_contra": 0.0009160041809082031,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Coffee Break: Netflix Purges the C-Suite While Larry Ellison Goes Deep to Fund Skydance",
+          "source_domain": "nakedcapitalism.com",
+          "url": "https://www.nakedcapitalism.com/2026/10/netflix-purges-larry-ellison-skydance-paramount-wbd-debt-spacex.html",
+          "published_at": "2026-10-21T18:00:53Z",
+          "snippet": "Let’s start with Netflix.",
+          "similarity": 0.39855197611495574,
+          "credibility": 0.4,
+          "p_entail": 0.0005249977111816406,
+          "p_neutral": 0.99853515625,
+          "p_contra": 0.0008573532104492188,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 4 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "26",
+      "claim": "Bitcoin will trade above $250,000 before the end of 2027.",
+      "expected": "UNVERIFIED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "Bitcoin trade above $250 000 the end of 2027",
+        "Bitcoin end of 2027 above $250 000",
+        "Bitcoin end of 2027 trade"
+      ],
+      "explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 3 relevant neutral article(s) treated as no information.",
+      "latency_ms": 3651,
+      "wall_ms": 3651,
+      "evidence": [
+        {
+          "title": "Russia Will Soon Ban Peer-to-Peer Bitcoin Trading, Central Bank Confirms",
+          "source_domain": "decrypt.co",
+          "url": "https://decrypt.co/381079/russia-ban-peer-to-peer-bitcoin-trading",
+          "published_at": "2026-10-15T20:31:04Z",
+          "snippet": "Russians have until July 1, 2027 to buy and sell crypto directly with each other.",
+          "similarity": 0.6067055755087949,
+          "credibility": 0.4,
+          "p_entail": 0.0009527206420898438,
+          "p_neutral": 0.99658203125,
+          "p_contra": 0.00228118896484375,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Bitcoin in 2027: The Craziest Price Predictions from $100K to $1M",
+          "source_domain": "bitcoinfoundation.org",
+          "url": "https://bitcoinfoundation.org/news/bitcoin/bitcoin-price-2027/",
+          "published_at": "2026-10-07T13:33:28Z",
+          "snippet": "Bitcoin in 2027: The Craziest Price Predictions from $100K to $1M",
+          "similarity": 0.6999979272398276,
+          "credibility": 0.4,
+          "p_entail": 0.0452880859375,
+          "p_neutral": 0.83984375,
+          "p_contra": 0.1151123046875,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "Russia plans to ban direct peer-to-peer crypto trades from July 2027",
+          "source_domain": "cryptobriefing.com",
+          "url": "https://cryptobriefing.com/russia-ban-p2p-crypto-trades-july-2027/",
+          "published_at": "2026-10-15T14:28:51Z",
+          "snippet": "Russia plans to ban direct peer-to-peer crypto trades from July 2027",
+          "similarity": 0.5396294138839333,
+          "credibility": 0.4,
+          "p_entail": 0.002292633056640625,
+          "p_neutral": 0.98828125,
+          "p_contra": 0.00937652587890625,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "China’s P2P stablecoin wallets surge 43x, Korea’s $450B crypto economy: Asia Express",
+          "source_domain": "cointelegraph.com",
+          "url": "https://cointelegraph.com/magazine/chinas-p2p-stablecoin-wallets-surge-43x-koreas-450b-crypto-economy-asia-express",
+          "published_at": "2026-10-08T22:35:00Z",
+          "snippet": "South Korea’s crypto economy is worth now worth $450B despite exchange profits falling 78%.",
+          "similarity": 0.4953047040998013,
+          "credibility": 0.4,
+          "p_entail": 0.0007786750793457031,
+          "p_neutral": 0.998046875,
+          "p_contra": 0.0009522438049316406,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "France’s tax proposal would tax Bitcoin-to-USDC swaps before investors cash out",
+          "source_domain": "cryptoslate.com",
+          "url": "https://cryptoslate.com/frances-tax-proposal-would-make-bitcoin-to-usdc-swaps-taxable-before-cash-out/",
+          "published_at": "2026-10-12T15:20:19Z",
+          "snippet": "France’s tax proposal would tax Bitcoin-to-USDC swaps before investors cash out",
+          "similarity": 0.38962264408199354,
+          "credibility": 0.4,
+          "p_entail": 0.0010824203491210938,
+          "p_neutral": 0.998046875,
+          "p_contra": 0.0008821487426757812,
+          "stance": "NEUTRAL"
+        },
+        {
+          "title": "The SEC Just Broke the 2x Ceiling on Leveraged Crypto ETFs — and the First 3x Products Are One Form Away From Trading",
+          "source_domain": "forkast.news",
+          "url": "https://forkast.news/the-sec-just-broke-the-2x-ceiling-on-leveraged-crypto-etfs-and-the-first-3x-products-are-one-form-away-from-trading/",
+          "published_at": "2026-10-09T10:42:56Z",
+          "snippet": "On October 2, 2026, the SEC approved a Cboe BZX Exchange rule change that broke through a ceiling that has held for the entire history of US-listed crypto exchange-traded products: the 2x leverage cap.",
+          "similarity": 0.4018992373303538,
+          "credibility": 0.4,
+          "p_entail": 0.007656097412109375,
+          "p_neutral": 0.99072265625,
+          "p_contra": 0.001461029052734375,
+          "stance": "NEUTRAL"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: no relevant article supports or refutes the claim; neutral evidence is treated as no information; 3 relevant neutral article(s) treated as no information."
+    },
+    {
+      "row": "30",
+      "claim": "Several unnamed engineers at a major chip company are secretly planning to quit next month.",
+      "expected": "UNVERIFIED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "unnamed engineers major chip company secretly planning quit next month",
+        "next month",
+        "next month planning"
+      ],
+      "explanation": "UNVERIFIED: only 0 kept article(s); at least 2 are required.",
+      "latency_ms": 4524,
+      "wall_ms": 4524,
+      "evidence": [],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: only 0 kept article(s); at least 2 are required."
+    },
+    {
+      "row": "31",
+      "claim": "An anonymous source says a famous Bollywood actor will announce retirement next week.",
+      "expected": "UNVERIFIED",
+      "predicted": "UNVERIFIED",
+      "confidence": 0.0,
+      "support_score": 0.0,
+      "refute_score": 0.0,
+      "total_weight": 0.0,
+      "queries": [
+        "anonymous source says a famous Bollywood actor announce retirement next week",
+        "Bollywood next week",
+        "Bollywood next week says"
+      ],
+      "explanation": "UNVERIFIED: only 1 kept article(s); at least 2 are required.",
+      "latency_ms": 3120,
+      "wall_ms": 3120,
+      "evidence": [
+        {
+          "title": "Jailer 2 OTT release update: Rajinikanth’s film Hindi version to stream four weeks after theatrical debut? Here's what we know",
+          "source_domain": "economictimes.indiatimes.com",
+          "url": "https://economictimes.indiatimes.com/magazines/panache/jailer-2-ott-release-update-rajinikanths-film-hindi-version-to-stream-four-weeks-after-theatrical-debut-heres-what-we-know/articleshow/134883379.cms",
+          "published_at": "2026-10-12T06:10:41Z",
+          "snippet": "Superstar Rajinikanth is gearing up for his much-anticipated return in Jailer 2, with a theatrical release set for October 15, 2026.",
+          "similarity": 0.4025402282238672,
+          "credibility": 0.7,
+          "p_entail": 2.872943878173828e-05,
+          "p_neutral": 0.0004756450653076172,
+          "p_contra": 0.99951171875,
+          "stance": "REFUTES"
+        }
+      ],
+      "ablation_predicted": "UNVERIFIED",
+      "ablation_confidence": 0.0,
+      "ablation_explanation": "UNVERIFIED: only 1 kept article(s); at least 2 are required."
+    }
+  ],
+  "credibility_ablation": {
+    "description": "Evidence credibility set to 1.0; decision re-run with the same NLI probabilities.",
+    "metrics": {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4
+    },
+    "changed_count": 0,
+    "changed_claims": [],
+    "records": [
+      {
+        "claim": "South African human rights lawyer Navi Pillay won the 2026 Nobel Peace Prize.",
+        "expected": "SUPPORTED",
+        "real_tiers": "SUPPORTED",
+        "all_weights_one": "SUPPORTED",
+        "changed": false
+      },
+      {
+        "claim": "Canadian poet Anne Carson won the 2026 Nobel Prize in Literature.",
+        "expected": "SUPPORTED",
+        "real_tiers": "SUPPORTED",
+        "all_weights_one": "SUPPORTED",
+        "changed": false
+      },
+      {
+        "claim": "Netflix reported third-quarter 2026 revenue of $12.87 billion and earnings of 87 cents per share.",
+        "expected": "SUPPORTED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      },
+      {
+        "claim": "Manchester United beat Como 4-1 in a Champions League match on October 21, 2026.",
+        "expected": "REFUTED",
+        "real_tiers": "REFUTED",
+        "all_weights_one": "REFUTED",
+        "changed": false
+      },
+      {
+        "claim": "SpaceX launched a Dragon cargo spacecraft to the International Space Station from Vandenberg Space Force Base in California on October 13, 2026.",
+        "expected": "REFUTED",
+        "real_tiers": "REFUTED",
+        "all_weights_one": "REFUTED",
+        "changed": false
+      },
+      {
+        "claim": "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026, and the Panama Canal suspended all ship passage.",
+        "expected": "REFUTED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      },
+      {
+        "claim": "Netflix will cut its subscription prices for every customer next week, according to an unnamed insider.",
+        "expected": "UNVERIFIED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      },
+      {
+        "claim": "Bitcoin will trade above $250,000 before the end of 2027.",
+        "expected": "UNVERIFIED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      },
+      {
+        "claim": "Several unnamed engineers at a major chip company are secretly planning to quit next month.",
+        "expected": "UNVERIFIED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      },
+      {
+        "claim": "An anonymous source says a famous Bollywood actor will announce retirement next week.",
+        "expected": "UNVERIFIED",
+        "real_tiers": "UNVERIFIED",
+        "all_weights_one": "UNVERIFIED",
+        "changed": false
+      }
+    ]
+  }
+}
