@@ -114,6 +114,8 @@ Use `--split all` to run all 30 claims, or `--limit 5` for a short run.
 python -m pytest -q
 ```
 
+The test suite uses local fixtures and does not need `.cache/`.
+
 ### 7. Run the dev evaluation
 
 ```cmd
