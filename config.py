@@ -116,9 +116,9 @@ REQUEST_COUNT_PATH = CACHE_DIR / "request_count.json"
 # Ranking (Phase 4)
 # ---------------------------------------------------------------------------
 TOP_K = 6
-# PROVISIONAL: this came from the early Skerritt check, and that claim is in
-# split=test. Recalibrate later using only rows with split=dev in
-# tests/data/claims.csv. Never tune on split=test.
+# Checked on split=dev only at 0.25, 0.30, 0.35, 0.40 and 0.45. Accuracy stayed
+# 8/10, wrong-verdict rate 0/6, and coverage 4/6, so 0.35 stays. Never tune on
+# split=test.
 MIN_SIMILARITY = 0.35
 SNIPPET_MAX_CHARS = 400
 RECENCY_FULL_CREDIT_DAYS = 3

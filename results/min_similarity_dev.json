@@ -1,0 +1,265 @@
+{
+  "split": "dev",
+  "generated_at": "2026-10-28T05:14:13.134782+00:00",
+  "cache_only": true,
+  "thresholds": [
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45
+  ],
+  "default_threshold": 0.35,
+  "results": [
+    {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4,
+      "mean_latency_ms": 6213,
+      "max_latency_ms": 15146,
+      "threshold": 0.25
+    },
+    {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4,
+      "mean_latency_ms": 4426,
+      "max_latency_ms": 6756,
+      "threshold": 0.3
+    },
+    {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4,
+      "mean_latency_ms": 4026,
+      "max_latency_ms": 5769,
+      "threshold": 0.35
+    },
+    {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4,
+      "mean_latency_ms": 4515,
+      "max_latency_ms": 6405,
+      "threshold": 0.4
+    },
+    {
+      "total": 10,
+      "correct": 8,
+      "exact_accuracy": 0.8,
+      "per_class": {
+        "SUPPORTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "REFUTED": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "support": 3,
+          "predicted": 2
+        },
+        "UNVERIFIED": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 6
+        }
+      },
+      "confusion_matrix": {
+        "SUPPORTED": {
+          "SUPPORTED": 2,
+          "REFUTED": 0,
+          "UNVERIFIED": 1
+        },
+        "REFUTED": {
+          "SUPPORTED": 0,
+          "REFUTED": 2,
+          "UNVERIFIED": 1
+        },
+        "UNVERIFIED": {
+          "SUPPORTED": 0,
+          "REFUTED": 0,
+          "UNVERIFIED": 4
+        }
+      },
+      "wrong_verdict_rate": 0.0,
+      "wrong_verdict_flips": 0,
+      "directional_gold": 6,
+      "coverage": 0.6666666666666666,
+      "committed_directional": 4,
+      "mean_latency_ms": 4721,
+      "max_latency_ms": 6891,
+      "threshold": 0.45
+    }
+  ]
+}

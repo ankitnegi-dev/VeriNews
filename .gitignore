@@ -25,6 +25,7 @@ models/
 
 # Local study notes (never commit or push)
 notes/
+docs/
 
 # Model weight files if they appear elsewhere
 *.bin
