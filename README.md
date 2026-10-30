@@ -243,3 +243,10 @@ HTTP 422. A valid request returns HTTP 200 with a verdict, including
 - Cache-only mode replays stored evidence. It cannot detect stories that are
   newer than the cache.
 - VeriNews is a prototype, not a replacement for human fact-checking.
+
+Author:
+Ankit Negi
+
+GithuB:https://github.com/ankitnegi-dev
+
+PortfoliO:https://ankit-negi.is-a.dev
