@@ -3,25 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VeriNews | Evidence before verdict</title>
-  <meta name="description" content="Check a news claim against retrieved evidence, source credibility, and a safety-gated decision engine.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314272c'/%3E%3Cpath d='M8 9h16v3H8zm0 6h11v3H8zm0 6h8v3H8z' fill='%23e8eeec'/%3E%3C/svg%3E">
+  <title>VeriNews</title>
+  <meta name="description" content="Check a news claim against retrieved evidence and source credibility.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232f5d5a'/%3E%3Cpath d='M8 9h16v3H8zm0 6h11v3H8zm0 6h8v3H8z' fill='%23ffffff'/%3E%3C/svg%3E">
   <style>
     :root {
-      --paper: #e8eeec;
-      --panel: #f7f9f7;
-      --ink: #14272c;
-      --ink-soft: #40575b;
-      --muted: #5b6d70;
-      --line: #b9c8c5;
-      --line-soft: #d5dfdc;
-      --accent: #1f5f6b;
-      --support: #2f6b4f;
-      --refute: #a33c32;
-      --unverified: #756545;
-      --shadow: 0 1px 0 rgba(20, 39, 44, 0.05);
-      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-      --sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --bg: #f3f5f4;
+      --surface: #ffffff;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #d7dde3;
+      --accent: #2f5d5a;
+      --support: #1f7a4d;
+      --refute: #b42318;
+      --unverified: #8a6a1f;
+      --neutral: #6b7280;
+      --radius: 4px;
+      --space: 8px;
     }
 
     *,
@@ -35,15 +33,15 @@
     }
 
     html {
-      background: var(--paper);
+      background: var(--bg);
     }
 
     body {
       margin: 0;
-      background: var(--paper);
+      background: var(--bg);
       color: var(--ink);
-      font-family: var(--sans);
-      font-size: 16px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
     }
@@ -60,109 +58,72 @@
 
     :focus-visible {
       outline: 2px solid var(--accent);
-      outline-offset: 3px;
+      outline-offset: 2px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .page {
-      width: min(1120px, 100%);
+      width: min(960px, 100%);
       margin: 0 auto;
-      padding: 28px 24px 40px;
+      padding: calc(var(--space) * 2) var(--space) calc(var(--space) * 4);
     }
 
-    .masthead {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .wordmark {
-      color: var(--ink);
-      font-family: var(--serif);
-      font-size: 1.75rem;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1;
-      text-decoration: none;
-    }
-
-    .masthead-right {
+    .topbar {
       display: flex;
       align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space);
+      padding-bottom: var(--space);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: calc(var(--space) * 2);
     }
 
-    .tagline {
-      color: var(--muted);
-      font-size: 0.82rem;
-      letter-spacing: 0.01em;
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
-    .mode-badge {
+    .badge {
       border: 1px solid var(--line);
-      background: var(--panel);
+      background: var(--surface);
       color: var(--muted);
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 600;
       line-height: 1;
-      padding: 7px 9px;
-      box-shadow: var(--shadow);
+      padding: 6px 8px;
+      border-radius: var(--radius);
     }
 
-    .intro {
-      max-width: 780px;
-      margin: 54px 0 34px;
-    }
-
-    .intro h1 {
-      margin: 0;
-      font-family: var(--serif);
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 500;
-      letter-spacing: -0.045em;
-      line-height: 0.98;
-      text-wrap: balance;
-    }
-
-    .lede {
-      max-width: 64ch;
-      margin: 20px 0 0;
-      color: var(--muted);
-      font-size: 1.04rem;
-      line-height: 1.65;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
-      gap: 34px;
-      align-items: start;
-    }
-
-    .desk {
-      background: var(--panel);
+    .claim-box {
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-top: 4px solid var(--ink);
-      padding: 24px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: calc(var(--space) * 2);
     }
 
     .field-head {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 9px;
+      gap: var(--space);
+      margin-bottom: var(--space);
     }
 
     .field-head label {
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
+      font-size: 0.875rem;
+      font-weight: 600;
     }
 
     .char-count {
@@ -174,53 +135,47 @@
     textarea {
       display: block;
       width: 100%;
-      min-height: 168px;
+      min-height: 96px;
       resize: vertical;
       border: 1px solid var(--line);
-      border-radius: 0;
-      background: var(--paper);
+      border-radius: var(--radius);
+      background: var(--bg);
       color: var(--ink);
-      padding: 15px 16px;
-      line-height: 1.65;
-      transition: border-color 140ms ease, background-color 140ms ease;
-    }
-
-    textarea::placeholder {
-      color: #7d8c8d;
+      padding: 10px 12px;
+      line-height: 1.5;
     }
 
     textarea:focus {
       border-color: var(--accent);
-      background: #fbfcfb;
+      background: var(--surface);
     }
 
     .form-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: var(--space);
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: var(--space);
     }
 
     .verify-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      min-height: 44px;
-      border: 1px solid var(--ink);
-      border-radius: 2px;
-      background: var(--ink);
-      color: var(--panel);
-      padding: 10px 18px;
-      font-weight: 700;
+      gap: 6px;
+      min-height: 40px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #ffffff;
+      padding: 8px 14px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 140ms ease, border-color 140ms ease;
     }
 
     .verify-button:hover:not(:disabled) {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: #244a47;
+      border-color: #244a47;
     }
 
     .verify-button:disabled {
@@ -230,10 +185,10 @@
 
     .spinner {
       display: none;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(247, 249, 247, 0.36);
-      border-top-color: var(--panel);
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #ffffff;
       border-radius: 50%;
       animation: spin 800ms linear infinite;
     }
@@ -242,40 +197,37 @@
       display: block;
     }
 
-    .form-hint {
+    .form-status {
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.8125rem;
     }
 
     .examples {
-      margin-top: 22px;
-      padding-top: 16px;
-      border-top: 1px solid var(--line-soft);
+      margin-top: var(--space);
     }
 
     .examples-label {
       display: block;
-      margin-bottom: 9px;
+      margin-bottom: 6px;
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
     }
 
     .example-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .example {
       border: 1px solid var(--line);
-      border-radius: 2px;
-      background: transparent;
-      color: var(--ink-soft);
-      padding: 6px 9px;
-      font-size: 0.78rem;
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 6px 10px;
+      font-size: 0.8125rem;
       cursor: pointer;
-      transition: border-color 140ms ease, color 140ms ease;
     }
 
     .example:hover {
@@ -283,344 +235,293 @@
       color: var(--accent);
     }
 
-    .method {
-      border-left: 1px solid var(--line);
-      padding-left: 26px;
+    .error-message {
+      margin-top: var(--space);
+      color: var(--refute);
+      font-size: 0.875rem;
     }
 
-    .method h2 {
-      margin: 0 0 18px;
-      font-family: var(--serif);
-      font-size: 1.55rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    .method-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: method-step;
-    }
-
-    .method-list li {
-      display: grid;
-      grid-template-columns: 26px minmax(0, 1fr);
-      gap: 11px;
-      margin-bottom: 18px;
-      counter-increment: method-step;
-    }
-
-    .method-list li::before {
-      content: counter(method-step);
-      width: 26px;
-      height: 26px;
+    .verdict {
+      margin-top: calc(var(--space) * 2);
       border: 1px solid var(--line);
-      color: var(--accent);
-      font-size: 0.75rem;
-      font-weight: 700;
-      line-height: 24px;
-      text-align: center;
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: calc(var(--space) * 2);
     }
 
-    .method-list strong {
-      display: block;
-      margin-bottom: 3px;
-      font-size: 0.9rem;
+    .verdict.supported {
+      border-color: var(--support);
     }
 
-    .method-list span {
-      display: block;
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.55;
+    .verdict.refuted {
+      border-color: var(--refute);
     }
 
-    .method-note {
-      margin: 22px 0 0;
-      padding-top: 16px;
-      border-top: 1px solid var(--line-soft);
-      color: var(--muted);
-      font-size: 0.84rem;
-      line-height: 1.6;
-    }
-
-    .loading-panel {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-top: 28px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      padding: 16px 18px;
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-    }
-
-    .loading-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      animation: pulse 900ms ease-in-out infinite alternate;
-    }
-
-    .error-panel {
-      margin-top: 28px;
-      border: 1px solid var(--line);
-      border-left: 5px solid var(--refute);
-      background: var(--panel);
-      padding: 16px 18px;
-    }
-
-    .error-panel p {
-      margin: 0;
-      color: var(--ink);
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-
-    .result {
-      margin-top: 32px;
-      animation: reveal 340ms ease both;
-    }
-
-    .verdict-panel {
-      --verdict-color: var(--line);
-      border: 1px solid var(--line);
-      border-left: 8px solid var(--verdict-color);
-      border-radius: 2px;
-      background: var(--panel);
-      padding: 26px 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .verdict-panel.supported {
-      --verdict-color: var(--support);
-    }
-
-    .verdict-panel.refuted {
-      --verdict-color: var(--refute);
-    }
-
-    .verdict-panel.unverified {
-      --verdict-color: var(--unverified);
+    .verdict.unverified {
+      border-color: var(--unverified);
     }
 
     .verdict-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
-    .verdict-badge {
+    .verdict-icon {
       display: inline-flex;
-      align-items: center;
-      border: 1px solid var(--verdict-color);
-      color: var(--verdict-color);
-      padding: 5px 9px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      line-height: 1.25;
-    }
-
-    .result-meta {
+      width: 20px;
+      height: 20px;
       color: var(--muted);
-      font-size: 0.76rem;
-      font-variant-numeric: tabular-nums;
     }
 
-    .verdict-title {
-      margin: 18px 0 8px;
-      font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 500;
-      letter-spacing: -0.035em;
-      line-height: 1.04;
-      text-wrap: balance;
+    .verdict.supported .verdict-icon {
+      color: var(--support);
     }
 
-    .verdict-explanation {
-      max-width: 74ch;
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-      line-height: 1.65;
+    .verdict.refuted .verdict-icon {
+      color: var(--refute);
     }
 
-    .confidence {
-      max-width: 430px;
-      margin-top: 24px;
+    .verdict.unverified .verdict-icon {
+      color: var(--unverified);
     }
 
-    .confidence-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .confidence-track {
-      height: 8px;
-      border: 1px solid var(--line);
-      background: var(--paper);
-      overflow: hidden;
-    }
-
-    .confidence-track span {
-      display: block;
-      width: 0;
-      height: 100%;
-      background: var(--verdict-color);
-      transition: width 520ms ease;
-    }
-
-    .evidence-section {
-      margin-top: 36px;
-    }
-
-    .evidence-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 16px;
-    }
-
-    .evidence-head h2 {
-      margin: 0;
-      font-family: var(--serif);
-      font-size: 1.5rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    .evidence-head span {
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .evidence-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .evidence-card {
-      --stance-color: var(--line);
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--stance-color);
-      background: var(--panel);
-      padding: 17px 19px;
-      box-shadow: var(--shadow);
-    }
-
-    .evidence-card.supports {
-      --stance-color: var(--support);
-    }
-
-    .evidence-card.refutes {
-      --stance-color: var(--refute);
-    }
-
-    .evidence-card.neutral {
-      --stance-color: var(--unverified);
-    }
-
-    .evidence-top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .evidence-title {
-      min-width: 0;
-      margin: 0;
+    .verdict-label {
       font-size: 1rem;
-      font-weight: 650;
-      line-height: 1.35;
+      font-weight: 700;
     }
 
-    .evidence-title a {
+    .verdict.supported .verdict-label {
+      color: var(--support);
+    }
+
+    .verdict.refuted .verdict-label {
+      color: var(--refute);
+    }
+
+    .verdict.unverified .verdict-label {
+      color: var(--unverified);
+    }
+
+    .verdict-reason {
+      margin: 0 0 var(--space);
       color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
+      font-size: 0.875rem;
+      line-height: 1.5;
     }
 
-    .evidence-title a:hover {
-      border-bottom-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .evidence-domain {
-      flex: 0 0 auto;
-      color: var(--muted);
-      font-size: 0.75rem;
-    }
-
-    .evidence-meta {
+    .stats {
       display: flex;
       flex-wrap: wrap;
-      gap: 0;
-      margin-top: 8px;
+      gap: 6px 14px;
+      margin-bottom: var(--space);
       color: var(--muted);
       font-size: 0.75rem;
       font-variant-numeric: tabular-nums;
     }
 
-    .meta-item {
-      padding-right: 11px;
-    }
-
-    .meta-item + .meta-item {
-      border-left: 1px solid var(--line-soft);
-      padding-left: 11px;
-    }
-
-    .meta-item strong {
-      color: var(--ink-soft);
+    .stats strong {
+      color: var(--ink);
       font-weight: 600;
     }
 
-    .stance {
-      color: var(--stance-color);
+    .weight-bar {
+      display: flex;
+      height: 6px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .weight-bar span {
+      display: block;
+      height: 100%;
+    }
+
+    .weight-support {
+      background: var(--support);
+    }
+
+    .weight-refute {
+      background: var(--refute);
+    }
+
+    .evidence {
+      margin-top: calc(var(--space) * 2);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space);
+      margin-bottom: 6px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 0.9375rem;
       font-weight: 700;
     }
 
+    .section-head span {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+
+    th,
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      background: var(--bg);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr.neutral {
+      color: var(--muted);
+    }
+
+    .source-cell {
+      min-width: 120px;
+    }
+
+    .source-domain {
+      display: block;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    tbody tr.neutral .source-domain {
+      color: var(--muted);
+    }
+
+    .source-tier {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .headline-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .headline-link:hover {
+      text-decoration: underline;
+    }
+
     .snippet {
-      max-width: 82ch;
-      margin: 11px 0 0;
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-      line-height: 1.6;
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.45;
+    }
+
+    tbody tr.neutral .headline-link {
+      color: var(--muted);
+    }
+
+    .relevance {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .chip {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .chip.supports {
+      color: var(--support);
+      border-color: var(--support);
+    }
+
+    .chip.refutes {
+      color: var(--refute);
+      border-color: var(--refute);
+    }
+
+    .chip.neutral {
+      color: var(--neutral);
+      border-color: var(--neutral);
     }
 
     .empty-evidence {
-      border: 1px dashed var(--line);
-      padding: 20px;
+      margin-top: var(--space);
       color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.6;
+      font-size: 0.875rem;
+    }
+
+    .how {
+      margin-top: calc(var(--space) * 2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 10px 12px;
+    }
+
+    .how summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .how ol {
+      margin: var(--space) 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .how li {
+      margin-bottom: 4px;
     }
 
     .footer {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      gap: 16px;
+      gap: var(--space);
       flex-wrap: wrap;
-      margin-top: 64px;
-      padding-top: 16px;
+      margin-top: calc(var(--space) * 4);
+      padding-top: var(--space);
       border-top: 1px solid var(--line);
       color: var(--muted);
-      font-size: 0.76rem;
+      font-size: 0.75rem;
     }
 
     @keyframes spin {
@@ -629,92 +530,26 @@
       }
     }
 
-    @keyframes pulse {
-      from {
-        opacity: 0.35;
-        transform: scale(0.85);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 860px) {
-      .page {
-        padding: 22px 18px 32px;
-      }
-
-      .intro {
-        margin: 38px 0 26px;
-      }
-
-      .workspace {
-        grid-template-columns: 1fr;
-        gap: 26px;
-      }
-
-      .method {
-        border-left: 0;
-        border-top: 1px solid var(--line);
-        padding-left: 0;
-        padding-top: 24px;
-      }
-
-      .verdict-panel {
-        padding: 22px 20px;
-      }
-
-      .evidence-top {
-        display: block;
-      }
-
-      .evidence-domain {
-        display: block;
-        margin-top: 5px;
-      }
-    }
-
     @media (max-width: 520px) {
-      .masthead-right {
-        gap: 8px;
+      .page {
+        padding: 12px 12px 24px;
       }
 
-      .tagline {
-        display: none;
-      }
-
-      .desk {
-        padding: 18px;
-      }
-
-      .intro h1 {
-        font-size: clamp(2.2rem, 12vw, 3.1rem);
+      .claim-box {
+        padding: 12px;
       }
 
       .form-actions {
-        align-items: flex-start;
         flex-direction: column;
-        gap: 10px;
+        align-items: stretch;
       }
 
       .verify-button {
         width: 100%;
       }
 
-      .verdict-title {
-        font-size: 2rem;
+      .stats {
+        gap: 4px 10px;
       }
     }
 
@@ -732,114 +567,94 @@
 </head>
 <body>
   <div class="page">
-    <header class="masthead">
-      <a class="wordmark" href="/">VeriNews</a>
-      <div class="masthead-right">
-        <span class="mode-badge" id="mode-badge" hidden></span>
-        <span class="tagline">Evidence before verdict.</span>
-      </div>
+    <header class="topbar">
+      <span class="brand">VeriNews</span>
+      <span class="badge" id="mode-badge" hidden>Offline demo</span>
     </header>
 
     <main>
-      <section class="intro" aria-labelledby="page-title">
-        <h1 id="page-title">Check a claim against the news.</h1>
-        <p class="lede">Paste a claim. We retrieve recent coverage, compare each article with the claim, and show what the evidence actually supports.</p>
-      </section>
-
-      <div class="workspace">
-        <section class="desk" aria-labelledby="claim-label">
-          <form id="verify-form" novalidate>
-            <div class="field-head">
-              <label for="claim" id="claim-label">The claim</label>
-              <span class="char-count" id="char-count">0 / 500</span>
-            </div>
-            <textarea id="claim" name="claim" maxlength="500" rows="5" placeholder="e.g. The Reserve Bank of India raised its repo rate to 5.50 percent on October 7, 2026." required></textarea>
-            <div class="form-actions">
-              <button class="verify-button" id="verify-button" type="submit">
-                <span class="button-label">Verify claim</span>
-                <span class="spinner" aria-hidden="true"></span>
-              </button>
-              <span class="form-hint">Up to 500 characters.</span>
-            </div>
-          </form>
-
-          <div class="examples" aria-label="Cached example claims">
-            <span class="examples-label">Try a cached example</span>
-            <div class="example-list">
-              <button type="button" class="example" data-claim="South African human rights lawyer Navi Pillay won the 2026 Nobel Peace Prize.">Nobel Peace Prize</button>
-              <button type="button" class="example" data-claim="Manchester United beat Como 4-1 in a Champions League match on October 21, 2026.">Man Utd result</button>
-              <button type="button" class="example" data-claim="An anonymous source says a famous Bollywood actor will announce retirement next week.">Bollywood rumor</button>
-            </div>
+      <section class="claim-box" aria-labelledby="claim-label">
+        <form id="verify-form" novalidate>
+          <div class="field-head">
+            <label for="claim" id="claim-label">Claim</label>
+            <span class="char-count" id="char-count">0 / 500</span>
           </div>
-        </section>
-
-        <aside class="method" aria-labelledby="method-title">
-          <h2 id="method-title">How this works</h2>
-          <ol class="method-list">
-            <li>
-              <div>
-                <strong>Find coverage</strong>
-                <span>Search cached or live news for the claim's key people, places, and numbers.</span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <strong>Weigh the evidence</strong>
-                <span>Rank relevance and source credibility, then ask whether each article supports, refutes, or stays neutral.</span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <strong>Refuse a guess</strong>
-                <span>Two relevant sources must agree before a verdict. Otherwise the result is "Not enough evidence."</span>
-              </div>
-            </li>
-          </ol>
-          <p class="method-note">Neutral coverage is no information. A single article never decides a verdict.</p>
-        </aside>
-      </div>
-
-      <section class="loading-panel" id="loading-panel" hidden aria-live="polite">
-        <span class="loading-dot" aria-hidden="true"></span>
-        <span>Checking the evidence...</span>
-      </section>
-
-      <section class="error-panel" id="error-panel" hidden role="alert">
-        <p id="error-message"></p>
-      </section>
-
-      <section class="result" id="result" hidden aria-live="polite" tabindex="-1">
-        <div class="verdict-panel" id="verdict-panel">
-          <div class="verdict-head">
-            <span class="verdict-badge" id="verdict-badge"></span>
-            <span class="result-meta" id="result-meta"></span>
+          <textarea id="claim" name="claim" maxlength="500" rows="4" placeholder="Paste a claim to verify." required></textarea>
+          <div class="form-actions">
+            <button class="verify-button" id="verify-button" type="submit">
+              <span class="button-label">Verify claim</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+            <span class="form-status" id="form-status"></span>
           </div>
-          <h2 class="verdict-title" id="verdict-title"></h2>
-          <p class="verdict-explanation" id="verdict-explanation"></p>
-          <div class="confidence">
-            <div class="confidence-head">
-              <span>Confidence</span>
-              <span id="confidence-value">0%</span>
-            </div>
-            <div class="confidence-track" id="confidence-track" role="progressbar" aria-label="Verdict confidence" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-              <span id="confidence-bar"></span>
-            </div>
+        </form>
+
+        <div class="examples" aria-label="Cached example claims">
+          <span class="examples-label">Try a cached example</span>
+          <div class="example-list">
+            <button type="button" class="example" data-claim="South African human rights lawyer Navi Pillay won the 2026 Nobel Peace Prize.">Nobel Peace Prize</button>
+            <button type="button" class="example" data-claim="Manchester United beat Como 4-1 in a Champions League match on October 21, 2026.">Man Utd result</button>
+            <button type="button" class="example" data-claim="An anonymous source says a famous Bollywood actor will announce retirement next week.">Bollywood rumor</button>
           </div>
         </div>
 
-        <div class="evidence-section">
-          <div class="evidence-head">
-            <h2>Evidence considered</h2>
-            <span id="evidence-count"></span>
-          </div>
-          <div class="evidence-list" id="evidence-list"></div>
+        <p class="error-message" id="error-message" hidden></p>
+      </section>
+
+      <section class="verdict" id="verdict" hidden aria-live="polite" tabindex="-1">
+        <div class="verdict-head">
+          <span class="verdict-icon" id="verdict-icon" aria-hidden="true"></span>
+          <span class="verdict-label" id="verdict-label"></span>
+        </div>
+        <p class="verdict-reason" id="verdict-reason"></p>
+        <div class="stats" id="stats">
+          <span><strong>Sources kept</strong> <span id="stat-sources"></span></span>
+          <span><strong>Support weight</strong> <span id="stat-support"></span></span>
+          <span><strong>Refute weight</strong> <span id="stat-refute"></span></span>
+          <span><strong>Confidence</strong> <span id="stat-confidence"></span></span>
+          <span><strong>Latency</strong> <span id="stat-latency"></span></span>
+        </div>
+        <div class="weight-bar" id="weight-bar" role="img" aria-label="Support weight versus refute weight">
+          <span class="weight-support" id="weight-support"></span>
+          <span class="weight-refute" id="weight-refute"></span>
         </div>
       </section>
+
+      <section class="evidence" id="evidence" hidden aria-live="polite">
+        <div class="section-head">
+          <h2>Evidence</h2>
+          <span id="evidence-count"></span>
+        </div>
+        <div class="table-wrap" id="table-wrap">
+          <table>
+            <caption class="sr-only">Evidence considered</caption>
+            <thead>
+              <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Headline</th>
+                <th scope="col">Relevance</th>
+                <th scope="col">Stance</th>
+              </tr>
+            </thead>
+            <tbody id="evidence-body"></tbody>
+          </table>
+        </div>
+        <p class="empty-evidence" id="empty-evidence" hidden>No evidence passed the retrieval gates.</p>
+      </section>
+
+      <details class="how">
+        <summary>How it works</summary>
+        <ol>
+          <li>Find coverage: search cached or live news for the claim's key people, places, and numbers.</li>
+          <li>Weigh evidence: rank relevance and source credibility, then score each article as supports, refutes, or neutral.</li>
+          <li>Refuse a guess: at least two relevant articles must agree before a verdict.</li>
+        </ol>
+      </details>
     </main>
 
     <footer class="footer">
-      <span>VeriNews</span>
-      <span>Retrieval, ranking, NLI, credibility, decision.</span>
+      <span id="footer-mode">Offline mode</span>
+      <span>v1.1-ui</span>
     </footer>
   </div>
 
@@ -850,39 +665,32 @@
       const charCount = document.getElementById("char-count");
       const verifyButton = document.getElementById("verify-button");
       const buttonLabel = verifyButton.querySelector(".button-label");
-      const loadingPanel = document.getElementById("loading-panel");
-      const errorPanel = document.getElementById("error-panel");
+      const formStatus = document.getElementById("form-status");
       const errorMessage = document.getElementById("error-message");
-      const result = document.getElementById("result");
-      const verdictPanel = document.getElementById("verdict-panel");
-      const verdictBadge = document.getElementById("verdict-badge");
-      const verdictTitle = document.getElementById("verdict-title");
-      const verdictExplanation = document.getElementById("verdict-explanation");
-      const resultMeta = document.getElementById("result-meta");
-      const confidenceValue = document.getElementById("confidence-value");
-      const confidenceTrack = document.getElementById("confidence-track");
-      const confidenceBar = document.getElementById("confidence-bar");
+      const verdict = document.getElementById("verdict");
+      const verdictIcon = document.getElementById("verdict-icon");
+      const verdictLabel = document.getElementById("verdict-label");
+      const verdictReason = document.getElementById("verdict-reason");
+      const statSources = document.getElementById("stat-sources");
+      const statSupport = document.getElementById("stat-support");
+      const statRefute = document.getElementById("stat-refute");
+      const statConfidence = document.getElementById("stat-confidence");
+      const statLatency = document.getElementById("stat-latency");
+      const weightSupport = document.getElementById("weight-support");
+      const weightRefute = document.getElementById("weight-refute");
+      const evidence = document.getElementById("evidence");
       const evidenceCount = document.getElementById("evidence-count");
-      const evidenceList = document.getElementById("evidence-list");
+      const tableWrap = document.getElementById("table-wrap");
+      const evidenceBody = document.getElementById("evidence-body");
+      const emptyEvidence = document.getElementById("empty-evidence");
       const modeBadge = document.getElementById("mode-badge");
+      const footerMode = document.getElementById("footer-mode");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const VERDICTS = {
-        SUPPORTED: {
-          badge: "Supported",
-          title: "The evidence supports this claim.",
-          className: "supported"
-        },
-        REFUTED: {
-          badge: "Refuted",
-          title: "The evidence refutes this claim.",
-          className: "refuted"
-        },
-        UNVERIFIED: {
-          badge: "Not enough evidence",
-          title: "There is not enough evidence to decide.",
-          className: "unverified"
-        }
+        SUPPORTED: { label: "Supported", className: "supported", icon: "check" },
+        REFUTED: { label: "Refuted", className: "refuted", icon: "cross" },
+        UNVERIFIED: { label: "Not enough evidence", className: "unverified", icon: "alert" }
       };
 
       const STANCES = {
@@ -890,6 +698,33 @@
         REFUTES: { label: "Refutes", className: "refutes" },
         NEUTRAL: { label: "Neutral", className: "neutral" }
       };
+
+      function svgIcon(name) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 20 20");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "2");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        if (name === "check") {
+          path.setAttribute("d", "M4 10.5 8 14.5 16 6.5");
+        } else if (name === "cross") {
+          path.setAttribute("d", "M6 6 14 14M14 6 6 14");
+        } else {
+          path.setAttribute("d", "M10 7v4M10 14h.01");
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("cx", "10");
+          circle.setAttribute("cy", "10");
+          circle.setAttribute("r", "8");
+          svg.appendChild(circle);
+        }
+        svg.appendChild(path);
+        return svg;
+      }
 
       function updateCount() {
         charCount.textContent = `${claimInput.value.length} / 500`;
@@ -899,19 +734,21 @@
         form.setAttribute("aria-busy", String(isLoading));
         verifyButton.disabled = isLoading;
         verifyButton.classList.toggle("is-loading", isLoading);
-        buttonLabel.textContent = isLoading ? "Checking evidence..." : "Verify claim";
-        loadingPanel.hidden = !isLoading;
+        buttonLabel.textContent = isLoading ? "Checking..." : "Verify claim";
+        formStatus.textContent = isLoading ? "Checking evidence..." : "";
         if (isLoading) {
-          errorPanel.hidden = true;
-          result.hidden = true;
+          errorMessage.hidden = true;
+          verdict.hidden = true;
+          evidence.hidden = true;
         }
       }
 
       function showError(message) {
         errorMessage.textContent = message;
-        errorPanel.hidden = false;
-        result.hidden = true;
-        loadingPanel.hidden = true;
+        errorMessage.hidden = false;
+        verdict.hidden = true;
+        evidence.hidden = true;
+        formStatus.textContent = "";
       }
 
       function cleanExplanation(text) {
@@ -923,92 +760,158 @@
         return first === first.toUpperCase() ? cleaned : first.toUpperCase() + cleaned.slice(1);
       }
 
-      function metaItem(label, value, className) {
-        const item = document.createElement("span");
-        item.className = "meta-item";
-        const strong = document.createElement("strong");
-        strong.textContent = `${label}: `;
-        item.appendChild(strong);
-        const text = document.createElement("span");
-        text.textContent = value;
-        if (className) {
-          text.className = className;
+      function plainReason(text) {
+        const raw = String(text || "").replace(/^UNVERIFIED:\s*/, "");
+        const neutralMatch = raw.match(/(\d+)\s+relevant neutral article/);
+        const neutralCount = neutralMatch ? Number(neutralMatch[1]) : 0;
+
+        let reason = raw;
+        const keptMatch = raw.match(/only (\d+) kept article/);
+        const singleSupport = /only one relevant article supports/.test(raw);
+        const singleRefute = /only one relevant article refutes/.test(raw);
+        const supportRefuteMatch = raw.match(/only (\d+) relevant article\(s\) support and (\d+) refute/);
+
+        if (keptMatch) {
+          const count = Number(keptMatch[1]);
+          reason = `${count} relevant article${count === 1 ? "" : "s"} found, 2 needed.`;
+        } else if (/none of the .* reaches the relevance gate/.test(raw)) {
+          reason = "No article is relevant enough to decide.";
+        } else if (/no relevant article supports or refutes/.test(raw)) {
+          reason = "No article supports or refutes the claim.";
+        } else if (singleSupport) {
+          reason = "Only one article supports the claim; 2 are needed.";
+        } else if (singleRefute) {
+          reason = "Only one article refutes the claim; 2 are needed.";
+        } else if (supportRefuteMatch) {
+          reason = `Only ${supportRefuteMatch[1]} supporting and ${supportRefuteMatch[2]} refuting articles; 2 are needed on one side.`;
+        } else if (/weighted relevant evidence is too low/.test(raw)) {
+          reason = "Weighted evidence is too low to decide.";
+        } else if (/evidence is too evenly split/.test(raw)) {
+          reason = "Evidence is too evenly split to decide.";
+        } else if (/no side clears the decision margin/.test(raw)) {
+          reason = "No side clears the decision margin.";
         }
-        item.appendChild(text);
-        return item;
+
+        if (neutralCount > 0 && !/neutral/i.test(reason)) {
+          reason += ` ${neutralCount} neutral article${neutralCount === 1 ? "" : "s"} treated as no information.`;
+        }
+
+        const first = reason.charAt(0);
+        return first === first.toUpperCase() ? reason : first.toUpperCase() + reason.slice(1);
+      }
+
+      function credibilityTier(score) {
+        const value = Number(score);
+        if (value >= 0.95) return "High";
+        if (value >= 0.65) return "Medium";
+        if (value >= 0.35) return "Low";
+        return "Blocked";
+      }
+
+      function stanceProbability(item, stance) {
+        if (stance === "SUPPORTS") return item.p_entail;
+        if (stance === "REFUTES") return item.p_contra;
+        return item.p_neutral;
       }
 
       function renderEvidence(items) {
-        evidenceList.replaceChildren();
-        evidenceCount.textContent = `${items.length} source${items.length === 1 ? "" : "s"}`;
+        const sorted = [...items].sort((a, b) => Number(b.similarity) - Number(a.similarity));
+        evidenceBody.replaceChildren();
 
-        if (!items.length) {
-          const empty = document.createElement("p");
-          empty.className = "empty-evidence";
-          empty.textContent = "No article passed the evidence gates. Try a more specific claim, or check that its coverage is cached.";
-          evidenceList.appendChild(empty);
+        if (!sorted.length) {
+          tableWrap.hidden = true;
+          emptyEvidence.hidden = false;
+          evidenceCount.textContent = "0 sources";
           return;
         }
 
-        for (const item of items) {
+        tableWrap.hidden = false;
+        emptyEvidence.hidden = true;
+        evidenceCount.textContent = `${sorted.length} source${sorted.length === 1 ? "" : "s"}`;
+
+        for (const item of sorted) {
           const stance = STANCES[item.stance] || STANCES.NEUTRAL;
-          const card = document.createElement("article");
-          card.className = `evidence-card ${stance.className}`;
+          const row = document.createElement("tr");
+          row.className = stance.className === "neutral" ? "neutral" : "";
 
-          const top = document.createElement("div");
-          top.className = "evidence-top";
+          const sourceCell = document.createElement("td");
+          sourceCell.className = "source-cell";
+          const domain = document.createElement("span");
+          domain.className = "source-domain";
+          domain.textContent = item.source_domain;
+          const tier = document.createElement("span");
+          tier.className = "source-tier";
+          tier.textContent = `${credibilityTier(item.credibility)} (${Number(item.credibility).toFixed(1)})`;
+          sourceCell.append(domain, tier);
 
-          const title = document.createElement("h3");
-          title.className = "evidence-title";
+          const headlineCell = document.createElement("td");
           const link = document.createElement("a");
+          link.className = "headline-link";
           link.href = item.url;
           link.target = "_blank";
           link.rel = "noopener noreferrer";
           link.textContent = item.title;
-          title.appendChild(link);
+          headlineCell.appendChild(link);
+          if (item.snippet) {
+            const snippet = document.createElement("p");
+            snippet.className = "snippet";
+            snippet.textContent = item.snippet;
+            headlineCell.appendChild(snippet);
+          }
 
-          const domain = document.createElement("span");
-          domain.className = "evidence-domain";
-          domain.textContent = item.source_domain;
+          const relevanceCell = document.createElement("td");
+          relevanceCell.className = "relevance";
+          relevanceCell.textContent = Number(item.similarity).toFixed(3);
 
-          top.append(title, domain);
+          const stanceCell = document.createElement("td");
+          const chip = document.createElement("span");
+          chip.className = `chip ${stance.className}`;
+          const probability = stanceProbability(item, item.stance);
+          chip.textContent = `${stance.label} ${Math.round(Number(probability) * 100)}%`;
+          stanceCell.appendChild(chip);
 
-          const meta = document.createElement("div");
-          meta.className = "evidence-meta";
-          meta.appendChild(metaItem("Relevance", Number(item.similarity).toFixed(3)));
-          meta.appendChild(metaItem("Credibility", Number(item.credibility).toFixed(1)));
-          meta.appendChild(metaItem("Stance", stance.label, "stance"));
-
-          const snippet = document.createElement("p");
-          snippet.className = "snippet";
-          snippet.textContent = item.snippet;
-
-          card.append(top, meta, snippet);
-          evidenceList.appendChild(card);
+          row.append(sourceCell, headlineCell, relevanceCell, stanceCell);
+          evidenceBody.appendChild(row);
         }
       }
 
       function renderVerdict(data) {
-        const verdict = VERDICTS[data.verdict] || VERDICTS.UNVERIFIED;
-        verdictPanel.className = `verdict-panel ${verdict.className}`;
-        verdictBadge.textContent = verdict.badge;
-        verdictTitle.textContent = verdict.title;
-        verdictExplanation.textContent = cleanExplanation(data.explanation);
+        const verdictInfo = VERDICTS[data.verdict] || VERDICTS.UNVERIFIED;
+        verdict.className = `verdict ${verdictInfo.className}`;
+        verdictIcon.replaceChildren(svgIcon(verdictInfo.icon));
+        verdictLabel.textContent = verdictInfo.label;
 
+        const evidenceItems = Array.isArray(data.evidence) ? data.evidence : [];
+        verdictReason.textContent = data.verdict === "UNVERIFIED"
+          ? plainReason(data.explanation)
+          : cleanExplanation(data.explanation);
+
+        const sourceCount = evidenceItems.length;
+        const support = Number(data.support_score) || 0;
+        const refute = Number(data.refute_score) || 0;
         const confidence = Math.max(0, Math.min(1, Number(data.confidence) || 0));
-        const percent = Math.round(confidence * 100);
-        confidenceValue.textContent = `${percent}%`;
-        confidenceBar.style.width = `${percent}%`;
-        confidenceTrack.setAttribute("aria-valuenow", String(percent));
-
-        const sourceCount = Array.isArray(data.evidence) ? data.evidence.length : 0;
         const latency = Number(data.latency_ms) || 0;
-        resultMeta.textContent = `${sourceCount} source${sourceCount === 1 ? "" : "s"} checked in ${latency} ms`;
 
-        renderEvidence(Array.isArray(data.evidence) ? data.evidence : []);
-        result.hidden = false;
-        result.focus({ preventScroll: true });
-        result.scrollIntoView({
+        statSources.textContent = sourceCount;
+        statSupport.textContent = support.toFixed(3);
+        statRefute.textContent = refute.toFixed(3);
+        statConfidence.textContent = `${Math.round(confidence * 100)}%`;
+        statLatency.textContent = `${latency} ms`;
+
+        const total = support + refute;
+        if (total > 0) {
+          weightSupport.style.width = `${(support / total) * 100}%`;
+          weightRefute.style.width = `${(refute / total) * 100}%`;
+        } else {
+          weightSupport.style.width = "0%";
+          weightRefute.style.width = "0%";
+        }
+
+        renderEvidence(evidenceItems);
+        verdict.hidden = false;
+        evidence.hidden = false;
+        verdict.focus({ preventScroll: true });
+        verdict.scrollIntoView({
           behavior: reduceMotion ? "auto" : "smooth",
           block: "start"
         });
@@ -1071,9 +974,13 @@
         .then((health) => {
           modeBadge.textContent = health.cache_only ? "Offline demo" : "Live retrieval";
           modeBadge.hidden = false;
+          footerMode.textContent = health.cache_only
+            ? "Replay of stored late-October 2026 evidence, not a live news search."
+            : "Live retrieval mode.";
         })
         .catch(() => {
           modeBadge.hidden = true;
+          footerMode.textContent = "Offline mode";
         });
     })();
   </script>
