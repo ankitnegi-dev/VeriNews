@@ -221,6 +221,11 @@
       color: var(--orange);
     }
 
+    .accent-period {
+      position: relative;
+      left: -0.08em;
+    }
+
     .hero-line {
       max-width: 54ch;
       margin: 16px 0 0;
@@ -1181,7 +1186,7 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Evidence before verdict</p>
-          <h1>Check a claim against the <span class="accent-word">evidence.</span></h1>
+          <h1>Check a claim against the <span class="accent-word">evidence<span class="accent-period">.</span></span></h1>
           <p class="hero-line">Paste a claim. See which recent articles support it, refute it, or leave it unresolved.</p>
         </div>
 
@@ -1366,19 +1371,19 @@
       </div>
       <div class="metric-grid">
         <article class="metric-card">
-          <span class="metric-value">0.600</span>
+          <span class="metric-value">60%</span>
           <span class="metric-label">Exact accuracy</span>
-          <p class="metric-caption">12 of 20 test claims matched the gold label.</p>
+          <p class="metric-caption">12 of 20 test claims got the right verdict</p>
         </article>
         <article class="metric-card">
-          <span class="metric-value">0.071</span>
+          <span class="metric-value">7%</span>
           <span class="metric-label">Wrong-verdict rate</span>
-          <p class="metric-caption">1 of 14 directional claims was flipped.</p>
+          <p class="metric-caption">1 of 14 true-or-false claims got the wrong answer</p>
         </article>
         <article class="metric-card">
-          <span class="metric-value">0.500</span>
+          <span class="metric-value">50%</span>
           <span class="metric-label">Coverage</span>
-          <p class="metric-caption">7 of 14 directional claims received a committed verdict.</p>
+          <p class="metric-caption">7 of 14 true-or-false claims got a committed verdict</p>
         </article>
       </div>
       <p class="metric-note">20 test claims, small sample, system frozen before testing.</p>
@@ -1443,7 +1448,7 @@
 
     <section class="statement wrap">
       <div class="statement-inner">
-        <p>Claims move fast. <span class="accent-word">Evidence</span> takes longer. Someone has probably already <span class="accent-word">reported it.</span></p>
+        <p>Claims move fast. <span class="accent-word">Evidence</span> takes longer. Someone may already have <span class="accent-word">reported it.</span></p>
       </div>
     </section>
 
@@ -1476,7 +1481,7 @@
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="footer-disclosure" id="footer-disclosure">Replay of stored late-October 2026 evidence, not a live news search.</p>
-      <span class="footer-version">v1.2-ui</span>
+      <span class="footer-version">v1.2.1-ui</span>
     </div>
   </footer>
 
