@@ -203,6 +203,40 @@ The single test ablation change was Tesla, which moved from `UNVERIFIED` to
 reason: the two `REFUTES` came from off-topic articles about Anthropic and
 iPhones, not Tesla. It is not evidence for or against the credibility weights.
 
+## Experiments
+
+### Passage-level NLI (v2)
+
+The v2 experiment replaced the retrieval snippet with full-article passages:
+sentences were split, 2-sentence windows were ranked with MiniLM, and the top two
+passages per article were run through NLI. The table covers all 30 claims in
+`tests/data/claims.csv`, so it is **development evidence, not held-out**.
+
+| Metric | Snippet mode | Passage mode |
+| --- | ---: | ---: |
+| Exact accuracy | 0.667 (20/30) | 0.700 (21/30) |
+| Wrong-verdict rate | 0.050 (1/20) | 0.150 (3/20) |
+| Coverage | 0.550 (11/20) | 0.700 (14/20) |
+| Mean latency, cold (ms) | 24,797 | 32,986 |
+| Mean latency, warm (ms) | 7,741 | 6,847 |
+| Max latency, cold (ms) | 59,435 | 142,062 |
+| Max latency, warm (ms) | 14,330 | 32,037 |
+
+The v2 path was not adopted because the wrong-verdict rate rose from 1/20 to
+3/20. The differences are one or two claims: one claim in exact accuracy and two
+extra wrong-verdict flips. The mechanism was look-alike numbers and quantities
+in the full text. For example, passages about revenue were read as contradicting
+a net-profit claim, and other full-text context pushed supported claims to
+`REFUTED`.
+
+Future work:
+
+- Compare numbers and entities before accepting a contradiction.
+- Require high relevance for a contradicting passage.
+- Count a strong entailing passage as support.
+- Use a larger NLI model.
+- Split long claims into single facts.
+
 ## API
 
 ```text
