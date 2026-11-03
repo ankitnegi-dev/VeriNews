@@ -119,6 +119,19 @@ class VerificationPipeline:
         claim = " ".join(str(claim_text).split())
         if not claim:
             return failure_verdict(claim, "Claim is empty")
+        if claim.endswith("?"):
+            return Verdict(
+                claim=claim,
+                verdict="UNVERIFIED",
+                confidence=0.0,
+                support_score=0.0,
+                refute_score=0.0,
+                total_weight=0.0,
+                queries=[],
+                evidence=[],
+                explanation="This looks like a question. Enter one statement of fact.",
+                latency_ms=self._elapsed_ms(started),
+            )
 
         try:
             analysis = self._analyze(claim)
