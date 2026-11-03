@@ -135,6 +135,18 @@ NLI_CACHE_DIR = CACHE_DIR / "nli"
 NLI_BATCH_SIZE = 8
 
 # ---------------------------------------------------------------------------
+# Premise mode and full-text cache (v2 experiment)
+# ---------------------------------------------------------------------------
+# "snippet" uses the ranked snippet as the NLI premise, exactly as before.
+# "passage" extracts full article text, builds 2-sentence sliding windows,
+# ranks them with MiniLM, and runs NLI on the top passages per article.
+PREMISE_MODE = os.getenv("PREMISE_MODE", "snippet").strip().lower()
+PREMISE_PASSAGE_COUNT = 2
+PREMISE_WINDOW_SIZE = 2
+FULLTEXT_CACHE_DIR = CACHE_DIR / "fulltext"
+FULLTEXT_TIMEOUT_SECONDS = 8
+
+# ---------------------------------------------------------------------------
 # Credibility and decision (Phase 6)
 # ---------------------------------------------------------------------------
 # Credibility values are fixed judgment calls about source quality. They are

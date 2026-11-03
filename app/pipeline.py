@@ -22,7 +22,9 @@ import config
 from app.claim_analysis import _get_nlp, analyze
 from app.credibility import CredibilityTable, load_credibility
 from app.decision import build_evidence, decide
+from app.fulltext import fetch_full_text
 from app.nli import _get_model, classify
+from app.passages import aggregate_passage_results, premises_for_article
 from app.ranking import _get_embedder, rank_articles
 from app.retrieval import retrieve
 from app.schemas import Article, Claim, NLIResult, RankedArticle, Verdict
@@ -82,6 +84,9 @@ class VerificationPipeline:
         retriever: Retriever = retrieve,
         ranker: Ranker = rank_articles,
         classifier: Classifier = classify,
+        premise_mode: str | None = None,
+        embedder: object = None,
+        full_text_getter: object = None,
     ) -> None:
         self.cache_only = config.CACHE_ONLY if cache_only is None else cache_only
         self._credibility_table = credibility_table
@@ -89,6 +94,9 @@ class VerificationPipeline:
         self._retrieve = retriever
         self._rank = ranker
         self._classify = classifier
+        self.premise_mode = premise_mode
+        self._embedder = embedder
+        self._full_text_getter = full_text_getter
 
     @property
     def credibility_table(self) -> CredibilityTable:
@@ -119,6 +127,19 @@ class VerificationPipeline:
         claim = " ".join(str(claim_text).split())
         if not claim:
             return failure_verdict(claim, "Claim is empty")
+        if claim.endswith("?"):
+            return Verdict(
+                claim=claim,
+                verdict="UNVERIFIED",
+                confidence=0.0,
+                support_score=0.0,
+                refute_score=0.0,
+                total_weight=0.0,
+                queries=[],
+                evidence=[],
+                explanation="This looks like a question. Enter one statement of fact.",
+                latency_ms=self._elapsed_ms(started),
+            )
 
         try:
             analysis = self._analyze(claim)
@@ -156,8 +177,49 @@ class VerificationPipeline:
             )
 
         try:
-            snippets = [item.snippet for item in ranked]
-            results = self._classify(analysis.text, snippets) if snippets else []
+            mode = (
+                self.premise_mode
+                if self.premise_mode is not None
+                else config.PREMISE_MODE
+            )
+            mode = str(mode).strip().lower()
+            if mode == "passage":
+                embedder = self._embedder
+                if embedder is None:
+                    embedder = _get_embedder()
+                full_text_getter = self._full_text_getter or fetch_full_text
+
+                premises_by_article: list[list[str]] = []
+                for item in ranked:
+                    text = full_text_getter(item.url)
+                    selected = premises_for_article(
+                        analysis.text,
+                        text,
+                        title=item.title,
+                        snippet=item.snippet,
+                        embedder=embedder,
+                    )
+                    premises_by_article.append(selected)
+
+                flat_premises = [
+                    premise
+                    for premises in premises_by_article
+                    for premise in premises
+                ]
+                flat_results = (
+                    self._classify(analysis.text, flat_premises)
+                    if flat_premises
+                    else []
+                )
+                results = []
+                offset = 0
+                for premises in premises_by_article:
+                    group = flat_results[offset : offset + len(premises)]
+                    offset += len(premises)
+                    results.append(aggregate_passage_results(group))
+            else:
+                snippets = [item.snippet for item in ranked]
+                results = self._classify(analysis.text, snippets) if snippets else []
         except Exception as exc:
             logger.warning("NLI failed: %s", _safe_error(exc))
             return failure_verdict(
