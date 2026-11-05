@@ -363,3 +363,29 @@ Ankit Negi
 GithuB:https://github.com/ankitnegi-dev
 
 PortfoliO:https://ankit-negi.is-a.dev
+
+
+## Informal fresh live test
+
+Five claims with labels from the user's own research of public sources
+(unverified by the assistant). All five are labeled SUPPORTED. This is informal
+and excluded from headline numbers.
+
+| Claim | v1 verdict | v3 (B+C) verdict |
+| --- | --- | --- |
+| Federal Reserve kept its benchmark rate unchanged on Oct 28, 2026 | UNVERIFIED | UNVERIFIED |
+| Milwaukee Brewers won the 2026 World Series 4-1 over Tampa Bay Rays | REFUTED (wrong) | REFUTED (wrong) |
+| Max Verstappen won the 2026 Mexico City Grand Prix ahead of Lewis Hamilton | REFUTED (wrong) | UNVERIFIED |
+| Apple fiscal Q4 2026 revenue $114.5B, up 12% | UNVERIFIED | UNVERIFIED |
+| India beat New Zealand by six wickets in 3rd T20I, Wellington, Oct 27, 2026 | REFUTED (wrong) | UNVERIFIED |
+
+v1: 0 correct, 3 wrong refutations, 2 abstentions.
+v3 (B+C, A skipped because its number-free queries need live retrieval): 0
+correct, 1 wrong refutation, 4 abstentions.
+
+The v1 refutations were driven by NLI over snippets that were topically related
+but did not state the opposite: the Brewers articles said "five games" for a
+4-1 series, the Verstappen snippets were about qualifying/podium, and the India
+snippets were about series history. v3's full-text passages were neutral on
+those, so it abstained instead of refuting.
+
