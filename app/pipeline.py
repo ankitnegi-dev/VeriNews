@@ -22,6 +22,9 @@ import config
 from app.claim_analysis import _get_nlp, analyze
 from app.credibility import CredibilityTable, load_credibility
 from app.decision import build_evidence, decide
+from app.v3 import V3Options, build_v3_evidence, clause_verdict
+from app.claim_aware import number_free_first_query
+from app.fulltext import read_cached_text
 from app.nli import _get_model, classify
 from app.ranking import _get_embedder, rank_articles
 from app.retrieval import retrieve
@@ -82,6 +85,7 @@ class VerificationPipeline:
         retriever: Retriever = retrieve,
         ranker: Ranker = rank_articles,
         classifier: Classifier = classify,
+        v3: V3Options | None = None,
     ) -> None:
         self.cache_only = config.CACHE_ONLY if cache_only is None else cache_only
         self._credibility_table = credibility_table
@@ -89,6 +93,8 @@ class VerificationPipeline:
         self._retrieve = retriever
         self._rank = ranker
         self._classify = classifier
+        self._v3 = v3
+        self.last_v3 = None
 
     @property
     def credibility_table(self) -> CredibilityTable:
@@ -143,9 +149,15 @@ class VerificationPipeline:
                 latency_ms=self._elapsed_ms(started),
             )
 
+        options = self._v3
+        if options is not None and options.retrieval:
+            queries = number_free_first_query(claim, analysis.queries)
+        else:
+            queries = list(analysis.queries)
+
         try:
             articles = self._retrieve(
-                analysis.queries,
+                queries,
                 cache_only=self.cache_only,
             )
         except Exception as exc:
@@ -153,7 +165,7 @@ class VerificationPipeline:
             return failure_verdict(
                 analysis.text,
                 f"Retrieval failed ({_safe_error(exc)})",
-                queries=analysis.queries,
+                queries=queries,
                 latency_ms=self._elapsed_ms(started),
             )
 
@@ -164,34 +176,58 @@ class VerificationPipeline:
             return failure_verdict(
                 analysis.text,
                 f"Ranking failed ({_safe_error(exc)})",
-                queries=analysis.queries,
+                queries=queries,
                 latency_ms=self._elapsed_ms(started),
             )
 
+        use_v3_evidence = (
+            options is not None
+            and (options.passages or options.guards)
+        )
+
         try:
-            snippets = [item.snippet for item in ranked]
-            results = self._classify(analysis.text, snippets) if snippets else []
+            if use_v3_evidence:
+                v3_result = build_v3_evidence(
+                    analysis.text,
+                    ranked,
+                    options=options,
+                    classifier=self._classify,
+                    credibility_table=self.credibility_table,
+                    fulltext_reader=read_cached_text,
+                    embedder=None,
+                )
+                self.last_v3 = v3_result
+                evidence = v3_result.evidence
+                if v3_result.clause_result is not None and v3_result.clause_result.coordinated:
+                    verdict = clause_verdict(
+                        analysis.text,
+                        v3_result.clause_result,
+                        evidence,
+                        queries=queries,
+                        latency_ms=self._elapsed_ms(started),
+                    )
+                    logger.info(
+                        "Verdict %s for %r with %d evidence item(s) in %d ms",
+                        verdict.verdict,
+                        claim,
+                        len(verdict.evidence),
+                        verdict.latency_ms,
+                    )
+                    return verdict
+            else:
+                snippets = [item.snippet for item in ranked]
+                results = self._classify(analysis.text, snippets) if snippets else []
+                evidence = build_evidence(
+                    ranked,
+                    results,
+                    credibility_table=self.credibility_table,
+                )
         except Exception as exc:
             logger.warning("NLI failed: %s", _safe_error(exc))
             return failure_verdict(
                 analysis.text,
                 f"NLI verification failed ({_safe_error(exc)})",
-                queries=analysis.queries,
-                latency_ms=self._elapsed_ms(started),
-            )
-
-        try:
-            evidence = build_evidence(
-                ranked,
-                results,
-                credibility_table=self.credibility_table,
-            )
-        except Exception as exc:
-            logger.warning("Evidence assembly failed: %s", _safe_error(exc))
-            return failure_verdict(
-                analysis.text,
-                f"Evidence assembly failed ({_safe_error(exc)})",
-                queries=analysis.queries,
+                queries=queries,
                 latency_ms=self._elapsed_ms(started),
             )
 
@@ -199,7 +235,7 @@ class VerificationPipeline:
             verdict = decide(
                 analysis.text,
                 evidence,
-                queries=analysis.queries,
+                queries=queries,
                 latency_ms=self._elapsed_ms(started),
             )
         except Exception as exc:
@@ -207,7 +243,7 @@ class VerificationPipeline:
             return failure_verdict(
                 analysis.text,
                 f"Decision failed ({_safe_error(exc)})",
-                queries=analysis.queries,
+                queries=queries,
                 latency_ms=self._elapsed_ms(started),
             )
 

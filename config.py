@@ -157,6 +157,44 @@ DECISION_RATIO = 0.4
 MARGIN = 1.5
 
 # ---------------------------------------------------------------------------
+# v3 claim-aware experiment (defaults keep v1 behaviour)
+# ---------------------------------------------------------------------------
+# Each component has its own flag. The pipeline reads the flags only when an
+# explicit V3Options object is passed, so the API and all existing callers stay
+# on v1 unless they opt in.
+V3_RETRIEVAL = os.getenv("V3_RETRIEVAL", "false").strip().lower() == "true"
+V3_PASSAGES = os.getenv("V3_PASSAGES", "false").strip().lower() == "true"
+V3_GUARDS = os.getenv("V3_GUARDS", "false").strip().lower() == "true"
+
+# Passage ranking uses 1- and 2-sentence windows. The coverage bonus is added
+# to cosine similarity; it rewards windows that contain the claim's numbers,
+# named entities, and ordinals.
+V3_PASSAGE_WINDOW_SIZES = (1, 2)
+V3_PASSAGE_TOP_K = 2
+V3_PASSAGE_COVERAGE_WEIGHT = 0.20
+
+# Guard (i): a contradiction counts only when the passage shares the claim's
+# main named entity and at least this fraction of its content terms. The value
+# is tuned on the 30-claim development set only.
+V3_GUARD_TERM_COVERAGE = 0.60
+# Guard (ii): an exact-fact passage with contradiction below this value is
+# counted as support even when NLI returns neutral (or a weak contradiction).
+V3_GUARD_CONTRADICTION_MAX = 0.90
+# Support probability assigned by guard (ii) so that the unchanged decision
+# engine can use the rescued passage.
+V3_GUARD_SUPPORT_PROB = 0.50
+
+# Full-text cache produced by the passage experiment. Article text is local and
+# must never be committed.
+FULLTEXT_CACHE_DIR = CACHE_DIR / "fulltext"
+FULLTEXT_TIMEOUT_SECONDS = 8
+
+# v3 refresh state and outputs.
+V3_CACHE_DIR = CACHE_DIR / "v3"
+V3_REFRESH_STATE_PATH = V3_CACHE_DIR / "refresh_state.json"
+V3_ABLATION_PATH = V3_CACHE_DIR / "ablation.json"
+
+# ---------------------------------------------------------------------------
 # API (Phase 7)
 # ---------------------------------------------------------------------------
 API_HOST = "127.0.0.1"

@@ -622,6 +622,7 @@ def retrieve(
     cache: RetrievalCache | None = None,
     cache_only: bool | None = None,
     max_results: int | None = None,
+    force: bool = False,
 ) -> list[Article]:
     """Retrieve and deduplicate articles for a list of search queries.
 
@@ -651,6 +652,8 @@ def retrieve(
 
     active_cache = cache or RetrievalCache()
     use_cache_only = config.CACHE_ONLY if cache_only is None else cache_only
+    if force:
+        use_cache_only = False
     effective_max_results = (
         config.MAX_RESULTS_PER_QUERY if max_results is None else max_results
     )
@@ -658,12 +661,14 @@ def retrieve(
     collected: list[Article] = []
     for query in query_list:
         for provider in active_providers:
-            cached = active_cache.get(
-                provider.name,
-                query,
-                allow_stale=use_cache_only,
-            )
-            if cached is not None:
+            cached = None
+            if not force:
+                cached = active_cache.get(
+                    provider.name,
+                    query,
+                    allow_stale=use_cache_only,
+                )
+            if cached is not None and not force:
                 logger.info(
                     "Cache hit for %s (%d articles, stale allowed: %s)",
                     provider.name,
