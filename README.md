@@ -191,6 +191,10 @@ The 8 test mistakes break down as: NLI too strict 4, retrieval miss 3, compound
 claim 1, single-article gate 0, and other 0. Full evidence for every mistake is
 in `results/eval_test_report.md` and `results/eval_test.json`.
 
+Note: the earlier 60% test figure (12/20) includes correct abstentions, i.e.
+gold `UNVERIFIED` claims predicted `UNVERIFIED`; the wrong-verdict rate is
+separate at 1/14.
+
 ### Credibility ablation
 
 | Split | Real tiers | All weights 1.0 | Changed |
@@ -236,6 +240,81 @@ Future work:
 - Count a strong entailing passage as support.
 - Use a larger NLI model.
 - Split long claims into single facts.
+
+## Experiments (continued)
+
+### Failure diagnosis of v1 (stage of failure)
+
+Diagnosis of the 13 gold SUPPORTED/REFUTED claims on which v1 returned
+`UNVERIFIED` or the wrong verdict. Each failure is assigned to exactly one stage.
+Development evidence on the 30 seen claims, not held-out.
+
+| Code | Stage | Count | Share of failures | Claims |
+| --- | --- | ---: | ---: | --- |
+| R | Retrieval | 2 | 0.154 | row 5; row 17 |
+| P | Passage (snippet/top-2 misses the decisive fact) | 3 | 0.231 | row 21; row 4; row 12 |
+| N | NLI (label or probability wrong) | 6 | 0.462 | row 6; row 7; row 8; row 9; row 10; live 3 |
+| A | Aggregation (gates/weights) | 1 | 0.077 | live 2 |
+| C | Claim (malformed/ambiguous) | 1 | 0.077 | live 4 |
+| L | Label (gold wrong) | 0 | 0.000 | none |
+| Total |  | 13 | 1.000 |  |
+
+### v3 claim-aware ablation
+
+Components, each behind its own flag, evaluated alone and in combination on the
+30 CSV claims. Development evidence on the 30 seen claims, not held-out.
+"Correct" means a gold SUPPORTED/REFUTED claim predicted with that same
+verdict; "abstained" means predicted `UNVERIFIED`; "wrong verdict" means a
+gold SUPPORTED/REFUTED claim predicted with the opposite verdict.
+
+| Config | Exact | Correct on S/R | Abstained on S/R | Wrong verdicts | Cold mean/max ms | Warm mean/max ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| v1 | 20/30 | 10/20 | 9/20 | 1 | 1688/12304 | 1292/2564 |
+| A | 18/30 | 8/20 | 11/20 | 1 | 1006/2210 | 1009/2251 |
+| B | 23/30 | 13/20 | 4/20 | 3 | 4428/7639 | 4465/7953 |
+| C | 14/30 | 5/20 | 15/20 | 0 | 1359/2664 | 1357/2689 |
+| A+B | 21/30 | 11/20 | 7/20 | 2 | 3048/9600 | 2776/5476 |
+| B+C | 20/30 | 11/20 | 7/20 | 2 | 4390/7603 | 4481/7560 |
+| A+B+C | 20/30 | 10/20 | 10/20 | 0 | 2803/5372 | 2804/5384 |
+
+- A (number-free retrieval) lowered retrieval quality on these claims.
+- B (claim-aware passages) raised correct SUPPORTED/REFUTED claims to 13/20
+  but also raised wrong verdicts to 3/20.
+- C (guards) was very conservative: 0 wrong verdicts, 5/20 correct.
+- No combination raised correct SUPPORTED/REFUTED claims above v1's 10/20
+  while keeping wrong verdicts at or below v1's 1/20. v3 is not adopted.
+  Differences of one to three claims are within noise on a 30-claim set.
+
+Guard (i) term-coverage tuning (B+C configuration):
+
+| X | Exact | Correct on S/R | Abstained on S/R | Wrong verdicts |
+| --- | ---: | ---: | ---: | ---: |
+| 0.40 | 22/30 | 12/20 | 5/20 | 3 |
+| 0.50 | 22/30 | 12/20 | 6/20 | 2 |
+| 0.60 | 20/30 | 11/20 | 7/20 | 2 |
+| 0.70 | 18/30 | 9/20 | 11/20 | 0 |
+| 0.80 | 17/30 | 8/20 | 12/20 | 0 |
+
+Guard (ii) promoted only NLI-neutral passages that contained all claim numbers
+and the main entity with contradiction below 0.9 (weak-refute promotions: 0).
+
+### Live claims (informal appendix)
+
+The four live claims are informal: their labels were assigned by an assistant
+and not verified, and they have no full-text cache. They are excluded from all
+headline numbers above. Their v1 outcomes are recorded in `notes/diagnosis.md`.
+
+- Live 1: SUPPORTED (v1 correct).
+- Live 2: SUPPORTED (v1 returned UNVERIFIED).
+- Live 3: SUPPORTED (v1 returned UNVERIFIED).
+- Live 4: REFUTED (v1 returned UNVERIFIED).
+
+### Future work
+
+- Stronger NLI models trained on number-sensitive data.
+- Fine-tuning on a labelled news-claim set.
+- Numeric and entity checking before accepting a contradiction.
+- Retrieval that includes primary sources.
 
 ## API
 
