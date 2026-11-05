@@ -19,7 +19,7 @@ held-out test run.
 - Applies source credibility and safety gates before deciding.
 - Returns `UNVERIFIED` when the evidence is missing, weak, conflicting, or too
   one-sided to decide.
-- Serves a one-file web page with a claim box, verdict badge, confidence bar,
+- Serves a one-file web page with a claim box, verdict badge, evidence margin bar,
   explanation, and evidence cards.
 
 ## Architecture
