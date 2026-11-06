@@ -19,7 +19,7 @@ held-out test run.
 - Applies source credibility and safety gates before deciding.
 - Returns `UNVERIFIED` when the evidence is missing, weak, conflicting, or too
   one-sided to decide.
-- Serves a one-file web page with a claim box, verdict badge, confidence bar,
+- Serves a one-file web page with a claim box, verdict badge, evidence margin bar,
   explanation, and evidence cards.
 
 ## Architecture
@@ -363,3 +363,66 @@ Ankit Negi
 GithuB:https://github.com/ankitnegi-dev
 
 PortfoliO:https://ankit-negi.is-a.dev
+
+
+## Informal fresh live test
+
+Five claims with labels from the user's own research of public sources
+(unverified by the assistant). All five are labeled SUPPORTED. This is informal
+and excluded from headline numbers.
+
+| Claim | v1 verdict | v3 (B+C) verdict |
+| --- | --- | --- |
+| Federal Reserve kept its benchmark rate unchanged on Oct 28, 2026 | UNVERIFIED | UNVERIFIED |
+| Milwaukee Brewers won the 2026 World Series 4-1 over Tampa Bay Rays | REFUTED (wrong) | REFUTED (wrong) |
+| Max Verstappen won the 2026 Mexico City Grand Prix ahead of Lewis Hamilton | REFUTED (wrong) | UNVERIFIED |
+| Apple fiscal Q4 2026 revenue $114.5B, up 12% | UNVERIFIED | UNVERIFIED |
+| India beat New Zealand by six wickets in 3rd T20I, Wellington, Oct 27, 2026 | REFUTED (wrong) | UNVERIFIED |
+
+v1: 0 correct, 3 wrong refutations, 2 abstentions.
+v3 (B+C, A skipped because its number-free queries need live retrieval): 0
+correct, 1 wrong refutation, 4 abstentions.
+
+The v1 refutations were driven by NLI over snippets that were topically related
+but did not state the opposite: the Brewers articles said "five games" for a
+4-1 series, the Verstappen snippets were about qualifying/podium, and the India
+snippets were about series history. v3's full-text passages were neutral on
+those, so it abstained instead of refuting.
+
+
+
+### Fresh held-out set (20 claims)
+
+Informal set of 20 claims with labels from the user's own research (unverified).
+15 are new; 5 overlap the earlier fresh live test. Development/hold-out style;
+excluded from headline numbers.
+
+| # | Label | v1 verdict | v3 (A+B+C) verdict |
+| ---: | --- | --- | --- |
+| 1 | SUPPORTED | UNVERIFIED | UNVERIFIED |
+| 2 | SUPPORTED | REFUTED | REFUTED |
+| 3 | SUPPORTED | REFUTED | UNVERIFIED |
+| 4 | SUPPORTED | UNVERIFIED | UNVERIFIED |
+| 5 | SUPPORTED | REFUTED | UNVERIFIED |
+| 6 | SUPPORTED | UNVERIFIED | UNVERIFIED |
+| 7 | SUPPORTED | UNVERIFIED | UNVERIFIED |
+| 8 | SUPPORTED | REFUTED | REFUTED |
+| 9 | SUPPORTED | UNVERIFIED | REFUTED |
+| 10 | REFUTED | UNVERIFIED | UNVERIFIED |
+| 11 | REFUTED | REFUTED | UNVERIFIED |
+| 12 | REFUTED | REFUTED | UNVERIFIED |
+| 13 | REFUTED | REFUTED | UNVERIFIED |
+| 14 | REFUTED | UNVERIFIED | UNVERIFIED |
+| 15 | REFUTED | UNVERIFIED | UNVERIFIED |
+| 16 | UNVERIFIED | UNVERIFIED | UNVERIFIED |
+| 17 | UNVERIFIED | UNVERIFIED | UNVERIFIED |
+| 18 | UNVERIFIED | UNVERIFIED | UNVERIFIED |
+| 19 | UNVERIFIED | UNVERIFIED | UNVERIFIED |
+| 20 | UNVERIFIED | UNVERIFIED | SUPPORTED |
+
+Totals:
+- v1: exact 8/20; correct on S/R 3/15; abstained on S/R 8/15; wrong committed 4 (4 flips, 0 on UNVERIFIED); mean latency 920715 ms.
+- v3 (A+B+C): exact 4/20; correct on S/R 0/15; abstained on S/R 12/15; wrong committed 4 (3 flips, 1 on UNVERIFIED); mean latency 9048 ms.
+
+Decision rule: adopt v3 only if wrong committed verdicts are lower than v1 AND
+correct S/R is at most 1 lower than v1. Result: **FAIL**.
