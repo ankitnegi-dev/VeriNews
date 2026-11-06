@@ -1229,6 +1229,7 @@
           </div>
         </div>
         <p class="result-reason" id="result-reason"></p>
+        <p class="result-caution" id="result-caution" hidden>Automatic result based on short article text. It can be wrong, especially when a true claim has several details. Read the sources.</p>
         <div class="stat-pills">
           <span class="stat-pill">Sources kept <strong id="stat-sources">0</strong></span>
           <span class="stat-pill">Support weight <strong id="stat-support">0.000</strong></span>
@@ -1503,6 +1504,7 @@
       const resultIcon = document.getElementById("result-icon");
       const resultVerdict = document.getElementById("result-verdict");
       const resultReason = document.getElementById("result-reason");
+      const resultCaution = document.getElementById("result-caution");
       const statSources = document.getElementById("stat-sources");
       const statSupport = document.getElementById("stat-support");
       const statRefute = document.getElementById("stat-refute");
@@ -1743,6 +1745,7 @@
         resultIcon.replaceChildren(svgIcon(verdict.icon));
         resultVerdict.textContent = verdict.label;
         resultReason.textContent = resultReasonText(data);
+        resultCaution.hidden = data.verdict === "UNVERIFIED";
 
         const support = Number(data.support_score) || 0;
         const refute = Number(data.refute_score) || 0;
