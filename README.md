@@ -344,6 +344,9 @@ committed = wrong committed verdicts across the 35 gold S/R claims.
 
 "At least 3 refuting articles" removed 4 of 5 false refutations at a cost of 1 of 10 correct refutations; not validated; not adopted.
 
+
+Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, removing the false refutation of the Brewers claim let its supporting articles produce a correct SUPPORTED verdict.
+
 ## API
 
 ```text
