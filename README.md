@@ -318,29 +318,31 @@ headline numbers above. Their v1 outcomes are recorded in `notes/diagnosis.md`.
 
 ## Experiments (continued, corrected gate table)
 
-Exploratory, fitted on seen data; no gate selected. Columns: correct refutations
-kept (gold REFUTED and cached v1 REFUTED and gate REFUTED); false refutations
-removed (gold != REFUTED and cached v1 REFUTED and gate != REFUTED); correct
-refutations lost (gold REFUTED and cached v1 REFUTED and gate != REFUTED);
-correct S/R overall (gold S/R predicted correctly under the gate). Baseline is
-the cached v1 verdict (0 mismatches on all 50 claims). Baseline p_contra
-threshold is NLI_REFUTE_THRESHOLD = 0.5, so "min p_contra >= 0.9" is a stricter
-variant, not the baseline. Correct refutations = 10 (7 CSV + 3 fresh); false
-refutations = 5.
+Exploratory, fitted on seen data; no gate selected. Baseline refuting rule as
+implemented: stance REFUTES when p_contra >= 0.5 (NLI_REFUTE_THRESHOLD),
+relevance >= 0.5 (REL_MIN), at least 2 refuting articles (MIN_EVIDENCE).
+Baseline = cached v1 verdict (0 mismatches on all 50 claims).
 
-| Gate | kept | removed | lost | correct S/R |
-| --- | ---: | ---: | ---: | ---: |
-| min refuting articles >= 2 (baseline) | 10 | 0 | 0 | 13/35 |
-| min refuting articles >= 3 | 9 | 4 | 1 | 12/35 |
-| min relevance >= 0.5 (baseline) | 10 | 0 | 0 | 13/35 |
-| min relevance >= 0.6 | 9 | 0 | 1 | 12/35 |
-| min relevance >= 0.7 | 7 | 1 | 3 | 10/35 |
-| min relevance >= 0.8 | 4 | 4 | 6 | 8/35 |
-| min p_contra >= 0.9 | 9 | 2 | 1 | 12/35 |
-| min p_contra >= 0.95 | 8 | 3 | 2 | 11/35 |
-| min p_contra >= 0.99 | 6 | 3 | 4 | 9/35 |
-| distinct refuting domains >= 2 | 10 | 0 | 0 | 13/35 |
-| distinct refuting domains >= 1 (baseline) | 10 | 0 | 0 | 13/35 |
+Columns: kept = correct refutations kept; removed = false refutations removed;
+lost = correct refutations lost; correct S/R = gold S/R predicted correctly
+under the gate; false rem = false refutations still REFUTED (of 5); wrong
+committed = wrong committed verdicts across the 35 gold S/R claims.
+
+| Gate | kept | removed | lost | correct S/R | false ref remaining (of 5) | wrong committed (of 35) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| min refuting articles >= 2 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
+| min refuting articles >= 3 | 9 | 4 | 1 | 12/35 | 4 | 1 |
+| min relevance >= 0.5 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
+| min relevance >= 0.6 | 9 | 0 | 1 | 12/35 | 0 | 5 |
+| min relevance >= 0.7 | 7 | 1 | 3 | 10/35 | 1 | 4 |
+| min relevance >= 0.8 | 1 | 4 | 9 | 4/35 | 4 | 1 |
+| min p_contra >= 0.9 | 9 | 2 | 1 | 12/35 | 2 | 3 |
+| min p_contra >= 0.95 | 8 | 3 | 2 | 11/35 | 3 | 2 |
+| min p_contra >= 0.99 | 6 | 3 | 4 | 9/35 | 3 | 2 |
+| distinct refuting domains >= 2 | 10 | 0 | 0 | 13/35 | 0 | 5 |
+| distinct refuting domains >= 1 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
+
+"At least 3 refuting articles" removed 4 of 5 false refutations at a cost of 1 of 10 correct refutations; not validated; not adopted.
 
 ## API
 
