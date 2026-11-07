@@ -319,26 +319,28 @@ headline numbers above. Their v1 outcomes are recorded in `notes/diagnosis.md`.
 ## Experiments (continued, corrected gate table)
 
 Exploratory, fitted on seen data; no gate selected. Columns: correct refutations
-kept (gold REFUTED and baseline REFUTED and gate REFUTED); false refutations
-removed (gold != REFUTED and baseline REFUTED and gate != REFUTED); correct
-refutations lost (gold REFUTED and baseline REFUTED and gate != REFUTED);
-correct S/R overall (gold S/R predicted correctly under the gate). Baseline
-p_contra threshold is NLI_REFUTE_THRESHOLD = 0.5, so the "min p_contra >= 0.9"
-row is a stricter variant, not the baseline.
+kept (gold REFUTED and cached v1 REFUTED and gate REFUTED); false refutations
+removed (gold != REFUTED and cached v1 REFUTED and gate != REFUTED); correct
+refutations lost (gold REFUTED and cached v1 REFUTED and gate != REFUTED);
+correct S/R overall (gold S/R predicted correctly under the gate). Baseline is
+the cached v1 verdict, so baseline rows show 0 changes. Baseline p_contra
+threshold is NLI_REFUTE_THRESHOLD = 0.5, so "min p_contra >= 0.9" is a stricter
+variant, not the baseline. Correct refutations = 10 (7 CSV + 3 fresh); false
+refutations = 5.
 
 | Gate | kept | removed | lost | correct S/R |
 | --- | ---: | ---: | ---: | ---: |
-| min refuting articles >= 2 (baseline) | 11 | 0 | 0 | 14/35 |
-| min refuting articles >= 3 | 9 | 6 | 2 | 12/35 |
-| min relevance >= 0.5 (baseline) | 11 | 0 | 0 | 14/35 |
-| min relevance >= 0.6 | 10 | 0 | 1 | 13/35 |
-| min relevance >= 0.7 | 8 | 0 | 3 | 11/35 |
-| min relevance >= 0.8 | 5 | 1 | 6 | 8/35 |
-| min p_contra >= 0.9 | 9 | 3 | 2 | 12/35 |
-| min p_contra >= 0.95 | 8 | 4 | 3 | 11/35 |
-| min p_contra >= 0.99 | 6 | 5 | 5 | 9/35 |
-| distinct refuting domains >= 2 | 11 | 0 | 0 | 14/35 |
-| distinct refuting domains >= 1 (baseline) | 11 | 0 | 0 | 14/35 |
+| min refuting articles >= 2 (baseline) | 10 | 0 | 0 | 14/35 |
+| min refuting articles >= 3 | 9 | 4 | 1 | 12/35 |
+| min relevance >= 0.5 (baseline) | 10 | 0 | 0 | 14/35 |
+| min relevance >= 0.6 | 9 | 0 | 1 | 13/35 |
+| min relevance >= 0.7 | 7 | 0 | 3 | 11/35 |
+| min relevance >= 0.8 | 4 | 1 | 6 | 8/35 |
+| min p_contra >= 0.9 | 9 | 2 | 1 | 12/35 |
+| min p_contra >= 0.95 | 8 | 3 | 2 | 11/35 |
+| min p_contra >= 0.99 | 6 | 3 | 4 | 9/35 |
+| distinct refuting domains >= 2 | 10 | 0 | 0 | 14/35 |
+| distinct refuting domains >= 1 (baseline) | 10 | 0 | 0 | 14/35 |
 
 ## API
 
