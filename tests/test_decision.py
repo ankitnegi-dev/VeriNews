@@ -6,6 +6,9 @@ import pytest
 
 from app.decision import build_evidence, decide
 from app.schemas import Evidence, NLIResult, RankedArticle
+import config
+
+config.MIN_REFUTING_ARTICLES = 2
 
 
 def _evidence(
