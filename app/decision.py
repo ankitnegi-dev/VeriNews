@@ -253,23 +253,30 @@ def decide(
             latency_ms=latency_ms,
         )
 
-    if len(supports) < config.MIN_EVIDENCE and len(refutes) < config.MIN_EVIDENCE:
+    if len(supports) < config.MIN_EVIDENCE and len(refutes) < config.MIN_REFUTING_ARTICLES:
         if supports and not refutes:
             reason = (
                 "only one relevant article supports the claim; a single article "
                 "cannot decide a verdict"
             )
         elif refutes and not supports:
-            reason = (
-                "only one relevant article refutes the claim; a single article "
-                "cannot decide a verdict"
-            )
+            if len(refutes) == 1 and config.MIN_REFUTING_ARTICLES == 2:
+                reason = (
+                    "only one relevant article refutes the claim; a single article "
+                    "cannot decide a verdict"
+                )
+            else:
+                reason = (
+                    f"only {len(refutes)} relevant article(s) refute the claim; at "
+                    f"least {config.MIN_REFUTING_ARTICLES} are required on the "
+                    "refuting side"
+                )
         else:
             reason = (
                 f"only {len(supports)} relevant article(s) support and "
                 f"{len(refutes)} refute the claim; at least "
-                f"{config.MIN_EVIDENCE} relevant articles are required on the "
-                "deciding side"
+                f"{config.MIN_EVIDENCE} supporting or "
+                f"{config.MIN_REFUTING_ARTICLES} refuting articles are required"
             )
         return _unverified(
             claim=cleaned_claim,
@@ -328,10 +335,10 @@ def decide(
             latency_ms=latency_ms,
         )
 
-    if support_score > refute_score * config.MARGIN:
+    if support_score > refute_score * config.MARGIN and len(supports) >= config.MIN_EVIDENCE:
         verdict = "SUPPORTED"
         side = supports
-    elif refute_score > support_score * config.MARGIN:
+    elif refute_score > support_score * config.MARGIN and len(refutes) >= config.MIN_REFUTING_ARTICLES:
         verdict = "REFUTED"
         side = refutes
     else:
