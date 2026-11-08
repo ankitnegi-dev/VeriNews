@@ -152,7 +152,7 @@ MIN_EVIDENCE = 2
 # Minimum number of refuting articles required before a REFUTED verdict can be
 # committed. Defaults to 2, exactly the v1 behaviour. Raised to 3 only by an
 # explicit experiment; the support side keeps MIN_EVIDENCE.
-MIN_REFUTING_ARTICLES = int(os.getenv("MIN_REFUTING_ARTICLES", "2"))
+MIN_REFUTING_ARTICLES = int(os.getenv("MIN_REFUTING_ARTICLES", "3"))
 
 # Exactly four decision parameters are tunable, and only on split=dev:
 # REL_MIN, MIN_TOTAL_WEIGHT, DECISION_RATIO, MARGIN.

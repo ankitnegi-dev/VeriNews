@@ -211,6 +211,9 @@ iPhones, not Tesla. It is not evidence for or against the credibility weights.
 
 ### Passage-level NLI (v2)
 
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
+
 The v2 experiment replaced the retrieval snippet with full-article passages:
 sentences were split, 2-sentence windows were ranked with MiniLM, and the top two
 passages per article were run through NLI. The table covers all 30 claims in
@@ -260,6 +263,9 @@ Development evidence on the 30 seen claims, not held-out.
 | Total |  | 13 | 1.000 |  |
 
 ### v3 claim-aware ablation
+
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
 
 Components, each behind its own flag, evaluated alone and in combination on the
 30 CSV claims. Development evidence on the 30 seen claims, not held-out.
@@ -349,6 +355,9 @@ Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.
 
 ## Third held-out set (20 claims)
 
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
+
 Pre-registered comparison (prereg-third): v1 (REFUTED needs >= 2 refuting
 articles) vs v1+gate (REFUTED needs >= 3). Both used the same cached
 evidence. Rule: adopt the gate only if (a) wrong committed verdicts are lower
@@ -376,16 +385,23 @@ Per-claim wrong committed verdicts under v1 (all removed by the gate):
 
 ## Combined held-out sets (three sets)
 
-| Set | Version | Committed right | Committed wrong | True confirmed | False refuted | UNVERIFIED correctly abstained |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Original test (20) | v1 | 6 | 1 | 1 | 5 | 13 |
-| Original test (20) | v1 + gate | 6 | 1 | 1 | 5 | 13 |
-| Fresh (20) | v1 | 3 | 4 | 0 | 3 | 13 |
-| Fresh (20) | v1 + gate | 2 | 0 | 0 | 2 | 18 |
-| Third (20) | v1 | 4 | 3 | 0 | 4 | 13 |
-| Third (20) | v1 + gate | 3 | 0 | 0 | 3 | 17 |
-| Combined (60) | v1 | 13 | 8 | 1 | 12 | 39 |
-| Combined (60) | v1 + gate | 11 | 1 | 1 | 10 | 48 |
+| Set | Version | Committed right | Committed wrong | True confirmed | False refuted | abstained (all claims) | gold UNVERIFIED left unverified (of 6, 5, 5) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Original test (20) | v1 | 6 | 1 | 1 | 5 | 13 | 6 |
+| Original test (20) | v1 + gate | 6 | 1 | 1 | 5 | 13 | 6 |
+| Fresh (20) | v1 | 3 | 4 | 0 | 3 | 13 | 5 |
+| Fresh (20) | v1 + gate | 2 | 0 | 0 | 2 | 18 | 5 |
+| Third (20) | v1 | 4 | 3 | 0 | 4 | 13 | 4 |
+| Third (20) | v1 + gate | 3 | 0 | 0 | 3 | 17 | 5 |
+| Combined (60) | v1 | 13 | 8 | 1 | 12 | 39 | 15 |
+| Combined (60) | v1 + gate | 11 | 1 | 1 | 10 | 48 | 16 |
+
+60-claim summary: wrong committed 8 to 1, correct committed 13 to 11, false
+refuted 12 to 10 of 20, true confirmed 1 of 24 in both, and the share of claims
+that receive any verdict is 21 of 60 for v1 and 12 of 60 with the gate. The
+gate was found on seen claims and confirmed once on an unseen set under a
+pre-registered rule (tag prereg-third). The earlier v1.0 behaviour remains
+available at tag v1.0.
 
 ## API
 
@@ -398,6 +414,17 @@ GET  /         static web page
 `POST /verify` accepts 1 to 500 characters. An empty or overlong claim returns
 HTTP 422. A valid request returns HTTP 200 with a verdict, including
 `UNVERIFIED` when the evidence is not enough.
+
+## Decision rule
+
+A verdict needs at least two relevant articles that agree for SUPPORTED and at
+least three for REFUTED. One article never decides. Conflict gives not enough
+evidence.
+
+Adopted change: the refuted gate (at least 3 refuting articles) is now the
+default, confirmed on the third held-out set under a pre-registered rule
+(prereg-third). The earlier v1.0 behaviour (2 refuting articles) remains
+available at tag v1.0 via MIN_REFUTING_ARTICLES=2.
 
 ## Limitations
 
@@ -437,6 +464,9 @@ PortfoliO:https://ankit-negi.is-a.dev
 
 
 ## Informal fresh live test
+
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
 
 Five claims with labels from the user's own research of public sources
 (unverified by the assistant). All five are labeled SUPPORTED. This is informal
