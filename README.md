@@ -347,6 +347,46 @@ committed = wrong committed verdicts across the 35 gold S/R claims.
 
 Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, removing the false refutation of the Brewers claim let its supporting articles produce a correct SUPPORTED verdict.
 
+## Third held-out set (20 claims)
+
+Pre-registered comparison (prereg-third): v1 (REFUTED needs >= 2 refuting
+articles) vs v1+gate (REFUTED needs >= 3). Both used the same cached
+evidence. Rule: adopt the gate only if (a) wrong committed verdicts are lower
+with the gate, counting S/R flips and any S/R verdict on a gold UNVERIFIED
+claim, and (b) correct S/R verdicts (out of 15) are at most 1 lower.
+Outcome: PASS.
+
+| Metric | v1 | v1 + gate (>= 3) |
+| --- | ---: | ---: |
+| Exact | 8/20 | 8/20 |
+| Correct on S/R | 4/15 | 3/15 |
+| Abstained on S/R | 9/15 | 12/15 |
+| Wrong committed (flips + UNVERIFIED-as-S/R) | 3 (2 flips, 1 on UNVERIFIED) | 0 |
+
+Per-claim wrong committed verdicts under v1 (all removed by the gate):
+- Claim 5 (gold SUPPORTED): Carlos Alcaraz won the 2026 Vienna Open final - refuted by
+  channelnewsasia.com (p_contra 0.933, sim 0.86) and dpa-international.com (0.999, 0.69);
+  same topic (Alcaraz did win), not the opposite.
+- Claim 7 (gold SUPPORTED): The Detroit Lions beat the Minnesota Vikings 19-15 on Nov 1, 2026 -
+  refuted by foxsports.com (0.581, 0.70) and dailynorseman.com (0.531, 0.61);
+  same topic (preview), not the opposite.
+- Claim 20 (gold UNVERIFIED): The Denver Broncos will win the Super Bowl this season -
+  refuted by nbcnews.com (0.718, 0.72), cbssports.com (0.994, 0.50), canalstreetchronicles.com
+  (0.982, 0.47); same topic (Super Bowl odds), not the opposite.
+
+## Combined held-out sets (three sets)
+
+| Set | Version | Committed right | Committed wrong | True confirmed | False refuted | UNVERIFIED correctly abstained |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Original test (20) | v1 | 6 | 1 | 1 | 5 | 13 |
+| Original test (20) | v1 + gate | 6 | 1 | 1 | 5 | 13 |
+| Fresh (20) | v1 | 3 | 4 | 0 | 3 | 13 |
+| Fresh (20) | v1 + gate | 2 | 0 | 0 | 2 | 18 |
+| Third (20) | v1 | 4 | 3 | 0 | 4 | 13 |
+| Third (20) | v1 + gate | 3 | 0 | 0 | 3 | 17 |
+| Combined (60) | v1 | 13 | 8 | 1 | 12 | 39 |
+| Combined (60) | v1 + gate | 11 | 1 | 1 | 10 | 48 |
+
 ## API
 
 ```text
