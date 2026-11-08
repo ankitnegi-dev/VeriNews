@@ -412,6 +412,11 @@ A verdict needs at least two relevant articles that agree for SUPPORTED and at
 least three for REFUTED. One article never decides. Conflict gives not enough
 evidence.
 
+Adopted change: the refuted gate (at least 3 refuting articles) is now the
+default, confirmed on the third held-out set under a pre-registered rule
+(prereg-third). The earlier v1.0 behaviour (2 refuting articles) remains
+available at tag v1.0 via MIN_REFUTING_ARTICLES=2.
+
 ## Limitations
 
 - Free-tier news APIs have delay and quotas. Live coverage may lag, and the daily
