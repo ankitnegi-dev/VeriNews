@@ -211,6 +211,9 @@ iPhones, not Tesla. It is not evidence for or against the credibility weights.
 
 ### Passage-level NLI (v2)
 
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
+
 The v2 experiment replaced the retrieval snippet with full-article passages:
 sentences were split, 2-sentence windows were ranked with MiniLM, and the top two
 passages per article were run through NLI. The table covers all 30 claims in
@@ -260,6 +263,9 @@ Development evidence on the 30 seen claims, not held-out.
 | Total |  | 13 | 1.000 |  |
 
 ### v3 claim-aware ablation
+
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
 
 Components, each behind its own flag, evaluated alone and in combination on the
 30 CSV claims. Development evidence on the 30 seen claims, not held-out.
@@ -348,6 +354,9 @@ committed = wrong committed verdicts across the 35 gold S/R claims.
 Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, removing the false refutation of the Brewers claim let its supporting articles produce a correct SUPPORTED verdict.
 
 ## Third held-out set (20 claims)
+
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
 
 Pre-registered comparison (prereg-third): v1 (REFUTED needs >= 2 refuting
 articles) vs v1+gate (REFUTED needs >= 3). Both used the same cached
@@ -455,6 +464,9 @@ PortfoliO:https://ankit-negi.is-a.dev
 
 
 ## Informal fresh live test
+
+Results of the earlier experiments (v2, v3, fresh set) were measured under the
+v1.0 rule of two refuting articles.
 
 Five claims with labels from the user's own research of public sources
 (unverified by the assistant). All five are labeled SUPPORTED. This is informal
