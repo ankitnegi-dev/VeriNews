@@ -403,6 +403,39 @@ gate was found on seen claims and confirmed once on an unseen set under a
 pre-registered rule (tag prereg-third). The earlier v1.0 behaviour remains
 available at tag v1.0.
 
+## Informal live tests: effect of claim form
+
+Informal, selected to test claim form, not a held-out result.
+
+Statements:
+1. Patrick Stewart, the actor known for Star Trek and X-Men, died at age 86.
+   SUPPORTED, 6 sources.
+2. Walter Koenig, who played Chekov in Star Trek, died at age 90.
+   SUPPORTED, 6 sources.
+3. The Milwaukee Brewers won the 2026 World Series.
+   SUPPORTED, 2 sources.
+4. Kimi Antonelli became the youngest Formula 1 world champion.
+   SUPPORTED, 4 sources.
+
+Paired examples:
+- World Series: the long detailed claim ("The Milwaukee Brewers won the 2026
+  World Series by beating the Tampa Bay Rays four games to one.") was wrongly
+  REFUTED under v1.0 and would abstain under the three-article rule; the short
+  claim ("The Milwaukee Brewers won the 2026 World Series.") was SUPPORTED.
+- Antonelli: the long detailed claim ("Kimi Antonelli clinched the 2026 Formula 1
+  drivers' championship at the Mexico City Grand Prix.") was wrongly REFUTED under
+  v1.0 and would abstain under the three-article rule; the short claim ("Kimi
+  Antonelli became the youngest Formula 1 world champion.") was SUPPORTED.
+
+Conclusion: confirmation requires at least two articles that state every detail,
+so short statements repeated across outlets are confirmed and detail-rich claims
+usually are not.
+
+## How to write a claim
+
+One fact, no dates or scores unless they are the point, use the wording headlines
+use.
+
 ## API
 
 ```text
