@@ -10,37 +10,90 @@ runs a pretrained NLI model, weights sources by credibility, and returns
 Status: v1.0. The system was frozen at tag `v0.8-frozen` before the single
 held-out test run.
 
-## What it does
+## Table of contents
 
-- Turns a free-text claim into search queries.
-- Reads cached evidence or retrieves recent coverage from news providers.
-- Ranks articles by relevance and recency.
-- Scores each article as `SUPPORTS`, `REFUTES`, or `NEUTRAL` against the claim.
-- Applies source credibility and safety gates before deciding.
-- Returns `UNVERIFIED` when the evidence is missing, weak, conflicting, or too
-  one-sided to decide.
-- Serves a one-file web page with a claim box, verdict badge, evidence margin bar,
-  explanation, and evidence cards.
+- [Results](#results)
+- [Quick start](#quick-start)
+- [Diagrams](#diagrams)
+- [Repository layout](#repository-layout)
+- [Experiments](#experiments)
+- [Limitations](#limitations)
+- [Tags](#tags)
 
-## Architecture
 
-```mermaid
-flowchart LR
-    claim["Claim text"] --> analysis["Claim analysis<br/>entities and queries"]
-    analysis --> cache{"CACHE_ONLY?"}
-    cache -->|true| stored["Local retrieval cache"]
-    cache -->|false| providers["NewsAPI / GNews"]
-    stored --> ranking["Evidence ranking"]
-    providers --> ranking
-    ranking --> nli["NLI stance"]
-    nli --> credibility["Credibility weights"]
-    credibility --> decision["Safety-gated decision"]
-    decision --> verdict["SUPPORTED / REFUTED / UNVERIFIED"]
-    verdict --> api["FastAPI /verify"]
-    api --> ui["Static web UI"]
-```
+## Results
 
-## How to run
+The system was frozen at tag `v0.8-frozen` before the single held-out test run.
+No ranking, NLI, credibility, or decision code was changed after seeing the test
+results.
+
+### Dev split
+
+| Metric | Value |
+| --- | ---: |
+| Claims | 10 |
+| Exact accuracy | 0.800 (8/10) |
+| Wrong-verdict rate | 0.000 (0/6) |
+| Coverage | 0.667 (4/6) |
+| Mean latency | 4153 ms |
+| Max latency | 6265 ms |
+
+| Class | Precision | Recall | Gold support | Predicted |
+| --- | ---: | ---: | ---: | ---: |
+| SUPPORTED | 1.000 | 0.667 | 3 | 2 |
+| REFUTED | 1.000 | 0.667 | 3 | 2 |
+| UNVERIFIED | 0.667 | 1.000 | 4 | 6 |
+
+| Expected \ Predicted | SUPPORTED | REFUTED | UNVERIFIED |
+| --- | ---: | ---: | ---: |
+| SUPPORTED | 2 | 0 | 1 |
+| REFUTED | 0 | 2 | 1 |
+| UNVERIFIED | 0 | 0 | 4 |
+
+### Test split
+
+| Metric | Value |
+| --- | ---: |
+| Claims | 20 |
+| Exact accuracy | 0.600 (12/20) |
+| Wrong-verdict rate | 0.071 (1/14) |
+| Coverage | 0.500 (7/14) |
+| Mean latency | 4692 ms |
+| Max latency | 7899 ms |
+
+| Class | Precision | Recall | Gold support | Predicted |
+| --- | ---: | ---: | ---: | ---: |
+| SUPPORTED | 1.000 | 0.143 | 7 | 1 |
+| REFUTED | 0.833 | 0.714 | 7 | 6 |
+| UNVERIFIED | 0.462 | 1.000 | 6 | 13 |
+
+| Expected \ Predicted | SUPPORTED | REFUTED | UNVERIFIED |
+| --- | ---: | ---: | ---: |
+| SUPPORTED | 1 | 1 | 5 |
+| REFUTED | 0 | 5 | 2 |
+| UNVERIFIED | 0 | 0 | 6 |
+
+The 8 test mistakes break down as: NLI too strict 4, retrieval miss 3, compound
+claim 1, single-article gate 0, and other 0. Full evidence for every mistake is
+in `results/eval_test_report.md` and `results/eval_test.json`.
+
+Note: the earlier 60% test figure (12/20) includes correct abstentions, i.e.
+gold `UNVERIFIED` claims predicted `UNVERIFIED`; the wrong-verdict rate is
+separate at 1/14.
+
+### Credibility ablation
+
+| Split | Real tiers | All weights 1.0 | Changed |
+| --- | --- | --- | ---: |
+| Dev | 0.800 (8/10), 0.000 (0/6), 0.667 (4/6) | 0.800 (8/10), 0.000 (0/6), 0.667 (4/6) | 0 |
+| Test | 0.600 (12/20), 0.071 (1/14), 0.500 (7/14) | 0.650 (13/20), 0.071 (1/14), 0.571 (8/14) | 1 |
+
+The single test ablation change was Tesla, which moved from `UNVERIFIED` to
+`REFUTED` with all weights set to 1.0. That change was right for the wrong
+reason: the two `REFUTES` came from off-topic articles about Anthropic and
+iPhones, not Tesla. It is not evidence for or against the credibility weights.
+
+## Quick start
 
 All commands below are for Windows Command Prompt (`cmd.exe`).
 
@@ -135,79 +188,126 @@ The evaluation script also accepts `--split test`. The held-out test split was
 run once after the `v0.8-frozen` tag. Its outputs are
 `results/eval_test.json` and `results/eval_test_report.md`.
 
-## Results
+### API
 
-The system was frozen at tag `v0.8-frozen` before the single held-out test run.
-No ranking, NLI, credibility, or decision code was changed after seeing the test
-results.
+```text
+POST /verify   {"claim": "A claim to check."}
+GET  /health
+GET  /         static web page
+```
 
-### Dev split
+`POST /verify` accepts 1 to 500 characters. An empty or overlong claim returns
+HTTP 422. A valid request returns HTTP 200 with a verdict, including
+`UNVERIFIED` when the evidence is not enough.
 
-| Metric | Value |
-| --- | ---: |
-| Claims | 10 |
-| Exact accuracy | 0.800 (8/10) |
-| Wrong-verdict rate | 0.000 (0/6) |
-| Coverage | 0.667 (4/6) |
-| Mean latency | 4153 ms |
-| Max latency | 6265 ms |
+### How to write a claim
 
-| Class | Precision | Recall | Gold support | Predicted |
-| --- | ---: | ---: | ---: | ---: |
-| SUPPORTED | 1.000 | 0.667 | 3 | 2 |
-| REFUTED | 1.000 | 0.667 | 3 | 2 |
-| UNVERIFIED | 0.667 | 1.000 | 4 | 6 |
+One fact, no dates or scores unless they are the point, use the wording headlines
+use.
 
-| Expected \ Predicted | SUPPORTED | REFUTED | UNVERIFIED |
-| --- | ---: | ---: | ---: |
-| SUPPORTED | 2 | 0 | 1 |
-| REFUTED | 0 | 2 | 1 |
-| UNVERIFIED | 0 | 0 | 4 |
+## Diagrams
 
-### Test split
+```mermaid
+flowchart LR
+  Browser["Browser page"] --> FastAPI["FastAPI app"]
+  FastAPI --> Pipeline["Verification pipeline"]
+  Pipeline --> Providers["NewsAPI and GNews"]
+  Pipeline --> Cache["Disk cache: retrieval, full-text, NLI"]
+  Pipeline --> Models["spaCy, MiniLM, DeBERTa NLI"]
+  Pipeline --> Cred["credibility.yaml"]
+  Repo["results and tests folders"]
+```
 
-| Metric | Value |
-| --- | ---: |
-| Claims | 20 |
-| Exact accuracy | 0.600 (12/20) |
-| Wrong-verdict rate | 0.071 (1/14) |
-| Coverage | 0.500 (7/14) |
-| Mean latency | 4692 ms |
-| Max latency | 7899 ms |
+System architecture: the browser calls FastAPI, which runs the pipeline over providers, caches, models, and the credibility file.
 
-| Class | Precision | Recall | Gold support | Predicted |
-| --- | ---: | ---: | ---: | ---: |
-| SUPPORTED | 1.000 | 0.143 | 7 | 1 |
-| REFUTED | 0.833 | 0.714 | 7 | 6 |
-| UNVERIFIED | 0.462 | 1.000 | 6 | 13 |
+```mermaid
+flowchart LR
+  Claim["Claim text"] --> Analysis["Claim analysis"]
+  Analysis --> Retrieval["Retrieval"]
+  Retrieval --> Ranking["Ranking"]
+  Ranking --> NLI["NLI stance"]
+  NLI --> Cred["Credibility weights"]
+  Cred --> Decision["Decision engine"]
+  Decision --> Response["Verdict, margin, explanation, evidence"]
+```
 
-| Expected \ Predicted | SUPPORTED | REFUTED | UNVERIFIED |
-| --- | ---: | ---: | ---: |
-| SUPPORTED | 1 | 1 | 5 |
-| REFUTED | 0 | 5 | 2 |
-| UNVERIFIED | 0 | 0 | 6 |
+Pipeline for one claim: analysis, retrieval, ranking, NLI, credibility, decision, then the response.
 
-The 8 test mistakes break down as: NLI too strict 4, retrieval miss 3, compound
-claim 1, single-article gate 0, and other 0. Full evidence for every mistake is
-in `results/eval_test_report.md` and `results/eval_test.json`.
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant A as FastAPI
+  participant P as Pipeline
+  participant C as Cache or provider
+  participant N as NLI model
+  participant D as Decision engine
+  B->>A: POST /verify
+  A->>P: verify(claim)
+  P->>C: read cache
+  alt cache hit
+    C-->>P: cached articles
+  else cache miss
+    C->>C: check daily cap
+    C->>C: fetch from provider
+  end
+  P->>N: classify snippets
+  N-->>P: stances
+  P->>D: decide
+  D-->>P: verdict
+  P-->>A: Verdict
+  A-->>B: JSON response
+```
 
-Note: the earlier 60% test figure (12/20) includes correct abstentions, i.e.
-gold `UNVERIFIED` claims predicted `UNVERIFIED`; the wrong-verdict rate is
-separate at 1/14.
+Sequence for POST /verify, showing the cache-only branch and the daily request cap.
 
-### Credibility ablation
+```mermaid
+flowchart TD
+  Start["Evidence"] --> R["Relevance gate: similarity >= REL_MIN 0.5"]
+  R --> S["NLI stance threshold: support >= 0.5, refute >= 0.5"]
+  S --> N["Neutral counts as no information"]
+  N --> Sup["At least 2 supporting articles for SUPPORTED"]
+  N --> Ref["At least 3 refuting articles for REFUTED"]
+  Sup --> Conflict["Conflict gives UNVERIFIED"]
+  Ref --> Conflict
+  Conflict --> Unv["Otherwise UNVERIFIED"]
+```
 
-| Split | Real tiers | All weights 1.0 | Changed |
-| --- | --- | --- | ---: |
-| Dev | 0.800 (8/10), 0.000 (0/6), 0.667 (4/6) | 0.800 (8/10), 0.000 (0/6), 0.667 (4/6) | 0 |
-| Test | 0.600 (12/20), 0.071 (1/14), 0.500 (7/14) | 0.650 (13/20), 0.071 (1/14), 0.571 (8/14) | 1 |
+Decision engine: relevance gate, NLI stance threshold, neutral as no information, then the support and refute article counts and conflict.
 
-The single test ablation change was Tesla, which moved from `UNVERIFIED` to
-`REFUTED` with all weights set to 1.0. That change was right for the wrong
-reason: the two `REFUTES` came from off-topic articles about Anthropic and
-iPhones, not Tesla. It is not evidence for or against the credibility weights.
+```mermaid
+flowchart LR
+  Live["Live mode: CACHE_ONLY false"] --> Fetch["Fetch from providers"]
+  Cache["Cache-only demo mode"] --> Replay["Replay stored evidence"]
+  Cap["Daily cap reached"] --> Stop["Stop retrieval, return cached or UNVERIFIED"]
+```
+
+Run modes: live mode fetches providers, cache-only replays stored evidence, daily cap stops retrieval.
+
+```mermaid
+flowchart LR
+  ISOT["ISOT baseline"] --> DevTest["Dev and test split, frozen v0.8-frozen"]
+  DevTest --> Fresh["Fresh set"]
+  Fresh --> Third["Third set, prereg-third"]
+  Third --> Exp["Experiments: passages, v3, larger model, gate analysis (not adopted)"]
+  Exp --> Gate["Gate adopted as v2.0"]
+```
+
+Evaluation timeline from the ISOT baseline to the adopted gate, using real tag names.
+
+## Repository layout
+
+- `app/` - pipeline, claim analysis, retrieval, ranking, NLI, decision, credibility
+- `config.py` - models, thresholds, paths, experiment flags
+- `static/` - one-file web UI
+- `tests/` - offline tests and claim sets
+- `scripts/` - evaluation, prewarm, ablation, refresh helpers
+- `results/` - tracked dev and test evaluation JSON and reports
+- `docs/` - local notes and report drafts (gitignored)
+- `.cache/` - local retrieval, full-text, and NLI caches (gitignored)
 
 ## Experiments
+
+### Experiments
 
 ### Passage-level NLI (v2)
 
@@ -243,6 +343,8 @@ Future work:
 - Count a strong entailing passage as support.
 - Use a larger NLI model.
 - Split long claims into single facts.
+
+### Experiments (continued)
 
 ## Experiments (continued)
 
@@ -322,6 +424,8 @@ headline numbers above. Their v1 outcomes are recorded in `notes/diagnosis.md`.
 - Numeric and entity checking before accepting a contradiction.
 - Retrieval that includes primary sources.
 
+### Experiments (continued, corrected gate table)
+
 ## Experiments (continued, corrected gate table)
 
 Exploratory, fitted on seen data; no gate selected. Baseline refuting rule as
@@ -336,22 +440,24 @@ committed = wrong committed verdicts across the 35 gold S/R claims.
 
 | Gate | kept | removed | lost | correct S/R | false ref remaining (of 5) | wrong committed (of 35) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| min refuting articles >= 2 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
-| min refuting articles >= 3 | 9 | 4 | 1 | 12/35 | 4 | 1 |
-| min relevance >= 0.5 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
-| min relevance >= 0.6 | 9 | 0 | 1 | 12/35 | 0 | 5 |
-| min relevance >= 0.7 | 7 | 1 | 3 | 10/35 | 1 | 4 |
-| min relevance >= 0.8 | 1 | 4 | 9 | 4/35 | 4 | 1 |
-| min p_contra >= 0.9 | 9 | 2 | 1 | 12/35 | 2 | 3 |
-| min p_contra >= 0.95 | 8 | 3 | 2 | 11/35 | 3 | 2 |
-| min p_contra >= 0.99 | 6 | 3 | 4 | 9/35 | 3 | 2 |
-| distinct refuting domains >= 2 | 10 | 0 | 0 | 13/35 | 0 | 5 |
-| distinct refuting domains >= 1 (baseline) | 10 | 0 | 0 | 13/35 | 0 | 5 |
+| min refuting articles >= 2 (baseline) | 10 | 0 | 0 | 13/35 | 5 | 5 |
+| min refuting articles >= 3 | 9 | 4 | 1 | 12/35 | 1 | 1 |
+| min relevance >= 0.5 (baseline) | 10 | 0 | 0 | 13/35 | 5 | 5 |
+| min relevance >= 0.6 | 9 | 0 | 1 | 12/35 | 5 | 5 |
+| min relevance >= 0.7 | 7 | 1 | 3 | 10/35 | 4 | 4 |
+| min relevance >= 0.8 | 4 | 4 | 6 | 4/35 | 1 | 1 |
+| min p_contra >= 0.9 | 9 | 2 | 1 | 12/35 | 3 | 3 |
+| min p_contra >= 0.95 | 8 | 3 | 2 | 11/35 | 2 | 2 |
+| min p_contra >= 0.99 | 6 | 3 | 4 | 9/35 | 2 | 2 |
+| distinct refuting domains >= 2 | 10 | 0 | 0 | 13/35 | 5 | 5 |
+| distinct refuting domains >= 1 (baseline) | 10 | 0 | 0 | 13/35 | 5 | 5 |
 
 "At least 3 refuting articles" removed 4 of 5 false refutations at a cost of 1 of 10 correct refutations; not validated; not adopted.
 
 
 Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, the only kept correct refutation is test16 (Shanghai Masters); the four removed false refutations are test5 (West Indies T20I), fresh3 (Verstappen Mexico), fresh5 (India 3rd T20I) and fresh8 (Antonelli title).
+
+### Third held-out set (20 claims)
 
 ## Third held-out set (20 claims)
 
@@ -383,6 +489,8 @@ Per-claim wrong committed verdicts under v1 (all removed by the gate):
   refuted by nbcnews.com (0.718, 0.72), cbssports.com (0.994, 0.50), canalstreetchronicles.com
   (0.982, 0.47); same topic (Super Bowl odds), not the opposite.
 
+### Combined held-out sets (three sets)
+
 ## Combined held-out sets (three sets)
 
 | Set | Version | Committed right | Committed wrong | True confirmed | False refuted | abstained (all claims) | gold UNVERIFIED left unverified (of 6, 5, 5) |
@@ -402,6 +510,8 @@ that receive any verdict is 21 of 60 for v1 and 12 of 60 with the gate. The
 gate was found on seen claims and confirmed once on an unseen set under a
 pre-registered rule (tag prereg-third). The earlier v1.0 behaviour remains
 available at tag v1.0.
+
+### Informal live tests: effect of claim form
 
 ## Informal live tests: effect of claim form
 
@@ -431,70 +541,7 @@ Conclusion: confirmation requires at least two articles that state every detail,
 so short statements repeated across outlets are confirmed and detail-rich claims
 usually are not.
 
-## How to write a claim
-
-One fact, no dates or scores unless they are the point, use the wording headlines
-use.
-
-## API
-
-```text
-POST /verify   {"claim": "A claim to check."}
-GET  /health
-GET  /         static web page
-```
-
-`POST /verify` accepts 1 to 500 characters. An empty or overlong claim returns
-HTTP 422. A valid request returns HTTP 200 with a verdict, including
-`UNVERIFIED` when the evidence is not enough.
-
-## Decision rule
-
-A verdict needs at least two relevant articles that agree for SUPPORTED and at
-least three for REFUTED. One article never decides. Conflict gives not enough
-evidence.
-
-Adopted change: the refuted gate (at least 3 refuting articles) is now the
-default, confirmed on the third held-out set under a pre-registered rule
-(prereg-third). The earlier v1.0 behaviour (2 refuting articles) remains
-available at tag v1.0 via MIN_REFUTING_ARTICLES=2.
-
-## Limitations
-
-- Free-tier news APIs have delay and quotas. Live coverage may lag, and the daily
-  request cap can stop retrieval.
-- The pipeline is English only.
-- The credibility list is hand-made and small. Unknown domains receive a default
-  low score.
-- The NLI model is strict on multi-fact claims. A snippet that only partially
-  supports a compound claim can be scored neutral or refuted.
-- The system can confuse different events of the same type. In the West Indies
-  second T20I test claim, retrieval returned articles about the first, third, and
-  fourth matches in the same series.
-- The NLI model can treat numbers about a different quantity as a contradiction.
-  In the TSMC test claim, revenue figures were scored as refuting a net-profit
-  claim.
-- Retrieval can return previews, how-to-watch pages, or live blogs instead of a
-  final report. The Bayern Munich vs Arsenal test claim is an example.
-- Off-topic evidence can pass `REL_MIN`. In the Tesla test claim, articles about
-  Anthropic and iPhones had relevance above the threshold, although the total
-  weight stayed below `MIN_TOTAL_WEIGHT`.
-- Compound claims are hard. The Panama earthquake claim is mostly true but adds a
-  false canal sentence, so the whole claim cannot be treated as supported.
-- The ISOT baseline measures writing style, not factual truth.
-- The labeled sets are small: 10 dev claims and 20 test claims. The metrics are
-  useful for diagnosis, not for a final estimate of real-world accuracy.
-- Cache-only mode replays stored evidence. It cannot detect stories that are
-  newer than the cache.
-- VeriNews is a prototype, not a replacement for human fact-checking.
-
-Author:
-Ankit Negi
-
-GithuB:https://github.com/ankitnegi-dev
-
-PortfoliO:https://ankit-negi.is-a.dev
-
+### Informal fresh live test
 
 ## Informal fresh live test
 
@@ -560,3 +607,57 @@ Totals:
 
 Decision rule: adopt v3 only if wrong committed verdicts are lower than v1 AND
 correct S/R is at most 1 lower than v1. Result: **FAIL**.
+
+## Decision rule
+
+A verdict needs at least two relevant articles that agree for SUPPORTED and at
+least three for REFUTED. One article never decides. Conflict gives not enough
+evidence.
+
+Adopted change: the refuted gate (at least 3 refuting articles) is now the
+default, confirmed on the third held-out set under a pre-registered rule
+(prereg-third). The earlier v1.0 behaviour (2 refuting articles) remains
+available at tag v1.0 via MIN_REFUTING_ARTICLES=2.
+
+## Limitations
+
+- Free-tier news APIs have delay and quotas. Live coverage may lag, and the daily
+  request cap can stop retrieval.
+- The pipeline is English only.
+- The credibility list is hand-made and small. Unknown domains receive a default
+  low score.
+- The NLI model is strict on multi-fact claims. A snippet that only partially
+  supports a compound claim can be scored neutral or refuted.
+- The system can confuse different events of the same type. In the West Indies
+  second T20I test claim, retrieval returned articles about the first, third, and
+  fourth matches in the same series.
+- The NLI model can treat numbers about a different quantity as a contradiction.
+  In the TSMC test claim, revenue figures were scored as refuting a net-profit
+  claim.
+- Retrieval can return previews, how-to-watch pages, or live blogs instead of a
+  final report. The Bayern Munich vs Arsenal test claim is an example.
+- Off-topic evidence can pass `REL_MIN`. In the Tesla test claim, articles about
+  Anthropic and iPhones had relevance above the threshold, although the total
+  weight stayed below `MIN_TOTAL_WEIGHT`.
+- Compound claims are hard. The Panama earthquake claim is mostly true but adds a
+  false canal sentence, so the whole claim cannot be treated as supported.
+- The ISOT baseline measures writing style, not factual truth.
+- The labeled sets are small: 10 dev claims and 20 test claims. The metrics are
+  useful for diagnosis, not for a final estimate of real-world accuracy.
+- Cache-only mode replays stored evidence. It cannot detect stories that are
+  newer than the cache.
+- VeriNews is a prototype, not a replacement for human fact-checking.
+
+Author:
+Ankit Negi
+
+GithuB:https://github.com/ankitnegi-dev
+
+PortfoliO:https://ankit-negi.is-a.dev
+
+## Tags
+
+`v0.8-frozen`, `v1.0`, `v1.4-fresh-eval`, `v1.5-final`, `v1.5.1-final`,
+`v1.5.2-final`, `v1.5.3-final`, `v1.5.4-final`, `v1.6-third-eval`,
+`v2.0-final`, `v2.0.1-docs`, `exp-passage-nli`, `exp-v3-claim-aware`,
+`prereg-third`.
