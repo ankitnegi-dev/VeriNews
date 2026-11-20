@@ -351,7 +351,7 @@ committed = wrong committed verdicts across the 35 gold S/R claims.
 "At least 3 refuting articles" removed 4 of 5 false refutations at a cost of 1 of 10 correct refutations; not validated; not adopted.
 
 
-Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, removing the false refutation of the Brewers claim let its supporting articles produce a correct SUPPORTED verdict.
+Footnote: Correct S/R can exceed 3 plus kept refutations. In the relevance >= 0.8 row, the only kept correct refutation is test16 (Shanghai Masters); the four removed false refutations are test5 (West Indies T20I), fresh3 (Verstappen Mexico), fresh5 (India 3rd T20I) and fresh8 (Antonelli title).
 
 ## Third held-out set (20 claims)
 
