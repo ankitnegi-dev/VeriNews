@@ -1,5 +1,13 @@
 # VeriNews
 
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)
+![spaCy](https://img.shields.io/badge/spaCy-NLP-09A3D5?logo=spacy&logoColor=white)
+![transformers](https://img.shields.io/badge/transformers-DeBERTa-FFD21E?logo=huggingface&logoColor=black)
+![pytest](https://img.shields.io/badge/pytest-tests-0A9EDC?logo=pytest&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-repo-181717?logo=github&logoColor=white)
+
+
 A real-time, evidence-based news claim verification prototype built with Python
 and FastAPI.
 
