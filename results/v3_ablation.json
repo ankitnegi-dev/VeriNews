@@ -1,0 +1,988 @@
+{
+  "label": "development evidence, not held-out",
+  "claims": 30,
+  "configs": {
+    "v1": {
+      "options": {
+        "retrieval": false,
+        "passages": false,
+        "guards": false
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "10/20",
+        "abstained_sr": "9/20",
+        "flips": 1,
+        "false_positive_on_unverified": 0,
+        "exact_count": 20,
+        "correct_sr_count": 10,
+        "abstained_sr_count": 9,
+        "flip_count": 1
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "10/20",
+        "abstained_sr": "9/20",
+        "flips": 1,
+        "false_positive_on_unverified": 0,
+        "exact_count": 20,
+        "correct_sr_count": 10,
+        "abstained_sr_count": 9,
+        "flip_count": 1
+      },
+      "cold_latency": {
+        "mean": 1688.0,
+        "max": 12304
+      },
+      "warm_latency": {
+        "mean": 1291.9,
+        "max": 2564
+      },
+      "guard_stats": null,
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "A": {
+      "options": {
+        "retrieval": true,
+        "passages": false,
+        "guards": false
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "18/30",
+        "correct_sr": "8/20",
+        "abstained_sr": "11/20",
+        "flips": 1,
+        "false_positive_on_unverified": 0,
+        "exact_count": 18,
+        "correct_sr_count": 8,
+        "abstained_sr_count": 11,
+        "flip_count": 1
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "18/30",
+        "correct_sr": "8/20",
+        "abstained_sr": "11/20",
+        "flips": 1,
+        "false_positive_on_unverified": 0,
+        "exact_count": 18,
+        "correct_sr_count": 8,
+        "abstained_sr_count": 11,
+        "flip_count": 1
+      },
+      "cold_latency": {
+        "mean": 1005.7,
+        "max": 2210
+      },
+      "warm_latency": {
+        "mean": 1009.3,
+        "max": 2251
+      },
+      "guard_stats": null,
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "B": {
+      "options": {
+        "retrieval": false,
+        "passages": true,
+        "guards": false
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "23/30",
+        "correct_sr": "13/20",
+        "abstained_sr": "4/20",
+        "flips": 3,
+        "false_positive_on_unverified": 0,
+        "exact_count": 23,
+        "correct_sr_count": 13,
+        "abstained_sr_count": 4,
+        "flip_count": 3
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "23/30",
+        "correct_sr": "13/20",
+        "abstained_sr": "4/20",
+        "flips": 3,
+        "false_positive_on_unverified": 0,
+        "exact_count": 23,
+        "correct_sr_count": 13,
+        "abstained_sr_count": 4,
+        "flip_count": 3
+      },
+      "cold_latency": {
+        "mean": 4427.9,
+        "max": 7639
+      },
+      "warm_latency": {
+        "mean": 4464.9,
+        "max": 7953
+      },
+      "guard_stats": {
+        "guard1_changed": 0,
+        "guard1_refute_to_neutral": 0,
+        "guard1_kept": 0,
+        "guard2_changed": 0,
+        "guard2_neutral_to_support": 0,
+        "guard2_weak_refute_to_support": 0,
+        "guard2_kept": 0,
+        "passages_seen": 0
+      },
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "C": {
+      "options": {
+        "retrieval": false,
+        "passages": false,
+        "guards": true
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "14/30",
+        "correct_sr": "5/20",
+        "abstained_sr": "15/20",
+        "flips": 0,
+        "false_positive_on_unverified": 1,
+        "exact_count": 14,
+        "correct_sr_count": 5,
+        "abstained_sr_count": 15,
+        "flip_count": 0
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "14/30",
+        "correct_sr": "5/20",
+        "abstained_sr": "15/20",
+        "flips": 0,
+        "false_positive_on_unverified": 1,
+        "exact_count": 14,
+        "correct_sr_count": 5,
+        "abstained_sr_count": 15,
+        "flip_count": 0
+      },
+      "cold_latency": {
+        "mean": 1358.8,
+        "max": 2664
+      },
+      "warm_latency": {
+        "mean": 1357.4,
+        "max": 2689
+      },
+      "guard_stats": {
+        "guard1_changed": 33,
+        "guard1_refute_to_neutral": 33,
+        "guard1_kept": 6,
+        "guard2_changed": 9,
+        "guard2_neutral_to_support": 9,
+        "guard2_weak_refute_to_support": 0,
+        "guard2_kept": 0,
+        "passages_seen": 145
+      },
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "A+B": {
+      "options": {
+        "retrieval": true,
+        "passages": true,
+        "guards": false
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "21/30",
+        "correct_sr": "11/20",
+        "abstained_sr": "7/20",
+        "flips": 2,
+        "false_positive_on_unverified": 0,
+        "exact_count": 21,
+        "correct_sr_count": 11,
+        "abstained_sr_count": 7,
+        "flip_count": 2
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "21/30",
+        "correct_sr": "11/20",
+        "abstained_sr": "7/20",
+        "flips": 2,
+        "false_positive_on_unverified": 0,
+        "exact_count": 21,
+        "correct_sr_count": 11,
+        "abstained_sr_count": 7,
+        "flip_count": 2
+      },
+      "cold_latency": {
+        "mean": 3048.3,
+        "max": 9600
+      },
+      "warm_latency": {
+        "mean": 2775.7,
+        "max": 5476
+      },
+      "guard_stats": {
+        "guard1_changed": 0,
+        "guard1_refute_to_neutral": 0,
+        "guard1_kept": 0,
+        "guard2_changed": 0,
+        "guard2_neutral_to_support": 0,
+        "guard2_weak_refute_to_support": 0,
+        "guard2_kept": 0,
+        "passages_seen": 0
+      },
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "B+C": {
+      "options": {
+        "retrieval": false,
+        "passages": true,
+        "guards": true
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "11/20",
+        "abstained_sr": "7/20",
+        "flips": 2,
+        "false_positive_on_unverified": 1,
+        "exact_count": 20,
+        "correct_sr_count": 11,
+        "abstained_sr_count": 7,
+        "flip_count": 2
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "11/20",
+        "abstained_sr": "7/20",
+        "flips": 2,
+        "false_positive_on_unverified": 1,
+        "exact_count": 20,
+        "correct_sr_count": 11,
+        "abstained_sr_count": 7,
+        "flip_count": 2
+      },
+      "cold_latency": {
+        "mean": 4389.8,
+        "max": 7603
+      },
+      "warm_latency": {
+        "mean": 4481.3,
+        "max": 7560
+      },
+      "guard_stats": {
+        "guard1_changed": 55,
+        "guard1_refute_to_neutral": 55,
+        "guard1_kept": 47,
+        "guard2_changed": 34,
+        "guard2_neutral_to_support": 34,
+        "guard2_weak_refute_to_support": 0,
+        "guard2_kept": 0,
+        "passages_seen": 296
+      },
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "REFUTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    },
+    "A+B+C": {
+      "options": {
+        "retrieval": true,
+        "passages": true,
+        "guards": true
+      },
+      "metrics_cold": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "10/20",
+        "abstained_sr": "10/20",
+        "flips": 0,
+        "false_positive_on_unverified": 0,
+        "exact_count": 20,
+        "correct_sr_count": 10,
+        "abstained_sr_count": 10,
+        "flip_count": 0
+      },
+      "metrics_warm": {
+        "n": 30,
+        "exact": "20/30",
+        "correct_sr": "10/20",
+        "abstained_sr": "10/20",
+        "flips": 0,
+        "false_positive_on_unverified": 0,
+        "exact_count": 20,
+        "correct_sr_count": 10,
+        "abstained_sr_count": 10,
+        "flip_count": 0
+      },
+      "cold_latency": {
+        "mean": 2803.1,
+        "max": 5372
+      },
+      "warm_latency": {
+        "mean": 2803.5,
+        "max": 5384
+      },
+      "guard_stats": {
+        "guard1_changed": 51,
+        "guard1_refute_to_neutral": 51,
+        "guard1_kept": 32,
+        "guard2_changed": 18,
+        "guard2_neutral_to_support": 18,
+        "guard2_weak_refute_to_support": 0,
+        "guard2_kept": 0,
+        "passages_seen": 268
+      },
+      "predictions": [
+        "SUPPORTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "SUPPORTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "REFUTED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED",
+        "UNVERIFIED"
+      ]
+    }
+  },
+  "changed_claims": [
+    {
+      "row": 4,
+      "claim": "Max Verstappen won the 2026 Singapore Grand Prix, finishing ahead of Charles Leclerc.",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "A",
+          "REFUTED"
+        ],
+        [
+          "B",
+          "REFUTED"
+        ],
+        [
+          "A+B",
+          "REFUTED"
+        ]
+      ]
+    },
+    {
+      "row": 5,
+      "claim": "West Indies beat India by six wickets in the second T20I in Ranchi on October 9, 2026.",
+      "expected": "SUPPORTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "A",
+          "UNVERIFIED"
+        ],
+        [
+          "C",
+          "UNVERIFIED"
+        ],
+        [
+          "A+B+C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 7,
+      "claim": "The Reserve Bank of India raised its repo rate by 25 basis points to 5.50 percent on October 7, 2026.",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "A+B+C",
+          "SUPPORTED"
+        ]
+      ]
+    },
+    {
+      "row": 8,
+      "claim": "TSMC reported third-quarter 2026 net profit of NT$763.06 billion, up 68.7 percent from a year earlier.",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "B",
+          "REFUTED"
+        ],
+        [
+          "B+C",
+          "REFUTED"
+        ],
+        [
+          "A+B+C",
+          "SUPPORTED"
+        ]
+      ]
+    },
+    {
+      "row": 9,
+      "claim": "Bayern Munich and Arsenal drew 2-2 in a Champions League match on October 21, 2026.",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "B+C",
+          "SUPPORTED"
+        ]
+      ]
+    },
+    {
+      "row": 12,
+      "claim": "Robert Hall and Michael Woodford won the 2026 Nobel economics prize for their work on the economics of climate change.",
+      "expected": "REFUTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "B",
+          "REFUTED"
+        ],
+        [
+          "A+B",
+          "REFUTED"
+        ]
+      ]
+    },
+    {
+      "row": 13,
+      "claim": "India won the five-match T20I series against West Indies 3-1.",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "A",
+          "UNVERIFIED"
+        ],
+        [
+          "C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 14,
+      "claim": "Manchester United beat Como 4-1 in a Champions League match on October 21, 2026.",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "C",
+          "UNVERIFIED"
+        ],
+        [
+          "A+B+C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 15,
+      "claim": "SpaceX launched a Dragon cargo spacecraft to the International Space Station from Vandenberg Space Force Base in California on October 13, 2026.",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 17,
+      "claim": "Tesla reported third-quarter 2026 revenue of $38 billion, up 35 percent from a year earlier.",
+      "expected": "REFUTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "A",
+          "REFUTED"
+        ],
+        [
+          "B",
+          "REFUTED"
+        ],
+        [
+          "A+B",
+          "REFUTED"
+        ]
+      ]
+    },
+    {
+      "row": 19,
+      "claim": "On October 16, 2026, President Trump signed an executive order putting new Graham Act sanctions and tariffs on Russia into full effect with no waivers.",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "A",
+          "UNVERIFIED"
+        ],
+        [
+          "C",
+          "UNVERIFIED"
+        ],
+        [
+          "A+B",
+          "UNVERIFIED"
+        ],
+        [
+          "B+C",
+          "UNVERIFIED"
+        ],
+        [
+          "A+B+C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 20,
+      "claim": "Manchester United beat Leeds United 2-0 at Elland Road on October 18, 2026.",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "changes": [
+        [
+          "A",
+          "UNVERIFIED"
+        ],
+        [
+          "C",
+          "UNVERIFIED"
+        ]
+      ]
+    },
+    {
+      "row": 21,
+      "claim": "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026, and the Panama Canal suspended all ship passage.",
+      "expected": "REFUTED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "B",
+          "REFUTED"
+        ],
+        [
+          "B+C",
+          "REFUTED"
+        ]
+      ]
+    },
+    {
+      "row": 24,
+      "claim": "Max Verstappen will win the 2027 Formula 1 drivers' championship.",
+      "expected": "UNVERIFIED",
+      "v1": "UNVERIFIED",
+      "changes": [
+        [
+          "C",
+          "SUPPORTED"
+        ],
+        [
+          "B+C",
+          "SUPPORTED"
+        ]
+      ]
+    }
+  ],
+  "regressions": [
+    {
+      "row": 4,
+      "config": "A",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "new": "REFUTED",
+      "type": "abstention_became_wrong_verdict"
+    },
+    {
+      "row": 4,
+      "config": "B",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "new": "REFUTED",
+      "type": "abstention_became_wrong_verdict"
+    },
+    {
+      "row": 4,
+      "config": "A+B",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "new": "REFUTED",
+      "type": "abstention_became_wrong_verdict"
+    },
+    {
+      "row": 8,
+      "config": "B",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "new": "REFUTED",
+      "type": "abstention_became_wrong_verdict"
+    },
+    {
+      "row": 8,
+      "config": "B+C",
+      "expected": "SUPPORTED",
+      "v1": "UNVERIFIED",
+      "new": "REFUTED",
+      "type": "abstention_became_wrong_verdict"
+    },
+    {
+      "row": 13,
+      "config": "A",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 13,
+      "config": "C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 14,
+      "config": "C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 14,
+      "config": "A+B+C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 15,
+      "config": "C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 19,
+      "config": "A",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 19,
+      "config": "C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 19,
+      "config": "A+B",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 19,
+      "config": "B+C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 19,
+      "config": "A+B+C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 20,
+      "config": "A",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 20,
+      "config": "C",
+      "expected": "REFUTED",
+      "v1": "REFUTED",
+      "new": "UNVERIFIED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 24,
+      "config": "C",
+      "expected": "UNVERIFIED",
+      "v1": "UNVERIFIED",
+      "new": "SUPPORTED",
+      "type": "correct_verdict_lost"
+    },
+    {
+      "row": 24,
+      "config": "B+C",
+      "expected": "UNVERIFIED",
+      "v1": "UNVERIFIED",
+      "new": "SUPPORTED",
+      "type": "correct_verdict_lost"
+    }
+  ],
+  "clause_info": {
+    "21": {
+      "coordinated": true,
+      "clauses": [
+        "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026",
+        "the Panama Canal suspended all ship passage."
+      ],
+      "counts": [
+        {
+          "clause": "A magnitude 7.7 earthquake struck southern Panama on October 9, 2026",
+          "supports": 4,
+          "refutes": 0,
+          "neutrals": 0,
+          "articles": [
+            "business-standard.com",
+            "thehindubusinessline.com",
+            "legalinsurrection.com",
+            "huffpost.com"
+          ]
+        },
+        {
+          "clause": "the Panama Canal suspended all ship passage.",
+          "supports": 0,
+          "refutes": 0,
+          "neutrals": 4,
+          "articles": [
+            "business-standard.com",
+            "thehindubusinessline.com",
+            "legalinsurrection.com",
+            "huffpost.com"
+          ]
+        }
+      ],
+      "verdict": "UNVERIFIED",
+      "explanation": "Coordinated claim (2 clauses): clause 1 supports 4 / refutes 0; clause 2 supports 0 / refutes 0; clause rule -> UNVERIFIED"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "v1": {
+    "n": 20,
+    "exact": "8/20",
+    "correct_sr": "3/15",
+    "abstained_sr": "8/15",
+    "flips": 4,
+    "unv_wrong": 0,
+    "wrong_committed": 4,
+    "exact_count": 8,
+    "correct_sr_count": 3,
+    "abstained_sr_count": 8
+  },
+  "v3": {
+    "n": 20,
+    "exact": "4/20",
+    "correct_sr": "0/15",
+    "abstained_sr": "12/15",
+    "flips": 3,
+    "unv_wrong": 1,
+    "wrong_committed": 4,
+    "exact_count": 4,
+    "correct_sr_count": 0,
+    "abstained_sr_count": 12
+  },
+  "v1_mean_lat": 920714.9,
+  "v3_mean_lat": 9047.8
+}

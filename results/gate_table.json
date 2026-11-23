@@ -1,0 +1,105 @@
+{
+  "table": [
+    {
+      "gate": "min refuting articles >= 2 (baseline)",
+      "kept": 10,
+      "removed": 0,
+      "lost": 0,
+      "correct_sr": "13/35",
+      "false_rem": 0,
+      "wrong_committed": 5
+    },
+    {
+      "gate": "min refuting articles >= 3",
+      "kept": 9,
+      "removed": 4,
+      "lost": 1,
+      "correct_sr": "12/35",
+      "false_rem": 4,
+      "wrong_committed": 1
+    },
+    {
+      "gate": "min relevance >= 0.5 (baseline)",
+      "kept": 10,
+      "removed": 0,
+      "lost": 0,
+      "correct_sr": "13/35",
+      "false_rem": 0,
+      "wrong_committed": 5
+    },
+    {
+      "gate": "min relevance >= 0.6",
+      "kept": 9,
+      "removed": 0,
+      "lost": 1,
+      "correct_sr": "12/35",
+      "false_rem": 0,
+      "wrong_committed": 5
+    },
+    {
+      "gate": "min relevance >= 0.7",
+      "kept": 7,
+      "removed": 1,
+      "lost": 3,
+      "correct_sr": "10/35",
+      "false_rem": 1,
+      "wrong_committed": 4
+    },
+    {
+      "gate": "min relevance >= 0.8",
+      "kept": 1,
+      "removed": 4,
+      "lost": 9,
+      "correct_sr": "4/35",
+      "false_rem": 4,
+      "wrong_committed": 1
+    },
+    {
+      "gate": "min p_contra >= 0.9",
+      "kept": 9,
+      "removed": 2,
+      "lost": 1,
+      "correct_sr": "12/35",
+      "false_rem": 2,
+      "wrong_committed": 3
+    },
+    {
+      "gate": "min p_contra >= 0.95",
+      "kept": 8,
+      "removed": 3,
+      "lost": 2,
+      "correct_sr": "11/35",
+      "false_rem": 3,
+      "wrong_committed": 2
+    },
+    {
+      "gate": "min p_contra >= 0.99",
+      "kept": 6,
+      "removed": 3,
+      "lost": 4,
+      "correct_sr": "9/35",
+      "false_rem": 3,
+      "wrong_committed": 2
+    },
+    {
+      "gate": "distinct refuting domains >= 2",
+      "kept": 10,
+      "removed": 0,
+      "lost": 0,
+      "correct_sr": "13/35",
+      "false_rem": 0,
+      "wrong_committed": 5
+    },
+    {
+      "gate": "distinct refuting domains >= 1 (baseline)",
+      "kept": 10,
+      "removed": 0,
+      "lost": 0,
+      "correct_sr": "13/35",
+      "false_rem": 0,
+      "wrong_committed": 5
+    }
+  ],
+  "n_claims": 50,
+  "baseline_mismatches": 0
+}

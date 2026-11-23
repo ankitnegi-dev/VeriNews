@@ -188,7 +188,23 @@ The evaluation script also accepts `--split test`. The held-out test split was
 run once after the `v0.8-frozen` tag. Its outputs are
 `results/eval_test.json` and `results/eval_test_report.md`.
 
-### API
+### Notebooks
+
+Run with `jupyter notebook` after `pip install -r requirements-notebooks.txt`.
+
+- `analysis_notebooks/01_data_cleaning_isot.ipynb` - ISOT cleaning and assertions.
+- `analysis_notebooks/02_style_baseline.ipynb` - TF-IDF baseline and influential words.
+- `analysis_notebooks/03_claim_sets.ipynb` - claim set counts and dates.
+- `analysis_notebooks/04_pipeline_walkthrough.ipynb` - cached pipeline stages.
+- `analysis_notebooks/05_evaluation_results.ipynb` - report tables and charts.
+
+## Screenshots
+
+No screenshots are committed yet. The folder `assets/screenshots/` is reserved for
+PNGs added later; each image should be referenced here with a caption and the
+claim it shows, and marked as an informal live test.
+
+## API
 
 ```text
 POST /verify   {"claim": "A claim to check."}
