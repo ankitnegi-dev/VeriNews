@@ -47,3 +47,5 @@ Thumbs.db
 .idea/
 
 screenshots/
+!assets/screenshots/
+!assets/screenshots/*.png
