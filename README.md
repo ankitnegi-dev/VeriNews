@@ -200,9 +200,19 @@ Run with `jupyter notebook` after `pip install -r requirements-notebooks.txt`.
 
 ## Screenshots
 
-No screenshots are committed yet. The folder `assets/screenshots/` is reserved for
-PNGs added later; each image should be referenced here with a caption and the
-claim it shows, and marked as an informal live test.
+Informal live tests (not held-out results).
+
+![Patrick Stewart](assets/screenshots/supported_patrick_stewart.png)
+Caption: "Patrick Stewart, the actor known for Star Trek and X-Men, died at age 86." - SUPPORTED, 6 sources. Informal live test.
+
+![Walter Koenig](assets/screenshots/supported_walter_koenig.png)
+Caption: "Walter Koenig, who played Chekov in Star Trek, died at age 90." - SUPPORTED, 6 sources. Informal live test.
+
+![Milwaukee Brewers (short claim)](assets/screenshots/supported_brewers_short.png)
+Caption: "The Milwaukee Brewers won the 2026 World Series." - SUPPORTED, 2 sources. Informal live test.
+
+![Kimi Antonelli (short claim)](assets/screenshots/supported_antonelli_youngest.png)
+Caption: "Kimi Antonelli became the youngest Formula 1 world champion." - SUPPORTED, 4 sources. Informal live test.
 
 ## API
 
