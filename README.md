@@ -93,6 +93,19 @@ The single test ablation change was Tesla, which moved from `UNVERIFIED` to
 reason: the two `REFUTES` came from off-topic articles about Anthropic and
 iPhones, not Tesla. It is not evidence for or against the credibility weights.
 
+## Tools and technologies
+
+- Python 3, FastAPI, Uvicorn
+- spaCy (en_core_web_sm) for claim analysis
+- sentence-transformers (all-MiniLM-L6-v2) for retrieval ranking and passages
+- transformers (MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli) for NLI
+- NewsAPI and GNews for live retrieval
+- scikit-learn, pandas, NumPy for the ISOT baseline
+- matplotlib for charts
+- pytest for the test suite
+- Mermaid for README diagrams
+- Git and GitHub for version control
+
 ## Quick start
 
 All commands below are for Windows Command Prompt (`cmd.exe`).
