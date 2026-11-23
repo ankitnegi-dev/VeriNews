@@ -95,6 +95,17 @@ iPhones, not Tesla. It is not evidence for or against the credibility weights.
 
 ## Tools and technologies
 
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)
+![spaCy](https://img.shields.io/badge/spaCy-NLP-09A3D5?logo=spacy&logoColor=white)
+![sentence-transformers](https://img.shields.io/badge/sentence--transformers-MiniLM-FF6F00)
+![transformers](https://img.shields.io/badge/transformers-DeBERTa-FFD21E?logo=huggingface&logoColor=black)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-data-150458?logo=pandas&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-tests-0A9EDC?logo=pytest&logoColor=white)
+![Mermaid](https://img.shields.io/badge/Mermaid-diagrams-FF3670?logo=mermaid&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-repo-181717?logo=github&logoColor=white)
+
 - Python 3, FastAPI, Uvicorn
 - spaCy (en_core_web_sm) for claim analysis
 - sentence-transformers (all-MiniLM-L6-v2) for retrieval ranking and passages
